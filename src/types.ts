@@ -1,22 +1,16 @@
 export enum BACKGROUND_EVENTS {
-  INITIALIZATION = "INIT",
+  INITIALIZATION = "INIT_BACKGROUND",
 }
 
 export enum POPUP_EVENTS {
-  INITIALIZATION = "INIT",
+  INITIALIZATION = "INIT_POPUP",
 }
 
-export interface IState {
-  message: IMessage;
-  sender: chrome.runtime.MessageSender;
-  sendResponse: (response?: any) => void;
+export enum OPTIONS_EVENTS {
+  INITIALIZATION = "INIT_OPTIONS",
 }
 
-export interface IMessage {
-  [key: string]: any;
-  action: string;
-}
-
+// Background
 export interface InitializePopUp {
   action: typeof BACKGROUND_EVENTS.INITIALIZATION;
   payload: {
@@ -24,6 +18,7 @@ export interface InitializePopUp {
   };
 }
 
+// PopUp Events
 export interface InitializePopUpResponse {
   action: typeof POPUP_EVENTS.INITIALIZATION;
   payload: {
@@ -31,7 +26,33 @@ export interface InitializePopUpResponse {
   };
 }
 
-export type Actions = InitializePopUp;
+// PopUp Events
+export interface InitializeOptionsResponse {
+  action: typeof OPTIONS_EVENTS.INITIALIZATION;
+  payload: {
+    id: string;
+  };
+}
 
-export type ActionFn = (props: any) => Actions;
-export type GenericFn = (data: any) => void;
+
+// Background Reducer
+export type BackgroundEventReducer = (
+  message: BackgroundActions,
+  sender: chrome.runtime.MessageSender,
+  sendResponse: ReducerRensposeFn 
+) => void;
+
+
+
+export type PopupEventFn = (props: PopUpActions) => void;
+export type OptionsEventFn = (props: OptionsActions) => void;
+
+export type ReducerRensposeFn = PopupEventFn & OptionsEventFn; 
+
+// Actions Type Exports
+export type BackgroundActions = InitializePopUp;
+export type PopUpActions = InitializePopUpResponse;
+export type OptionsActions = InitializeOptionsResponse;
+
+// All Actions
+export type Actions = BackgroundActions | PopUpActions | OptionsActions;

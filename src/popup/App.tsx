@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { messageEvent, initializePopUp } from '../actions';
+import { messageBackgroundAction, initializePopUp } from '../background/actions';
 import { InitializePopUpResponse } from '../types';
 
 
@@ -7,13 +7,15 @@ import { InitializePopUpResponse } from '../types';
 const App = () => {
     const [message, setMessage] = useState('');
     useEffect(() => {
-        messageEvent(initializePopUp("hello"), (response: InitializePopUpResponse) => {
-            const { id } = response.payload;
-            setMessage(id)
-        });
+        messageBackgroundAction(
+            initializePopUp("hello"),
+            (response: InitializePopUpResponse) => {
+                const { id } = response.payload;
+                setMessage(id)
+            });
     }, [])
 
-    return <div>Hello, { message }</div>
+    return <div>Hello, {message}</div>
 };
 
 export default App;
