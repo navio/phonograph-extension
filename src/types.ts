@@ -11,6 +11,13 @@ export enum OPTIONS_EVENTS {
   INITIALIZATION = "INIT_OPTIONS",
 }
 
+export const EVENTS = {
+  POPUP: POPUP_EVENTS,
+  OPTIONS: OPTIONS_EVENTS,
+  BACKGROUND: BACKGROUND_EVENTS,
+};
+
+
 // Background
 export interface InitializePopUp {
   action: typeof BACKGROUND_EVENTS.INIT_POPUP;
@@ -56,12 +63,12 @@ export type BackgroundEventReducer = (
   sendResponse: ReducerRensposeFn
 ) => void;
 
+// Response Types
 export type PopupEventFn = (props: PopUpActions) => void;
 export type OptionsEventFn = (props: OptionsActions) => void;
-
 export type ReducerRensposeFn = (props: MessageResponse) => void;
 
-// Actions Type Exports
+// Actions Types
 export type BackgroundActions = InitializePopUp | InitializeOptions;
 export type PopUpActions = InitializePopUpResponse;
 export type OptionsActions = InitializeOptionsResponse;
