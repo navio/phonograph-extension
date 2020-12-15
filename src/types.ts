@@ -26,37 +26,40 @@ export interface InitializeOptions {
   };
 }
 
+interface MessageResponse {
+  action: POPUP_EVENTS | OPTIONS_EVENTS;
+  payload?: {
+    [key: string]: any;
+  };
+}
+
 // PopUp Events
-export interface InitializePopUpResponse {
-  action: typeof POPUP_EVENTS.INITIALIZATION;
+export interface InitializePopUpResponse extends MessageResponse {
+  action: POPUP_EVENTS.INITIALIZATION;
   payload: {
     id: string;
   };
 }
 
 // PopUp Events
-export interface InitializeOptionsResponse {
-  action: typeof OPTIONS_EVENTS.INITIALIZATION;
+export interface InitializeOptionsResponse extends MessageResponse {
+  action: OPTIONS_EVENTS.INITIALIZATION;
   payload: {
     id: string;
   };
 }
-
 
 // Background Reducer
 export type BackgroundEventReducer = (
   message: BackgroundActions,
   sender: chrome.runtime.MessageSender,
-  sendResponse: ReducerRensposeFn 
+  sendResponse: ReducerRensposeFn
 ) => void;
-
-
 
 export type PopupEventFn = (props: PopUpActions) => void;
 export type OptionsEventFn = (props: OptionsActions) => void;
 
-export type ReducerRensposeFn = any;
-//    InitializePopUpResponse \ InitializeOptionsResponse
+export type ReducerRensposeFn = (props: MessageResponse) => void;
 
 // Actions Type Exports
 export type BackgroundActions = InitializePopUp | InitializeOptions;
