@@ -12,6 +12,11 @@ module.exports = {
 // devtool: 'inline-source-map',
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ],
+    fallback: {
+      "timers": require.resolve("timers-browserify"),
+      "stream": require.resolve("stream-browserify"),
+      "buffer": require.resolve("buffer/")
+    }
   },
   module: {
     rules: [
