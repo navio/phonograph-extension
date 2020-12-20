@@ -7,6 +7,13 @@
       "moduleResolution":"Node",
       "allowSyntheticDefaultImports": true,
       "jsx": "react",
-      "allowJs": true
+      "allowJs": true,
+      "baseUrl": "./",
+      "paths": {
+        "options/*": ["src/options/*"],
+        "popup/*": ["src/popup/*"],
+        "background/*": ["src/background/*"],
+        "player/*":["src/player/*"]
+      }
     }
   }

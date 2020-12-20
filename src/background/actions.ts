@@ -4,7 +4,7 @@ import {
   InitializePopUp,
   BACKGROUND_EVENTS,
   InitializeOptions,
-} from "../types";
+} from "./types";
 
 export const messageBackgroundAction = (
   action: BackgroundActions,

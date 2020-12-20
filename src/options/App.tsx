@@ -3,7 +3,7 @@ import {
   messageBackgroundAction,
   initializeOptions,
 } from "../background/actions";
-import { InitializeOptionsResponse } from "../types";
+import { InitializeOptionsResponse } from "./types";
 
 const App = () => {
   const [message, setMessage] = useState("");

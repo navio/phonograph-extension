@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { messageBackgroundAction, initializePopUp } from '../background/actions';
-import { InitializePopUpResponse } from '../types';
+import { InitializePopUpResponse } from './types';
 
 
 

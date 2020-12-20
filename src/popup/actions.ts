@@ -1,7 +1,7 @@
 import {
     POPUP_EVENTS,
     InitializePopUpResponse,
-  } from "../types";
+  } from "./types";
 
   export const initializeResponsePopUp = (
     id: string
