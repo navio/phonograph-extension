@@ -39,7 +39,6 @@ export interface AudioCanPlay {
 export interface AudioPlaying {
   action: PLAYER_EMITIONS.playing,
   payload: {
-    played: number,
     currenTime: number,
     duration: number,
   }
@@ -47,6 +46,10 @@ export interface AudioPlaying {
 
 export interface AudioPaused {
   action: PLAYER_EMITIONS.paused
+  playload: {
+    currenTime: number,
+    duration: number,
+  }
 }
 
 export interface AudioEnded {

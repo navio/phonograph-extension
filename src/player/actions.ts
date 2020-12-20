@@ -25,20 +25,25 @@ export const audioCanPlay = (): AudioCanPlay => ({
 });
 
 export const audioPlaying = (
-  played: number,
   currenTime: number,
   duration: number
 ): AudioPlaying => ({
   action: PLAYER_EMITIONS.playing,
   payload: {
-    played,
     currenTime,
     duration,
   },
 });
 
-export const audioPaused = (): AudioPaused => ({
+export const audioPaused = (
+  currenTime: number,
+  duration: number
+): AudioPaused => ({
   action: PLAYER_EMITIONS.paused,
+  playload: {
+    currenTime,
+    duration
+  }
 });
 
 export const audioProgress = (percentage: number): AudioProgress => ({
