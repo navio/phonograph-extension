@@ -1,6 +1,15 @@
 import { ReducerRensposeFn } from "background/types";
+import { MessageResponse } from "../types";
 
 export { ReducerRensposeFn };
+
+export interface AudioState {
+  currentTime: number;
+  duration: number;
+  playing: boolean;
+  loaded?: string;
+  ended?: boolean;
+}
 
 export enum PLAYER_EVENTS {
   LOAD = "LOAD_AUDIO",
@@ -24,47 +33,41 @@ export enum PLAYER_EMITIONS {
   ended = "ENDED_AUDIO",
 }
 
-export interface AudioLoaded {
-  action: typeof PLAYER_EMITIONS.loadeddata
+export interface AudioLoaded extends MessageResponse {
+  action: typeof PLAYER_EMITIONS.loadeddata;
 }
 
-export interface AudioProgress {
-  action: typeof PLAYER_EMITIONS.progress
+export interface AudioProgress extends MessageResponse {
+  action: typeof PLAYER_EMITIONS.progress;
 }
 
-export interface AudioCanPlay {
-  action: typeof PLAYER_EMITIONS.canplay
+export interface AudioCanPlay extends MessageResponse {
+  action: typeof PLAYER_EMITIONS.canplay;
 }
 
-export interface AudioPlaying {
-  action: PLAYER_EMITIONS.playing,
+export interface AudioPlaying extends MessageResponse {
+  action: PLAYER_EMITIONS.playing;
+  payload: AudioState
+}
+
+export interface AudioPaused extends MessageResponse {
+  action: PLAYER_EMITIONS.paused;
+  playload: AudioState;
+}
+
+export interface AudioEnded extends MessageResponse {
+  action: PLAYER_EMITIONS.ended;
+}
+
+export interface AudioCanPlayThrough extends MessageResponse {
+  action: PLAYER_EMITIONS.canplaythrough;
+}
+
+export interface AudioProgress extends MessageResponse {
+  action: PLAYER_EMITIONS.progress;
   payload: {
-    currenTime: number,
-    duration: number,
-  }
-}
-
-export interface AudioPaused {
-  action: PLAYER_EMITIONS.paused
-  playload: {
-    currenTime: number,
-    duration: number,
-  }
-}
-
-export interface AudioEnded {
-  action: PLAYER_EMITIONS.ended
-}
-
-export interface AudioCanPlayThrough {
-  action: PLAYER_EMITIONS.canplaythrough
-}
-
-export interface AudioProgress {
-  action: PLAYER_EMITIONS.progress,
-  payload: {
-    percentage: number
-  }
+    percentage: number;
+  };
 }
 
 export interface LoadAudio {

@@ -1,12 +1,28 @@
+import { url } from "inspector";
+
 type IProperty = string | number | symbol;
 type IGetOverwritesFn = (target: any, property: IProperty) => any;
 type ISetOverwritesFn = (target: any, property: IProperty, value: any) => any;
+
+export interface AudioState {
+  currentTime: number;
+  duration: number;
+  playing: boolean;
+  loaded?: string;
+  ended?: boolean;
+}
 
 export default class AudioElement extends HTMLAudioElement {
   private audioElement: HTMLAudioElement;
 
   public getOvewritres: Map<IProperty, IGetOverwritesFn>;
   public setOvewritres: Map<IProperty, ISetOverwritesFn>;
+
+  private audioState: AudioState = {
+    currentTime: 0,
+    duration: 0,
+    playing: false,
+  };
 
   constructor(audioElement?: HTMLAudioElement) {
     super();
@@ -37,5 +53,18 @@ export default class AudioElement extends HTMLAudioElement {
         return Reflect.set(target, property, value, receiver);
       },
     });
+  }
+  get state() {
+    this.audioState = {
+      ...this.audioState,
+      loaded: this.src,
+      duration: this.duration,
+      currentTime: this.currentTime,
+      ended: this.ended,
+    };
+    return this.audioState;
+  }
+  get durationPercentage(): number {
+    return (100 * this.currentTime) / this.duration;
   }
 }

@@ -2,6 +2,7 @@
 import { BACKGROUND_EVENTS, BackgroundActions } from "background/types";
 import { POPUP_EVENTS, PopUpActions } from "popup/types";
 import { OPTIONS_EVENTS, OptionsActions } from "options/types";
+import { PLAYER_EMITIONS } from "player/types";
 
 
 export const EVENTS = {
@@ -12,7 +13,7 @@ export const EVENTS = {
 
 // Standard Response
 export interface MessageResponse {
-  action: POPUP_EVENTS | OPTIONS_EVENTS ;
+  action: POPUP_EVENTS | OPTIONS_EVENTS | PLAYER_EMITIONS ;
   payload?: {
     [key: string]: any;
   };

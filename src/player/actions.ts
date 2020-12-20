@@ -14,39 +14,28 @@ import {
   AudioPlaying,
   AudioPaused,
   AudioProgress,
+  AudioState
 } from "./types";
 
-export const audioLoaded = (): AudioLoaded => ({
+export const loaded = (): AudioLoaded => ({
   action: PLAYER_EMITIONS.loadeddata,
 });
 
-export const audioCanPlay = (): AudioCanPlay => ({
+export const canPlay = (): AudioCanPlay => ({
   action: PLAYER_EMITIONS.canplay,
 });
 
-export const audioPlaying = (
-  currenTime: number,
-  duration: number
-): AudioPlaying => ({
+export const playing = (audioState:AudioState): AudioPlaying => ({
   action: PLAYER_EMITIONS.playing,
-  payload: {
-    currenTime,
-    duration,
-  },
+  payload: audioState,
 });
 
-export const audioPaused = (
-  currenTime: number,
-  duration: number
-): AudioPaused => ({
+export const paused = (audioState: AudioState): AudioPaused => ({
   action: PLAYER_EMITIONS.paused,
-  playload: {
-    currenTime,
-    duration
-  }
+  playload: audioState,
 });
 
-export const audioProgress = (percentage: number): AudioProgress => ({
+export const progress = (percentage: number): AudioProgress => ({
   action: PLAYER_EMITIONS.progress,
   payload: {
     percentage,
@@ -90,7 +79,7 @@ export const queuenext = (url: string): QueueNextAudio => ({
   payload: { url },
 });
 
-export default {
+export const Triggers = {
   load,
   play,
   stop,
@@ -99,4 +88,17 @@ export default {
   rewind,
   queue,
   queuenext,
+};
+
+export const Emitters = {
+  loaded,
+  canPlay,
+  playing,
+  paused,
+  progress,
+};
+
+export default {
+  Triggers,
+  Emitters
 };
