@@ -31,9 +31,19 @@ export default (audioElement?: HTMLAudioElement) => {
         return true;
       case PLAYER_EVENTS.FORWARD:
         player.currentTime += message.payload.time;
+        sendResponse(
+          Emitters.paused({
+            ...player.state,
+          })
+        );
         return true;
       case PLAYER_EVENTS.REWIND:
         player.currentTime -= message.payload.time;
+        sendResponse(
+          Emitters.paused({
+            ...player.state,
+          })
+        );
         return true;
     }
   };
