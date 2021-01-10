@@ -14,7 +14,7 @@ export interface AudioState {
 }
 
 export default class AudioElement extends Audio {
-  private audioElement: HTMLAudioElement;
+  public audioElement: HTMLAudioElement;
 
   public getOvewritres: Map<IProperty, IGetOverwritesFn>;
   public setOvewritres: Map<IProperty, ISetOverwritesFn>;
@@ -36,18 +36,18 @@ export default class AudioElement extends Audio {
     } else {
       this.audioElement = audioElement;
     }
-    return this.generateProxy();
+    // return this.generateProxy();
   }
 
   private generateProxy() {
     return new Proxy(this, {
-      get: (target, property, receiver) => {
+      get: (target, property) => {
         if (this.getOvewritres.has(property)) {
           return this.getOvewritres.get(property)(this.audioElement, property);
         }
         return Reflect.get(this.audioElement, property);
       },
-      set: (target, property, value, receiver) => {
+      set: (target, property, value) => {
         if (this.setOvewritres.has(property)) {
           return this.setOvewritres.get(property)(
             this.audioElement,
@@ -59,6 +59,7 @@ export default class AudioElement extends Audio {
       },
     });
   }
+
   get state() {
     this.audioState = {
       ...this.audioState,

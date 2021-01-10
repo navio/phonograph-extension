@@ -25,7 +25,17 @@ const App = () => {
       }
     );
 
-  return <div>Hello, {message}<button onClick={() => loadAudio()}> Play </button></div>;
+  const pauseAudio = () => messagePlayerAction(
+    Triggers.stop(),
+    () => {
+      console.log("sent");
+    }
+  );
+
+  return <div>Hello, {message}
+  <button onClick={() => loadAudio()}> Play </button>
+  <button onClick={() => pauseAudio()}> Stop </button>
+  </div>;
 };
 
 export default App;
