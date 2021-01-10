@@ -34,15 +34,15 @@ export enum PLAYER_EMITIONS {
 }
 
 export interface AudioLoaded extends MessageResponse {
-  action: typeof PLAYER_EMITIONS.loadeddata;
+  action: PLAYER_EMITIONS.loadeddata;
 }
 
 export interface AudioProgress extends MessageResponse {
-  action: typeof PLAYER_EMITIONS.progress;
+  action: PLAYER_EMITIONS.progress;
 }
 
 export interface AudioCanPlay extends MessageResponse {
-  action: typeof PLAYER_EMITIONS.canplay;
+  action: PLAYER_EMITIONS.canplay;
 }
 
 export interface AudioPlaying extends MessageResponse {

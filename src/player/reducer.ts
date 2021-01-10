@@ -4,9 +4,8 @@ import { Emitters } from "./actions";
 
 export default (audioElement?: HTMLAudioElement) => {
   const player = new AudioElement(audioElement);
-
+  // player.autoplay = true;
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
-    player.autoplay = true;
     switch (message.action) {
       case PLAYER_EVENTS.LOAD:
         const { url } = message.payload;
@@ -32,7 +31,7 @@ export default (audioElement?: HTMLAudioElement) => {
       case PLAYER_EVENTS.FORWARD:
         player.currentTime += message.payload.time;
         sendResponse(
-          Emitters.paused({
+          Emitters.playing({
             ...player.state,
           })
         );
@@ -40,7 +39,7 @@ export default (audioElement?: HTMLAudioElement) => {
       case PLAYER_EVENTS.REWIND:
         player.currentTime -= message.payload.time;
         sendResponse(
-          Emitters.paused({
+          Emitters.playing({
             ...player.state,
           })
         );

@@ -1,4 +1,5 @@
 import { url } from "inspector";
+import { extname } from "path";
 
 type IProperty = string | number | symbol;
 type IGetOverwritesFn = (target: any, property: IProperty) => any;
@@ -12,7 +13,9 @@ export interface AudioState {
   ended?: boolean;
 }
 
-export default class AudioElement extends HTMLAudioElement {
+
+
+export default class AudioElement extends Audio {
   private audioElement: HTMLAudioElement;
 
   public getOvewritres: Map<IProperty, IGetOverwritesFn>;
@@ -57,14 +60,14 @@ export default class AudioElement extends HTMLAudioElement {
   get state() {
     this.audioState = {
       ...this.audioState,
-      loaded: this.src,
-      duration: this.duration,
-      currentTime: this.currentTime,
-      ended: this.ended,
+      loaded: this.audioElement.src,
+      duration: this.audioElement.duration,
+      currentTime: this.audioElement.currentTime,
+      ended: this.audioElement.ended,
     };
     return this.audioState;
   }
   get durationPercentage(): number {
-    return (100 * this.currentTime) / this.duration;
+    return (100 * this.audioElement.currentTime) / this.audioElement.duration;
   }
 }
