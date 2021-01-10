@@ -20,6 +20,6 @@ export const podcasts: string[] = [
 export const podcast_local : string[] = [
     "http://100.115.92.203:8080/lore",
     "http://100.115.92.203:8080/NPR",
-    "http://100.115.92.203:8080/SlateTrumpcast"
+    "http://100.115.92.203:8080/SlatesTrumpcast"
 ]
 

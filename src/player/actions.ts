@@ -14,8 +14,12 @@ import {
   AudioPlaying,
   AudioPaused,
   AudioProgress,
-  AudioState
+  AudioState,
+  AudioRequestEvents
 } from "./types";
+
+import { ReducerRensposeFn } from "../types";
+
 
 export const loaded = (): AudioLoaded => ({
   action: PLAYER_EMITIONS.loadeddata,
@@ -25,7 +29,7 @@ export const canPlay = (): AudioCanPlay => ({
   action: PLAYER_EMITIONS.canplay,
 });
 
-export const playing = (audioState:AudioState): AudioPlaying => ({
+export const playing = (audioState: AudioState): AudioPlaying => ({
   action: PLAYER_EMITIONS.playing,
   payload: audioState,
 });
@@ -90,6 +94,12 @@ export const Triggers = {
   queuenext,
 };
 
+
+export const messagePlayerAction = (
+  action: AudioRequestEvents,
+  callback: ReducerRensposeFn
+) => chrome.runtime.sendMessage(action, callback);
+
 export const Emitters = {
   loaded,
   canPlay,
@@ -100,5 +110,5 @@ export const Emitters = {
 
 export default {
   Triggers,
-  Emitters
+  Emitters,
 };

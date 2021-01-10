@@ -13,9 +13,11 @@ const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
     case BACKGROUND_EVENTS.INIT_POPUP:
       engine.getPodcast(podcast_local[0]).then((podcast) => {
         const { title, author } = podcast;
-        const {title: EpisodeTitle } = podcast.items[0];
+        const { title: EpisodeTitle } = podcast.items[0];
         sendResponse(
-          initializeResponsePopUp(`Phonograph: ${title}: ${author} : ${EpisodeTitle}`)
+          initializeResponsePopUp(
+            `Phonograph: ${title}: ${author} : ${EpisodeTitle}`
+          )
         );
       });
       return true;

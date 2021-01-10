@@ -4,7 +4,7 @@ import { Emitters } from "./actions";
 
 export default (audioElement?: HTMLAudioElement) => {
   const player = new AudioElement(audioElement);
-  // player.autoplay = true;
+  player.autoplay = true;
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
       case PLAYER_EVENTS.LOAD:
@@ -13,7 +13,7 @@ export default (audioElement?: HTMLAudioElement) => {
         sendResponse(Emitters.loaded());
         return true;
       case PLAYER_EVENTS.PLAY:
-        player.play();
+          player.play();
         sendResponse(
           Emitters.playing({
             ...player.state,

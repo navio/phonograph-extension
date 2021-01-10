@@ -13,8 +13,6 @@ export interface AudioState {
   ended?: boolean;
 }
 
-
-
 export default class AudioElement extends Audio {
   private audioElement: HTMLAudioElement;
 
@@ -45,15 +43,19 @@ export default class AudioElement extends Audio {
     return new Proxy(this, {
       get: (target, property, receiver) => {
         if (this.getOvewritres.has(property)) {
-          return this.getOvewritres.get(property)(target, property);
+          return this.getOvewritres.get(property)(this.audioElement, property);
         }
-        return Reflect.get(target, property, receiver);
+        return Reflect.get(this.audioElement, property);
       },
       set: (target, property, value, receiver) => {
         if (this.setOvewritres.has(property)) {
-          return this.setOvewritres.get(property)(target, property, value);
+          return this.setOvewritres.get(property)(
+            this.audioElement,
+            property,
+            value
+          );
         }
-        return Reflect.set(target, property, value, receiver);
+        return Reflect.set(this.audioElement, property, value);
       },
     });
   }
