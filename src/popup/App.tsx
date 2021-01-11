@@ -13,6 +13,7 @@ const App = () => {
         setMessage(id);
       }
     );
+    chrome.runtime.onMessage.addListener((message) => console.log('popup',message))
   }, []);
 
   const loadAudio = () =>
@@ -20,15 +21,16 @@ const App = () => {
       Triggers.load(
         "https://dcs.megaphone.fm/CAD1225141363.mp3?key=91bb59c2c82f5120e3d7759adc50159c"
       ),
-      () => {
-        console.log("sent");
+      (response) => {
+        console.log(response);
       }
     );
 
+
   const pauseAudio = () => messagePlayerAction(
     Triggers.stop(),
-    () => {
-      console.log("sent");
+    (response) => {
+      console.log(response);
     }
   );
 

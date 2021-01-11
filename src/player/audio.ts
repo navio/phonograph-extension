@@ -1,5 +1,3 @@
-import { url } from "inspector";
-import { extname } from "path";
 
 type IProperty = string | number | symbol;
 type IGetOverwritesFn = (target: any, property: IProperty) => any;

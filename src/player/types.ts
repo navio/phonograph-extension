@@ -20,6 +20,7 @@ export enum PLAYER_EVENTS {
   REWIND = "REWIND_AUDIO",
   QUEUE = "QUEUE_AUDIO",
   QUEUE_NEXT = "QUEUE_AUDIO_NEXT",
+  STATE = "STATEOF_AUDIO",
 }
 
 export enum PLAYER_EMITIONS {
@@ -47,7 +48,7 @@ export interface AudioCanPlay extends MessageResponse {
 
 export interface AudioPlaying extends MessageResponse {
   action: PLAYER_EMITIONS.playing;
-  payload: AudioState
+  payload: AudioState;
 }
 
 export interface AudioPaused extends MessageResponse {
@@ -69,6 +70,15 @@ export interface AudioProgress extends MessageResponse {
     percentage: number;
   };
 }
+
+export type AudioEmissionEvents =
+  | AudioPlaying
+  | AudioProgress
+  | AudioCanPlayThrough
+  | AudioCanPlay
+  | AudioEnded
+  | AudioLoaded
+  | AudioPaused;
 
 export interface LoadAudio {
   action: typeof PLAYER_EVENTS.LOAD;
@@ -116,6 +126,10 @@ export interface QueueNextAudio {
   };
 }
 
+export interface StateOfAudio {
+  action: typeof PLAYER_EVENTS.STATE;
+}
+
 export type AudioRequestEvents =
   | LoadAudio
   | PlayAudio
@@ -124,7 +138,8 @@ export type AudioRequestEvents =
   | RewindAudio
   | NextAudio
   | QueueAudio
-  | QueueNextAudio;
+  | QueueNextAudio
+  | StateOfAudio;
 
 export type AudioEventsReducer = (
   message: AudioRequestEvents,

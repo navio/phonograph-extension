@@ -15,7 +15,9 @@ import {
   AudioPaused,
   AudioProgress,
   AudioState,
-  AudioRequestEvents
+  AudioRequestEvents,
+  AudioEmissionEvents,
+  AudioEnded
 } from "./types";
 
 import { ReducerRensposeFn } from "../types";
@@ -25,8 +27,9 @@ export const loaded = (): AudioLoaded => ({
   action: PLAYER_EMITIONS.loadeddata,
 });
 
-export const canPlay = (): AudioCanPlay => ({
+export const canPlay = (audioState: AudioState): AudioCanPlay => ({
   action: PLAYER_EMITIONS.canplay,
+  payload: audioState,
 });
 
 export const playing = (audioState: AudioState): AudioPlaying => ({
@@ -37,6 +40,10 @@ export const playing = (audioState: AudioState): AudioPlaying => ({
 export const paused = (audioState: AudioState): AudioPaused => ({
   action: PLAYER_EMITIONS.paused,
   playload: audioState,
+});
+
+export const ended = (): AudioEnded => ({
+  action: PLAYER_EMITIONS.ended
 });
 
 export const progress = (percentage: number): AudioProgress => ({
@@ -98,6 +105,11 @@ export const Triggers = {
 export const messagePlayerAction = (
   action: AudioRequestEvents,
   callback: ReducerRensposeFn
+) => chrome.runtime.sendMessage(action, callback);
+
+export const messagePlayerEmission = (
+  action: AudioEmissionEvents,
+  callback?: ReducerRensposeFn
 ) => chrome.runtime.sendMessage(action, callback);
 
 export const Emitters = {

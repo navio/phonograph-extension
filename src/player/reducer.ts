@@ -1,11 +1,26 @@
 import { AudioEventsReducer, PLAYER_EVENTS, AudioState } from "./types";
 import AudioElement from "./audio";
-import { Emitters } from "./actions";
+import { Emitters, messagePlayerEmission } from "./actions";
 
 export default (audioElementInit?: HTMLAudioElement) => {
   const player = new AudioElement(audioElementInit);
   const { audioElement } = player;
   player.audioElement.autoplay = true;
+
+  audioElement.addEventListener("pause", () =>
+    messagePlayerEmission(Emitters.paused(player.state))
+  );
+  audioElement.addEventListener("play", () =>
+    messagePlayerEmission(Emitters.playing(player.state))
+  );
+  audioElement.addEventListener("canplay", () =>
+    messagePlayerEmission(Emitters.canPlay(player.state))
+  );
+  audioElement.addEventListener("ended", () =>
+    messagePlayerEmission(Emitters.canPlay(player.state))
+  );
+
+  
 
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
@@ -41,6 +56,13 @@ export default (audioElementInit?: HTMLAudioElement) => {
         return true;
       case PLAYER_EVENTS.REWIND:
         audioElement.currentTime -= message.payload.time;
+        sendResponse(
+          Emitters.playing({
+            ...player.state,
+          })
+        );
+        return true;
+      case PLAYER_EVENTS.STATE:
         sendResponse(
           Emitters.playing({
             ...player.state,
