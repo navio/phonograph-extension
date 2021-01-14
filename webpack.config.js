@@ -3,15 +3,16 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 
 module.exports = {
+  mode: "production",
   entry: {
-    background:'./src/background',
+    background: './src/background',
     content: './src/content.ts',
     popup: `./src/popup`,
     options: `./src/options`
   },
-// devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: ['.tsx', '.ts', '.js'],
     alias: {
       background: path.resolve(__dirname, 'src/background/'),
       options: path.resolve(__dirname, 'src/options/'),
@@ -21,7 +22,9 @@ module.exports = {
     fallback: {
       "timers": require.resolve("timers-browserify"),
       "stream": require.resolve("stream-browserify"),
-      "buffer": require.resolve("buffer/")
+      "buffer": require.resolve("buffer/"),
+      "string_decoder": require.resolve("string_decoder/"),
+      "events": require.resolve("events/")
     }
   },
   module: {

@@ -1,3 +1,4 @@
+import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import { MessageResponse } from "../types"
 
 export enum OPTIONS_EVENTS {
@@ -7,7 +8,7 @@ export enum OPTIONS_EVENTS {
 export interface InitializeOptionsResponse extends MessageResponse {
   action: OPTIONS_EVENTS.INITIALIZATION;
   payload: {
-    id: string;
+    library: IPodcast[];
   };
 }
 
