@@ -18,6 +18,7 @@ module.exports = {
       options: path.resolve(__dirname, 'src/options/'),
       popup: path.resolve(__dirname, 'src/popup/'),
       player: path.resolve(__dirname, 'src/player/'),
+      ui: path.resolve(__dirname, 'src/ui/')
     },
     fallback: {
       "timers": require.resolve("timers-browserify"),
