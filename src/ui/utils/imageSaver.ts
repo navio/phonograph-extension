@@ -19,18 +19,31 @@ export default (url: string): Promise<string> => {
           const { size, type } = blob;
           const reader = new FileReader();
           reader.addEventListener("loadend", () => {
-            const src = reader.result.toString();
+            const srcAll = reader.result.toString();
+            const img = new Image();
+            img.src = srcAll;
+            img.onload = () => {
+              console.log("great");
+              const canvas = document.createElement("canvas");
+              const scale = 100;
 
+              const scaleFactor = scale / img.width;
+              canvas.width = scale;
+              canvas.height = img.height * scaleFactor;
 
-            const mediaFile = {
-              src,
-              size,
-              type,
-              url,
+              const ctx = canvas.getContext("2d");
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+              const src = ctx.canvas.toDataURL(type);
+              const mediaFile = {
+                src,
+                size,
+                type,
+                url,
+              };
+              images.set(url, mediaFile);
+              resolve(mediaFile.src);
             };
-            // Store it ?
-            images.set(url, mediaFile);
-            resolve(mediaFile.src);
           });
           reader.readAsDataURL(blob);
         });
