@@ -2,10 +2,10 @@ import { BACKGROUND_EVENTS, BackgroundEventReducer } from "./types";
 import { initializeResponsePopUp } from "popup/actions";
 import { initializeOptionsResponse } from "options/actions";
 import Engine from "../Podcast";
-import { podcast_local } from "./config";
+import { podcasts } from "./config";
 
 const engine = new Engine({
-  podcasts: podcast_local,
+  podcasts: podcasts,
 });
 
 const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
