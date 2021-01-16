@@ -25,7 +25,7 @@ export default (url: string): Promise<string> => {
             img.onload = () => {
               console.log("great");
               const canvas = document.createElement("canvas");
-              const scale = 100;
+              const scale = 400;
 
               const scaleFactor = scale / img.width;
               canvas.width = scale;
@@ -34,7 +34,7 @@ export default (url: string): Promise<string> => {
               const ctx = canvas.getContext("2d");
               ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-              const src = ctx.canvas.toDataURL(type);
+              const src = ctx.canvas.toDataURL(type, 10);
               const mediaFile = {
                 src,
                 size,
