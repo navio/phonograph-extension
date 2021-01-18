@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { AppContext, IPodcast } from "./index";
 import imageFetcher from "../utils/imageSaver";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
-
+import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: `10vw`,
     },
     gridElement: {
-      backgroundColor: `lightgray`,
+      backgroundColor: theme.palette.secondary.light,
       width: `10vw`,
       height: `10vw`,
       display: `block`,
@@ -29,13 +29,16 @@ const PodcatImage = (props: { podcast: IPodcast }) => {
   const { podcast } = props;
   const classes = useStyles();
   const [image, setImage] = useState<string>("");
+
   React.useEffect(() => {
-    imageFetcher(podcast.image).then(setImage);
+    imageFetcher(podcast.image, { media: true }).then((media) => {
+      setImage(typeof media === "string" ? media : media.url);
+    });
   }, []);
   return (
-    <a href={`#`} className={classes.gridElement}>
+    <Link to={`/podcast/${btoa(podcast.url)}`} className={classes.gridElement}>
       <img src={image} title={podcast.title} className={classes.images} />
-    </a>
+    </Link>
   );
 };
 
