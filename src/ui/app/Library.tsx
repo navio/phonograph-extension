@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { AppContext, IPodcast } from "./index";
-import imageFetcher from "../utils/imageSaver";
+import imageFetcher from "ui/utils/imageSaver";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme: Theme) =>
@@ -31,8 +31,8 @@ const PodcatImage = (props: { podcast: IPodcast }) => {
   const [image, setImage] = useState<string>("");
 
   React.useEffect(() => {
-    imageFetcher(podcast.image, { media: true }).then((media) => {
-      setImage(typeof media === "string" ? media : media.url);
+    imageFetcher(podcast.image).then((media) => {
+      setImage(media.url);
     });
   }, []);
   return (

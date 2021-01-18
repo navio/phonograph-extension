@@ -11,10 +11,9 @@ interface MediaFile {
   url: string;
   colors: number[][];
 }
-export type PodcastImage = string | MediaFile;
+export type PodcastImage = MediaFile;
 
 export interface ImageSaverConfig {
-  media?: boolean;
   refresh?: boolean;
 }
 
@@ -22,7 +21,7 @@ export default (
   url: string,
   config: ImageSaverConfig = {}
 ): Promise<PodcastImage> => {
-  const { media = false, refresh = false } = config;
+  const { refresh = false } = config;
   const internalFetch = () =>
     fetch(url)
       .then((res) => res.blob())
@@ -55,7 +54,7 @@ export default (
                 colors,
               };
               images.set(url, mediaFile);
-              resolve(media ? mediaFile.src : mediaFile);
+              resolve(mediaFile);
             };
           });
           reader.readAsDataURL(blob);
@@ -64,7 +63,7 @@ export default (
 
   return images.get(url).then((found: MediaFile) => {
     if (!refresh && found) {
-      return media ? found : found.src;
+      return found;
     }
     return internalFetch();
   });
