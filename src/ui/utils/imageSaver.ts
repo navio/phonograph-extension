@@ -17,6 +17,7 @@ export interface ImageSaverConfig {
   refresh?: boolean;
 }
 
+
 export default (
   url: string,
   config: ImageSaverConfig = {}

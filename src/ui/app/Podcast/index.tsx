@@ -3,8 +3,9 @@ import { useRouteMatch } from "react-router-dom";
 import imageFetcher, { PodcastImage } from "ui/utils/imageSaver";
 import { AppContext, IPodcast } from "../index";
 import Loading from "ui/common/Loading";
-import Header from "./header";
+import Top from "./Top";
 import List from "./List";
+import Header from "../Header";
 
 export default () => {
   const [podcast, setPodcast] = useState<IPodcast>(null);
@@ -28,7 +29,8 @@ export default () => {
 
   return podcast && image ? (
     <>
-      <Header podcast={podcast} image={image} />
+      <Header media={image} />
+      <Top podcast={podcast} image={image} />
       <List podcast={podcast} image={image} />
     </> 
   ) : (

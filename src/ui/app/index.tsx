@@ -26,7 +26,6 @@ export default function App(props: IAppProps) {
       <Router>
         <Switch>
           <Route path="/podcast/:podcast">
-            <Header />
             <Podcast />
           </Route>
           <Route path="/">
