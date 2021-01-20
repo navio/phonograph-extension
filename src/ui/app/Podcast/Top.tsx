@@ -3,13 +3,15 @@ import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import { IPodcast } from "../index";
 import { PodcastImage } from "ui/utils/imageSaver";
 import { clearText, dateFrom } from "ui/utils/stringsTools";
+import { getRGBA, contrastColor } from "ui/utils/color";
+import MicIcon from "@material-ui/icons/MicNoneOutlined";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       display: "block",
       width: "100%",
-    //   height: "100vh",
+      //   height: "100vh",
     },
     head: {
       padding: "5vh",
@@ -34,23 +36,34 @@ export default (props: { podcast: IPodcast; image: PodcastImage }) => {
     <div
       className={classes.container}
       style={{
-        backgroundColor: `rgba(${image.colors[0][0]}, ${image.colors[0][1]}, ${image.colors[0][2]}, 0.8)`,
+        backgroundColor: getRGBA(image.colors[0]),
       }}
     >
       <div className={classes.head}>
-        <img title={podcast.title} style={{ width: "15rem", height: "15rem" }} src={image.src} />
+        <img
+          title={podcast.title}
+          style={{ width: "15rem", height: "15rem" }}
+          src={image.src}
+        />
         <div className={classes.info}>
-        
           <h1
             className={classes.title}
             style={{
-              color: `rgba(${image.colors[1][0]}, ${image.colors[1][1]}, ${image.colors[1][2]}`,
+              color: getRGBA(image.colors[1]),
             }}
           >
             {podcast.title}
           </h1>
-          <span className={classes.infoText}>{podcast.author}</span>
-          <span className={classes.text}>{clearText(podcast.description)}</span>
+          <span className={classes.infoText}>
+            <MicIcon style={{ height: "1rem" }} />
+            {podcast.author}
+          </span>
+          <span
+            style={{ color: contrastColor(image.colors[0]) }}
+            className={classes.text}
+          >
+            {clearText(podcast.description)}
+          </span>
         </div>
       </div>
     </div>

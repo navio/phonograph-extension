@@ -1,5 +1,6 @@
 import colorthief from "colorthief";
 import PS from "podcastsuite";
+import { IColor } from "./color";
 const thief = new colorthief();
 const { createDatabase } = PS;
 const images = createDatabase("images", "offline");
@@ -9,14 +10,13 @@ interface MediaFile {
   size: number;
   type: string;
   url: string;
-  colors: number[][];
+  colors: IColor[];
 }
 export type PodcastImage = MediaFile;
 
 export interface ImageSaverConfig {
   refresh?: boolean;
 }
-
 
 export default (
   url: string,

@@ -13,6 +13,7 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import { PodcastImage } from "ui/utils/imageSaver";
+import { COLORS, contrastColor, getRGBA } from "ui/utils/color";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -76,7 +77,8 @@ export default function SearchAppBar(props: { media?: PodcastImage }) {
   const { media } = props;
   const overwrite = media
     ? {
-        backgroundColor: `rgba(${media.colors[1][0]},${media.colors[1][1]},${media.colors[1][2]})`,
+        backgroundColor: getRGBA(media.colors[1], 0.8),
+        color: contrastColor(media.colors[1]),
       }
     : {};
   return (
@@ -104,6 +106,11 @@ export default function SearchAppBar(props: { media?: PodcastImage }) {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
+              style={
+                overwrite.color === COLORS.black
+                  ? { border: `1px solid darkgray`, borderRadius: 'inherit' }
+                  : {}
+              }
               inputProps={{ "aria-label": "search" }}
             />
           </div>
