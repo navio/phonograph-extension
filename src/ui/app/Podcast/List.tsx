@@ -1,21 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import { IPodcast } from "..";
 
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { IPodcast } from "..";
+import PlayIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from "@material-ui/icons/PauseOutlined";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
+
 import { clearText, dateFrom } from "ui/utils/stringsTools";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { PodcastImage } from "ui/utils/imageSaver";
+import { getRGBA, IColor } from "ui/utils/color";
+
+import { messagePlayerAction, Triggers } from "player/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -73,12 +79,69 @@ const EpisodeListDescription = (props: { episode: IEpisode }) => {
   );
 };
 
-export default function EpisodeList(props: { podcast: IPodcast, image: PodcastImage }) {
+const PlayerIcon = (props: {
+  color: IColor;
+  onClick: React.Dispatch<React.SetStateAction<IEpisode>>;
+  episode: IEpisode;
+  currentEpisode: IEpisode;
+}) => {
+  const classes = useStyles();
+  const { color, onClick, episode, currentEpisode } = props;
+  const isPlaying = currentEpisode && episode.guid === currentEpisode.guid;
+
+  return (
+    <ListItemIcon
+      onClick={() => {
+        if(isPlaying){
+          pauseAudio();
+          onClick(undefined);
+        }else{
+          onClick(episode);
+        }
+      }}
+    >
+      {isPlaying ? (
+        <PauseIcon
+          style={{ color: getRGBA(color) }}
+          className={classes.mediaButton}
+        />
+      ) : (
+        <PlayIcon
+          style={{ color: getRGBA(color) }}
+          className={classes.mediaButton}
+        />
+      )}
+    </ListItemIcon>
+  );
+};
+
+const pauseAudio = () =>
+  messagePlayerAction(Triggers.stop(), (response) => {
+    console.log(response);
+  });
+
+export default function EpisodeList(props: {
+  podcast: IPodcast;
+  image: PodcastImage;
+}) {
   const [amount, setAmount] = useState<number>(1);
   const classes = useStyles();
-  const { podcast, image} = props;
-  const [r,g,b] = image.colors[0];
+  const { podcast, image } = props;
   const episodeList = podcast.items.slice(0, 20 * amount);
+  const [selectedEpisode, setSelectedEpisode] = useState<IEpisode>();
+
+  useEffect(() => {
+    if (selectedEpisode) {
+      console.log("gothere");
+      const url =
+        typeof selectedEpisode.media === "string"
+          ? selectedEpisode.media
+          : selectedEpisode.media.url;
+      messagePlayerAction(Triggers.load(url), (response) => {
+        console.log(response);
+      });
+    }
+  }, [selectedEpisode]);
 
   return (
     <div className={classes.root}>
@@ -93,9 +156,12 @@ export default function EpisodeList(props: { podcast: IPodcast, image: PodcastIm
         {episodeList.map((episode) => (
           <>
             <ListItem button>
-              <ListItemIcon >
-                <PlayArrowIcon style={{color: `rgba(${r},${g},${b},.8)` }} className={classes.mediaButton} />
-              </ListItemIcon>
+              <PlayerIcon
+                color={image.colors[0]}
+                onClick={setSelectedEpisode}
+                currentEpisode={selectedEpisode}
+                episode={episode}
+              />
               <EpisodeListDescription episode={episode} />
               <ListItemSecondaryAction>
                 <MoreVertIcon />

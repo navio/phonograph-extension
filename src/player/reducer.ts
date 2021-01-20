@@ -5,6 +5,7 @@ import { Emitters, messagePlayerEmission } from "./actions";
 export default (audioElementInit?: HTMLAudioElement) => {
   const player = new AudioElement(audioElementInit);
   const { audioElement } = player;
+  
   player.audioElement.autoplay = true;
 
   audioElement.addEventListener("pause", () =>
