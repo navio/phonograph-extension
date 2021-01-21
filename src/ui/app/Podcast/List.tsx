@@ -132,7 +132,6 @@ export default function EpisodeList(props: {
 
   useEffect(() => {
     if (selectedEpisode) {
-      console.log("gothere");
       const url =
         typeof selectedEpisode.media === "string"
           ? selectedEpisode.media

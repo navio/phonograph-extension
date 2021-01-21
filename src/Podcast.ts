@@ -5,7 +5,6 @@ export type ILibrary = Map<string, IPodcast>;
 
 export default class extends PodcastSuite {
   private library: ILibrary = new Map<string, IPodcast>();
-
   getPodcasts() {
     return this.mapLibraryEntries((podcast) => {
       this.library.set(podcast.url, podcast);
@@ -16,4 +15,5 @@ export default class extends PodcastSuite {
     this.getPodcasts();
     return this.library;
   }
+  
 }

@@ -10,8 +10,9 @@ export type IPodcast = IPodcastSuitePodcast;
 
 export const AppContext = React.createContext<{
   collection: IPodcast[];
+
 }>({
-  collection: [],
+  collection: []
 });
 
 export interface IAppProps {

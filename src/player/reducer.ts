@@ -1,6 +1,10 @@
 import { AudioEventsReducer, PLAYER_EVENTS, AudioState } from "./types";
 import AudioElement from "./audio";
+import ApplicationState from "../State";
 import { Emitters, messagePlayerEmission } from "./actions";
+
+
+const state = new ApplicationState();
 
 export default (audioElementInit?: HTMLAudioElement) => {
   const player = new AudioElement(audioElementInit);
@@ -26,6 +30,7 @@ export default (audioElementInit?: HTMLAudioElement) => {
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
       case PLAYER_EVENTS.LOAD:
+        // state.setEpisode()
         const { url } = message.payload;
         audioElement.src = url;
         sendResponse(Emitters.loaded());
