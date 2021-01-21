@@ -5,7 +5,7 @@ import Engine from "../Podcast";
 import { podcasts } from "./config";
 
 const engine = new Engine({
-  podcasts: podcasts,
+  // podcasts: podcasts,
 });
 
 const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
