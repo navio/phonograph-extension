@@ -8,58 +8,63 @@ import {
   getPodcastsReponse,
   backgroundReponse,
 } from "./actions";
-// import { podcasts } from "./config";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 
-const engine = new Engine({
-  //  podcasts: podcasts,
-});
+// const state = new ApplicationState();
 
-const state = new ApplicationState();
+const background = (engine: Engine, state: ApplicationState) => {
+  const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
+    
+    switch (message.action) {
 
-const reducer: BackgroundEventReducer = async (
-  message,
-  sender,
-  sendResponse
-) => {
-  switch (message.action) {
-    case BACKGROUND_EVENTS.INIT_POPUP:
-      engine.getPodcasts().then((library) => {
-        const podcast = library[0];
-        const { title, author } = podcast;
-        const { title: EpisodeTitle } = podcast.items[0];
-        sendResponse(
-          initializeResponsePopUp(`Library has ${library.length} podcasts.`)
+      case BACKGROUND_EVENTS.GET_PODCAST: {
+        const { url, save } = message.payload;
+        const podcastPromise: Promise<IPodcast> = save
+          ? engine.getPodcast(url)
+          : Engine.fetch(new URL(url));
+
+        podcastPromise.then((podcast) =>
+          sendResponse(getPodcastReponse(podcast))
         );
-      });
-      return true;
+        return true;
+      }
 
-    case BACKGROUND_EVENTS.INIT_OPTIONS:
-      const library = await engine.getPodcasts();
-      const episode = state.getEpisode();
-      sendResponse(initializeOptionsResponse(library, episode));
-      return true;
+      case BACKGROUND_EVENTS.DELETE_PODCAST: {
+        const { url } = message.payload;
+        sendResponse(backgroundReponse(true));
+        return true;
+      }
 
-    case BACKGROUND_EVENTS.GET_PODCASTS: {
-      const library = await engine.getPodcasts();
-      sendResponse(getPodcastsReponse(library));
-      return true;
-    }
-    case BACKGROUND_EVENTS.GET_PODCAST: {
-      const { url, save } = message.payload;
-      const podcast: IPodcast = save
-        ? await engine.getPodcast(url)
-        : await Engine.fetch(new URL(url));
-      sendResponse(getPodcastReponse(podcast));
+      case BACKGROUND_EVENTS.INIT_POPUP: {
+        engine.getPodcasts().then((library) => {
+          const podcast = library[0];
+          const { title, author } = podcast;
+          const { title: EpisodeTitle } = podcast.items[0];
+          sendResponse(
+            initializeResponsePopUp(`Library has ${library.length} podcasts.`)
+          );
+        });
+        return true;
+      }
 
-      return true;
+      case BACKGROUND_EVENTS.INIT_OPTIONS: {
+        engine.getPodcasts().then((library) => {
+          const episode = state.getEpisode();
+          sendResponse(initializeOptionsResponse(library, episode));
+        });
+        return true;
+      }
+
+      case BACKGROUND_EVENTS.GET_PODCASTS: {
+        engine.getPodcasts().then((library) => {
+          sendResponse(getPodcastsReponse(library));
+          return true;
+        });
+      }
+
     }
-    case BACKGROUND_EVENTS.DELETE_PODCAST: {
-      const { url } = message.payload;
-      sendResponse(backgroundReponse(true));
-      return true;
-    }
-  }
+  };
+  return reducer;
 };
 
-export default reducer;
+export default background;

@@ -10,7 +10,7 @@ export interface InitializeOptionsResponse extends MessageResponse {
   action: OPTIONS_EVENTS.INITIALIZATION;
   payload: {
     library: IPodcast[];
-    current: IEpisode;
+    current?: IEpisode;
   };
 }
 

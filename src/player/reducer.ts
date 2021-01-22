@@ -2,14 +2,19 @@ import { AudioEventsReducer, PLAYER_EVENTS, AudioState } from "./types";
 import AudioElement from "./audio";
 import ApplicationState from "../State";
 import { Emitters, messagePlayerEmission } from "./actions";
-
+import Engine from "../Podcast";
+import Podcast from "../Podcast";
 
 const state = new ApplicationState();
 
-export default (audioElementInit?: HTMLAudioElement) => {
-  const player = new AudioElement(audioElementInit);
+export default (
+  engine: Podcast,
+  state: ApplicationState,
+  config: { audioElementInit?: HTMLAudioElement } = {}
+) => {
+  const player = new AudioElement(config.audioElementInit);
   const { audioElement } = player;
-  
+
   player.audioElement.autoplay = true;
 
   audioElement.addEventListener("pause", () =>
@@ -24,8 +29,6 @@ export default (audioElementInit?: HTMLAudioElement) => {
   audioElement.addEventListener("ended", () =>
     messagePlayerEmission(Emitters.canPlay(player.state))
   );
-
-  
 
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
