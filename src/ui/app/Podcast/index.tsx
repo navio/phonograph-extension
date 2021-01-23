@@ -6,18 +6,32 @@ import Loading from "ui/common/Loading";
 import Top from "./Top";
 import List from "./List";
 import Header from "../Header";
+import engine from "podcastsuite";
+import { podcasts } from "background/config";
 
 export default () => {
   const [podcast, setPodcast] = useState<IPodcast>(null);
   const [image, setImage] = useState<PodcastImage>(null);
   const { collection } = useContext(AppContext);
   const { podcast: PodcastURL } = useRouteMatch("/podcast/:podcast").params;
-  const url = atob(PodcastURL);
 
   useEffect(() => {
+    let url;
+
+    try {
+      url = atob(PodcastURL);
+    } catch (error) {
+      url = PodcastURL
+    }
     const [podcast] = collection.filter((podcast) => podcast.url === url);
-    setPodcast(podcast);
-  }, [url, collection]);
+    if (podcast) {
+      setPodcast(podcast);
+    } else {
+      engine.fetch(new URL(url)).then((podcastRAW) =>  {
+        setPodcast(podcastRAW);
+      } );
+    }
+  }, [PodcastURL, collection]);
 
   useEffect(() => {
     if (podcast) {
@@ -32,7 +46,7 @@ export default () => {
       <Header media={image} />
       <Top podcast={podcast} image={image} />
       <List podcast={podcast} image={image} />
-    </> 
+    </>
   ) : (
     <Loading />
   );

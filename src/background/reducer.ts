@@ -33,8 +33,8 @@ const background = (engine: Engine, state: ApplicationState) => {
       }
       
       case PODCAST_EVENTS.GET_EPISODE: {
-        const { time, ...episode } = state.getEpisode();
-        sendResponse(getEpisodeReponse(episode, time))
+        // const { time , ...episode } = state.getEpisode();
+        // sendResponse(getEpisodeReponse(episode, time));
         return true;
       }
 
@@ -67,8 +67,8 @@ const background = (engine: Engine, state: ApplicationState) => {
 
       case BACKGROUND_EVENTS.INIT_OPTIONS: {
         engine.getPodcasts().then((library) => {
-          const { time, ...episode } = state.getEpisode();
-          sendResponse(initializeOptionsResponse(library, episode, time));
+          // const { time, ...episode } = state.getEpisode();
+          sendResponse(initializeOptionsResponse(library));
         });
         return true;
       }
