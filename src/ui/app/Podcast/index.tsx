@@ -7,7 +7,6 @@ import Top from "./Top";
 import List from "./List";
 import Header from "../Header";
 import engine from "podcastsuite";
-import { podcasts } from "background/config";
 
 export default () => {
   const [podcast, setPodcast] = useState<IPodcast>(null);
@@ -16,7 +15,7 @@ export default () => {
   const { podcast: PodcastURL } = useRouteMatch("/podcast/:podcast").params;
 
   useEffect(() => {
-    let url;
+    let url: string;
 
     try {
       url = atob(PodcastURL);
@@ -27,6 +26,7 @@ export default () => {
     if (podcast) {
       setPodcast(podcast);
     } else {
+        setPodcast(undefined);
       engine.fetch(new URL(url)).then((podcastRAW) =>  {
         setPodcast(podcastRAW);
       } );

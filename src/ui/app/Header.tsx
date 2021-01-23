@@ -109,7 +109,7 @@ export default function SearchAppBar(props: { media?: PodcastImage }) {
               style={
                 overwrite.color === COLORS.black
                   ? { border: `1px solid darkgray`, borderRadius: 'inherit' }
-                  : {}
+                  : { border: `1px solid lightgray`, borderRadius: 'inherit', fontWeight: 'bold' }
               }
               inputProps={{ "aria-label": "search" }}
             />

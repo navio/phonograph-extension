@@ -17,11 +17,12 @@ import {
   AudioState,
   AudioRequestEvents,
   AudioEmissionEvents,
-  AudioEnded
+  AudioEnded,
+  PlayableMedia,
 } from "./types";
 
 import { ReducerRensposeFn } from "../types";
-
+import { IEpisode } from "podcastsuite/dist/Format";
 
 export const loaded = (): AudioLoaded => ({
   action: PLAYER_EMITIONS.loadeddata,
@@ -32,9 +33,12 @@ export const canPlay = (audioState: AudioState): AudioCanPlay => ({
   payload: audioState,
 });
 
-export const playing = (audioState: AudioState): AudioPlaying => ({
+export const playing = (
+  state: AudioState,
+  media: PlayableMedia
+): AudioPlaying => ({
   action: PLAYER_EMITIONS.playing,
-  payload: audioState,
+  payload: { state, media },
 });
 
 export const paused = (audioState: AudioState): AudioPaused => ({
@@ -43,7 +47,7 @@ export const paused = (audioState: AudioState): AudioPaused => ({
 });
 
 export const ended = (): AudioEnded => ({
-  action: PLAYER_EMITIONS.ended
+  action: PLAYER_EMITIONS.ended,
 });
 
 export const progress = (percentage: number): AudioProgress => ({
@@ -53,9 +57,9 @@ export const progress = (percentage: number): AudioProgress => ({
   },
 });
 
-export const load = (url: string): LoadAudio => ({
+export const load = (episode: IEpisode): LoadAudio => ({
   action: PLAYER_EVENTS.LOAD,
-  payload: { url },
+  payload: { episode },
 });
 
 export const play = (): PlayAudio => ({
@@ -101,7 +105,6 @@ export const Triggers = {
   queuenext,
 };
 
-
 export const messagePlayerAction = (
   action: AudioRequestEvents,
   callback: ReducerRensposeFn
@@ -111,6 +114,16 @@ export const messagePlayerEmission = (
   action: AudioEmissionEvents,
   callback?: ReducerRensposeFn
 ) => chrome.runtime.sendMessage(action, callback);
+
+export const playingEmissionListener = (
+  callback: (message: AudioPlaying) => void
+) => {
+  chrome.runtime.onMessage.addListener((message: AudioPlaying) => {
+    if (message.action === PLAYER_EMITIONS.playing) {
+      callback(message);
+    }
+  });
+};
 
 export const Emitters = {
   loaded,

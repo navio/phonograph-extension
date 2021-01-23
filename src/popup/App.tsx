@@ -16,15 +16,15 @@ const App = () => {
     chrome.runtime.onMessage.addListener((message) => console.log('popup',message))
   }, []);
 
-  const loadAudio = () =>
-    messagePlayerAction(
-      Triggers.load(
-        "https://dcs.megaphone.fm/CAD1225141363.mp3?key=91bb59c2c82f5120e3d7759adc50159c"
-      ),
-      (response) => {
-        console.log(response);
-      }
-    );
+  const loadAudio = () => {};
+    // messagePlayerAction(
+    //   Triggers.load(
+    //     "https://dcs.megaphone.fm/CAD1225141363.mp3?key=91bb59c2c82f5120e3d7759adc50159c"
+    //   ),
+    //   (response) => {
+    //     console.log(response);
+    //   }
+    // );
 
 
   const pauseAudio = () => messagePlayerAction(

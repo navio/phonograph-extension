@@ -7,19 +7,29 @@ import {
 import { InitializeOptionsResponse } from "./types";
 
 import App from "ui/app";
+import { IEpisode } from "podcastsuite/dist/Format";
+import { playingEmissionListener } from "player/actions";
+import { PLAYER_EMITIONS } from "player/types";
 
 export default () => {
   const [collection, setCollection] = useState<IPodcast[]>([]);
-  
+  const [episode, setEpisode] = useState<IEpisode>();
+
   useEffect(() => {
     messageBackgroundAction(
-      initializeOptions("hello"),
+      initializeOptions("Init Whole APP"),
       (response: InitializeOptionsResponse) => {
-        const { library } = response.payload;
+        const { library, episode } = response.payload;
         setCollection(library);
+        setEpisode(episode);
       }
     );
+
+    playingEmissionListener((message) => {
+      const { media } = message.payload;
+      setEpisode(media);
+    });
   }, []);
 
-  return <App collection={collection} />;
+  return <App collection={collection} episode={episode} />;
 };

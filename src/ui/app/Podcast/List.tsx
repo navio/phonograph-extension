@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -22,6 +22,7 @@ import { PodcastImage } from "ui/utils/imageSaver";
 import { getRGBA, IColor } from "ui/utils/color";
 
 import { messagePlayerAction, Triggers } from "player/actions";
+import { AppContext } from "../index";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -81,22 +82,20 @@ const EpisodeListDescription = (props: { episode: IEpisode }) => {
 
 const PlayerIcon = (props: {
   color: IColor;
-  onClick: React.Dispatch<React.SetStateAction<IEpisode>>;
   episode: IEpisode;
   currentEpisode: IEpisode;
 }) => {
   const classes = useStyles();
-  const { color, onClick, episode, currentEpisode } = props;
+  const { color,  episode, currentEpisode } = props;
   const isPlaying = currentEpisode && episode.guid === currentEpisode.guid;
 
   return (
     <ListItemIcon
       onClick={() => {
-        if(isPlaying){
+        if (isPlaying) {
           pauseAudio();
-          onClick(undefined);
-        }else{
-          onClick(episode);
+        } else {
+          playAudio(episode)
         }
       }}
     >
@@ -120,6 +119,12 @@ const pauseAudio = () =>
     console.log(response);
   });
 
+const playAudio = (episode: IEpisode) => {
+    messagePlayerAction(Triggers.load(episode), (response) => {
+      // console.log(response);
+    });
+}
+
 export default function EpisodeList(props: {
   podcast: IPodcast;
   image: PodcastImage;
@@ -128,19 +133,9 @@ export default function EpisodeList(props: {
   const classes = useStyles();
   const { podcast, image } = props;
   const episodeList = podcast.items.slice(0, 20 * amount);
-  const [selectedEpisode, setSelectedEpisode] = useState<IEpisode>();
+  const { episode: selectedEpisode } = useContext(AppContext);
 
-  useEffect(() => {
-    if (selectedEpisode) {
-      const url =
-        typeof selectedEpisode.media === "string"
-          ? selectedEpisode.media
-          : selectedEpisode.media.url;
-      messagePlayerAction(Triggers.load(url), (response) => {
-        console.log(response);
-      });
-    }
-  }, [selectedEpisode]);
+
 
   return (
     <div className={classes.root}>
@@ -157,7 +152,7 @@ export default function EpisodeList(props: {
             <ListItem button>
               <PlayerIcon
                 color={image.colors[0]}
-                onClick={setSelectedEpisode}
+                // onClick={setSelectedEpisode}
                 currentEpisode={selectedEpisode}
                 episode={episode}
               />

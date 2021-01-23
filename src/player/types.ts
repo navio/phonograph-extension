@@ -1,4 +1,5 @@
 import { ReducerRensposeFn } from "background/types";
+import { IEpisode } from "podcastsuite/dist/Format";
 import { MessageResponse } from "../types";
 
 export { ReducerRensposeFn };
@@ -34,6 +35,8 @@ export enum PLAYER_EMITIONS {
   ended = "ENDED_AUDIO",
 }
 
+export type PlayableMedia = IEpisode;
+
 export interface AudioLoaded extends MessageResponse {
   action: PLAYER_EMITIONS.loadeddata;
 }
@@ -48,7 +51,10 @@ export interface AudioCanPlay extends MessageResponse {
 
 export interface AudioPlaying extends MessageResponse {
   action: PLAYER_EMITIONS.playing;
-  payload: AudioState;
+  payload: {
+    state: AudioState;
+    media: PlayableMedia;
+   }
 }
 
 export interface AudioPaused extends MessageResponse {
@@ -83,7 +89,7 @@ export type AudioEmissionEvents =
 export interface LoadAudio {
   action: typeof PLAYER_EVENTS.LOAD;
   payload: {
-    url: string;
+    episode: IEpisode;
   };
 }
 export interface PlayAudio {
