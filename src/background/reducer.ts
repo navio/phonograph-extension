@@ -10,8 +10,6 @@ import {
 } from "./actions";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 
-// const state = new ApplicationState();
-
 const background = (engine: Engine, state: ApplicationState) => {
   const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
     
