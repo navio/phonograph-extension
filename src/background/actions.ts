@@ -1,3 +1,4 @@
+import { IEpisode } from "podcastsuite/dist/Format";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import {
   BackgroundActions,
@@ -5,6 +6,8 @@ import {
   InitializePopUp,
   BACKGROUND_EVENTS,
   BACKGROUND_RESPONSES,
+  PODCAST_RESPONSES,
+  PODCAST_EVENTS,
   InitializeOptions,
   GetPodcast,
   GetPodcasts,
@@ -12,6 +15,10 @@ import {
   GetPodcastResponse,
   GetPodcastsResponse,
   BackgroundResponse,
+  SetEpisode,
+  ClearEpisode,
+  GetEpisodeReponse,
+  GetEpisode,
 } from "./types";
 
 export const messageBackgroundAction = (
@@ -31,39 +38,66 @@ export const initializeOptions = (id: string): InitializeOptions => ({
 
 // Responses
 
+export const getEpisodeReponse = (
+  podcast: IEpisode,
+  time: number
+): GetEpisodeReponse => ({
+  action: PODCAST_RESPONSES.EPISODE,
+  payload: { podcast, time },
+});
+
 export const backgroundReponse = (payload: any): BackgroundResponse => ({
   action: BACKGROUND_RESPONSES.GENERAL,
-  payload
+  payload,
 });
 
 export const getPodcastsReponse = (
   library: IPodcast[]
 ): GetPodcastsResponse => ({
-  action: BACKGROUND_RESPONSES.PODCASTS,
+  action: PODCAST_RESPONSES.PODCASTS,
   payload: { library },
 });
 
 export const getPodcastReponse = (podcast: IPodcast): GetPodcastResponse => ({
-  action: BACKGROUND_RESPONSES.PODCAST,
+  action: PODCAST_RESPONSES.PODCAST,
   payload: { podcast },
 });
 
 // Podcast
 
 export const getPodcast = (url: string, save: boolean = false): GetPodcast => ({
-  action: BACKGROUND_EVENTS.GET_PODCAST,
+  action: PODCAST_EVENTS.GET_PODCAST,
   payload: {
     url,
     save,
   },
 });
 
+export const setEpisode = (episode: IEpisode, time: number): SetEpisode => ({
+  action: PODCAST_EVENTS.SET_EPISODE,
+  payload: {
+    episode,
+    time: time || 0,
+  },
+});
+
+export const clearEpisode = (
+  episode: IEpisode,
+  time: number
+): ClearEpisode => ({
+  action: PODCAST_EVENTS.REMOVE_EPISODE,
+});
+
+export const getEpisode = (): GetEpisode => ({
+  action: PODCAST_EVENTS.GET_EPISODE,
+});
+
 export const getPodcasts = (): GetPodcasts => ({
-  action: BACKGROUND_EVENTS.GET_PODCASTS,
+  action: PODCAST_EVENTS.GET_PODCASTS,
 });
 
 export const deletePodcast = (url: string): DeletePodcast => ({
-  action: BACKGROUND_EVENTS.DELETE_PODCAST,
+  action: PODCAST_EVENTS.DELETE_PODCAST,
   payload: {
     url,
   },

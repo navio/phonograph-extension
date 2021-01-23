@@ -1,4 +1,8 @@
-import { BACKGROUND_EVENTS, BackgroundEventReducer } from "./types";
+import {
+  BACKGROUND_EVENTS,
+  PODCAST_EVENTS,
+  BackgroundEventReducer,
+} from "./types";
 import { initializeResponsePopUp } from "popup/actions";
 import { initializeOptionsResponse } from "options/actions";
 import Engine from "../Podcast";
@@ -7,15 +11,34 @@ import {
   getPodcastReponse,
   getPodcastsReponse,
   backgroundReponse,
+  getEpisodeReponse,
 } from "./actions";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
+import { IEpisodeState } from "../State";
 
 const background = (engine: Engine, state: ApplicationState) => {
   const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
-    
     switch (message.action) {
 
-      case BACKGROUND_EVENTS.GET_PODCAST: {
+      case PODCAST_EVENTS.SET_EPISODE: {
+        const { episode, time } = message.payload;
+        const episodeState: IEpisodeState = { ...episode, time };
+        state.setEpisode(episodeState);
+        return true;
+      }
+
+      case PODCAST_EVENTS.REMOVE_EPISODE: {
+        state.setEpisode(undefined);
+        return true;
+      }
+      
+      case PODCAST_EVENTS.GET_EPISODE: {
+        const { time, ...episode } = state.getEpisode();
+        sendResponse(getEpisodeReponse(episode, time))
+        return true;
+      }
+
+      case PODCAST_EVENTS.GET_PODCAST: {
         const { url, save } = message.payload;
         const podcastPromise: Promise<IPodcast> = save
           ? engine.getPodcast(url)
@@ -27,7 +50,7 @@ const background = (engine: Engine, state: ApplicationState) => {
         return true;
       }
 
-      case BACKGROUND_EVENTS.DELETE_PODCAST: {
+      case PODCAST_EVENTS.DELETE_PODCAST: {
         const { url } = message.payload;
         sendResponse(backgroundReponse(true));
         return true;
@@ -35,9 +58,6 @@ const background = (engine: Engine, state: ApplicationState) => {
 
       case BACKGROUND_EVENTS.INIT_POPUP: {
         engine.getPodcasts().then((library) => {
-          const podcast = library[0];
-          const { title, author } = podcast;
-          const { title: EpisodeTitle } = podcast.items[0];
           sendResponse(
             initializeResponsePopUp(`Library has ${library.length} podcasts.`)
           );
@@ -47,19 +67,18 @@ const background = (engine: Engine, state: ApplicationState) => {
 
       case BACKGROUND_EVENTS.INIT_OPTIONS: {
         engine.getPodcasts().then((library) => {
-          const episode = state.getEpisode();
-          sendResponse(initializeOptionsResponse(library, episode));
+          const { time, ...episode } = state.getEpisode();
+          sendResponse(initializeOptionsResponse(library, episode, time));
         });
         return true;
       }
 
-      case BACKGROUND_EVENTS.GET_PODCASTS: {
+      case PODCAST_EVENTS.GET_PODCASTS: {
         engine.getPodcasts().then((library) => {
           sendResponse(getPodcastsReponse(library));
           return true;
         });
       }
-
     }
   };
   return reducer;

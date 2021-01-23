@@ -1,3 +1,4 @@
+import { IEpisode } from "podcastsuite/dist/Format";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import { MessageResponse, ReducerRensposeFn } from "../types";
 
@@ -6,29 +7,47 @@ export { ReducerRensposeFn };
 export enum BACKGROUND_EVENTS {
   INIT_POPUP = "BACKGROUND_INIT_POPUP",
   INIT_OPTIONS = "BACKGROUND_INIT_OPTIONS",
+}
+
+export enum PODCAST_EVENTS {
   ADD_PODCAST = "BACKGROUND_PODCAST_ADD",
   GET_PODCAST = "BACKGROUND_PODCAST_GET",
   GET_PODCASTS = "BACKGROUND_PODCAST_ALL",
   DELETE_PODCAST = "BACKGROUND_PODCAST_DELETE",
+  SET_EPISODE = "SET_EPISODE",
+  REMOVE_EPISODE = "REMOVE_EPISODE",
+  GET_EPISODE = "GET_EPISODE"
+}
+
+export enum PODCAST_RESPONSES {
+  PODCAST = "BACKGROUND_PODCAST_RESPONSE",
+  PODCASTS = "BACKGROUND_PODCASTS_RESPONSES",
+  EPISODE = "BACKGROUND_EPISODE_RESPONSE"
 }
 
 export enum BACKGROUND_RESPONSES {
-  PODCAST = "BACKGROUND_PODCAST_RESPONSE",
-  PODCASTS = "BACKGROUND_PODCASTS_RESPONSES",
   GENERAL = "BACKGROUND_RESPONSE",
 }
 
 // RESPONSES
 
+export interface GetEpisodeReponse extends MessageResponse {
+  action: PODCAST_RESPONSES.EPISODE,
+  payload: {
+    podcast?: IEpisode,
+    time?: number,
+  }
+}
+
 export interface GetPodcastsResponse extends MessageResponse {
-  action: BACKGROUND_RESPONSES.PODCASTS,
+  action: PODCAST_RESPONSES.PODCASTS,
   payload: {
     library: IPodcast[];
   };
 }
 
 export interface GetPodcastResponse extends MessageResponse {
-  action: BACKGROUND_RESPONSES.PODCAST,
+  action: PODCAST_RESPONSES.PODCAST,
   payload: {
     podcast: IPodcast;
   };
@@ -56,8 +75,12 @@ export interface InitializeOptions {
   };
 }
 
+export interface GetEpisode {
+  action: typeof PODCAST_EVENTS.GET_EPISODE
+}
+
 export interface GetPodcast {
-  action: typeof BACKGROUND_EVENTS.GET_PODCAST;
+  action: typeof PODCAST_EVENTS.GET_PODCAST;
   payload: {
     url: string;
     save?: boolean;
@@ -65,11 +88,23 @@ export interface GetPodcast {
 }
 
 export interface GetPodcasts {
-  action: typeof BACKGROUND_EVENTS.GET_PODCASTS;
+  action: typeof PODCAST_EVENTS.GET_PODCASTS;
+}
+
+export interface SetEpisode {
+  action: typeof PODCAST_EVENTS.SET_EPISODE;
+  payload: {
+    episode: IEpisode,
+    time?: number
+  }
+}
+
+export interface ClearEpisode {
+  action: typeof PODCAST_EVENTS.REMOVE_EPISODE;
 }
 
 export interface DeletePodcast {
-  action: typeof BACKGROUND_EVENTS.DELETE_PODCAST;
+  action: typeof PODCAST_EVENTS.DELETE_PODCAST;
   payload: {
     url: string;
   };
@@ -84,6 +119,9 @@ export type BackgroundEventReducer = (
 export type BackgroundActions =
   | InitializePopUp
   | InitializeOptions
+  | SetEpisode
+  | ClearEpisode
+  | GetEpisode
   | GetPodcast
   | GetPodcasts
   | DeletePodcast;
