@@ -19,7 +19,6 @@ import { IEpisodeState } from "../State";
 const background = (engine: Engine, state: ApplicationState) => {
   const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
     switch (message.action) {
-
       case PODCAST_EVENTS.SET_EPISODE: {
         const { episode, time } = message.payload;
         const episodeState: IEpisodeState = { ...episode, time };
@@ -31,10 +30,11 @@ const background = (engine: Engine, state: ApplicationState) => {
         state.setEpisode(undefined);
         return true;
       }
-      
+
       case PODCAST_EVENTS.GET_EPISODE: {
-        // const { time , ...episode } = state.getEpisode();
-        // sendResponse(getEpisodeReponse(episode, time));
+        const episode = state.getEpisode();
+        const time = episode ? episode.time : 0;
+        sendResponse(getEpisodeReponse(episode, time));
         return true;
       }
 
@@ -67,8 +67,9 @@ const background = (engine: Engine, state: ApplicationState) => {
 
       case BACKGROUND_EVENTS.INIT_OPTIONS: {
         engine.getPodcasts().then((library) => {
-          // const { time, ...episode } = state.getEpisode();
-          sendResponse(initializeOptionsResponse(library));
+          const episode = state.getEpisode();
+          const time = episode ? episode.time : 0;
+          sendResponse(initializeOptionsResponse(library, episode, time));
         });
         return true;
       }

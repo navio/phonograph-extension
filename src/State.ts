@@ -19,6 +19,6 @@ export default class ApplicationState {
       const currentObj: IEpisodeState = JSON.parse(storedCurrent);
       return currentObj;
     }
-    return {};
+    return;
   }
 }
