@@ -34,7 +34,6 @@ export default () => {
     });
 
     pauseEmissionListener((message) => {
-      console.log('Options App', message, Date.now());
       const { state } = message.payload;
       setPlayerState(state);
     })
