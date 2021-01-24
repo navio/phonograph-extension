@@ -23,6 +23,7 @@ import { getRGBA, IColor } from "ui/utils/color";
 
 import { messagePlayerAction, Triggers } from "player/actions";
 import { AppContext } from "../index";
+import { AudioState } from "player/audio";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -84,10 +85,12 @@ const PlayerIcon = (props: {
   color: IColor;
   episode: IEpisode;
   currentEpisode: IEpisode;
+  playing: boolean;
 }) => {
   const classes = useStyles();
-  const { color,  episode, currentEpisode } = props;
-  const isPlaying = currentEpisode && episode.guid === currentEpisode.guid;
+  const { color, episode, currentEpisode, playing } = props;
+  const isPlaying =
+    currentEpisode && episode.guid === currentEpisode.guid && playing;
 
   return (
     <ListItemIcon
@@ -95,7 +98,7 @@ const PlayerIcon = (props: {
         if (isPlaying) {
           pauseAudio();
         } else {
-          playAudio(episode)
+          playAudio(episode);
         }
       }}
     >
@@ -116,14 +119,14 @@ const PlayerIcon = (props: {
 
 const pauseAudio = () =>
   messagePlayerAction(Triggers.stop(), (response) => {
-    console.log(response);
+    // console.log(response);
   });
 
 const playAudio = (episode: IEpisode) => {
-    messagePlayerAction(Triggers.load(episode), (response) => {
-      // console.log(response);
-    });
-}
+  messagePlayerAction(Triggers.load(episode), (response) => {
+    // console.log(response);
+  });
+};
 
 export default function EpisodeList(props: {
   podcast: IPodcast;
@@ -133,10 +136,8 @@ export default function EpisodeList(props: {
   const classes = useStyles();
   const { podcast, image } = props;
   const episodeList = podcast.items.slice(0, 20 * amount);
-  const { episode: selectedEpisode } = useContext(AppContext);
-
-
-
+  const { episode: selectedEpisode, playing } = useContext(AppContext);
+  console.log('playing:', playing);
   return (
     <div className={classes.root}>
       <Divider />
@@ -152,7 +153,7 @@ export default function EpisodeList(props: {
             <ListItem button>
               <PlayerIcon
                 color={image.colors[0]}
-                // onClick={setSelectedEpisode}
+                playing={playing}
                 currentEpisode={selectedEpisode}
                 episode={episode}
               />

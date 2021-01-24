@@ -59,7 +59,10 @@ export interface AudioPlaying extends MessageResponse {
 
 export interface AudioPaused extends MessageResponse {
   action: PLAYER_EMITIONS.paused;
-  playload: AudioState;
+  payload: {
+    state: AudioState;
+    media: PlayableMedia;
+   }
 }
 
 export interface AudioEnded extends MessageResponse {

@@ -7,15 +7,17 @@ import Podcast from "../Podcast";
 export default (
   engine: Podcast,
   state: ApplicationState,
-  config: { audioElementInit?: HTMLAudioElement } = {}
+  player: AudioElement
 ) => {
-  const player = new AudioElement(config.audioElementInit);
   const { audioElement } = player;
 
-  player.audioElement.autoplay = true;
+  // player.audioElement.autoplay = true;
 
   audioElement.addEventListener("pause", () =>
-    messagePlayerEmission(Emitters.paused(player.state))
+    messagePlayerEmission(Emitters.paused({
+      ...player.state,
+      playing: false,
+    }, state.getEpisode()))
   );
   audioElement.addEventListener("play", () => {
     messagePlayerEmission(Emitters.playing(player.state, state.getEpisode()));
@@ -30,14 +32,18 @@ export default (
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
       case PLAYER_EVENTS.LOAD:
+
         const { episode } = message.payload;
         const currentEpisode = state.getEpisode();
+        
+        // If i
         if (episode.guid === currentEpisode.guid) {
           audioElement
             .play()
             .then(() => sendResponse(Emitters.playing(player.state, episode)));
           return true;
         }
+
         const newEpisode = { ...episode, time: 0 };
         state.setEpisode(newEpisode);
         const url =
@@ -45,8 +51,9 @@ export default (
 
         audioElement.src = url;
         sendResponse(Emitters.loaded());
-
+        audioElement.play().then(() => Emitters.playing(player.state, episode))
         return true;
+
       case PLAYER_EVENTS.PLAY:
         audioElement
           .play()
@@ -59,7 +66,8 @@ export default (
         sendResponse(
           Emitters.paused({
             ...player.state,
-          })
+            playing: false,
+          }, state.getEpisode())
         );
         return true;
       case PLAYER_EVENTS.FORWARD:

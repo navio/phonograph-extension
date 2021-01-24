@@ -1,11 +1,12 @@
+import { IEpisode } from "podcastsuite/dist/Format";
 import {
     POPUP_EVENTS,
     InitializePopUpResponse,
   } from "./types";
 
   export const initializeResponsePopUp = (
-    id: string
+    episode: IEpisode
   ): InitializePopUpResponse => ({
     action: POPUP_EVENTS.INITIALIZATION,
-    payload: { id },
+    payload: { episode },
   });

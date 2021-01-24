@@ -15,8 +15,9 @@ import {
 } from "./actions";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import { IEpisodeState } from "../State";
+import AudioElement from "player/audio";
 
-const background = (engine: Engine, state: ApplicationState) => {
+const background = (engine: Engine, state: ApplicationState, player: AudioElement) => {
   const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
     switch (message.action) {
       case PODCAST_EVENTS.SET_EPISODE: {
@@ -57,11 +58,10 @@ const background = (engine: Engine, state: ApplicationState) => {
       }
 
       case BACKGROUND_EVENTS.INIT_POPUP: {
-        engine.getPodcasts().then((library) => {
           sendResponse(
-            initializeResponsePopUp(`Library has ${library.length} podcasts.`)
+            initializeResponsePopUp(state.getEpisode())
           );
-        });
+
         return true;
       }
 

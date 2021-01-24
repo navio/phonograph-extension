@@ -10,7 +10,7 @@ module.exports = {
     popup: `./src/popup`,
     options: `./src/options`
   },
-  // devtool: 'inline-source-map',
+  // devtool: 'none',
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {

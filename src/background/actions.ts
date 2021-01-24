@@ -26,9 +26,8 @@ export const messageBackgroundAction = (
   callback: ReducerRensposeFn
 ) => chrome.runtime.sendMessage(action, callback);
 
-export const initializePopUp = (id: string): InitializePopUp => ({
+export const initializePopUp = (): InitializePopUp => ({
   action: BACKGROUND_EVENTS.INIT_POPUP,
-  payload: { id },
 });
 
 export const initializeOptions = (id: string): InitializeOptions => ({

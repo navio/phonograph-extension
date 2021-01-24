@@ -8,12 +8,14 @@ import { InitializeOptionsResponse } from "./types";
 
 import App from "ui/app";
 import { IEpisode } from "podcastsuite/dist/Format";
-import { playingEmissionListener } from "player/actions";
-import { PLAYER_EMITIONS } from "player/types";
+import { pauseEmissionListener, playingEmissionListener } from "player/actions";
+import { AudioState } from "player/types";
+
 
 export default () => {
   const [collection, setCollection] = useState<IPodcast[]>([]);
   const [episode, setEpisode] = useState<IEpisode>();
+  const [playerState, setPlayerState] = useState<AudioState>();
 
   useEffect(() => {
     messageBackgroundAction(
@@ -26,10 +28,17 @@ export default () => {
     );
 
     playingEmissionListener((message) => {
-      const { media } = message.payload;
+      const { media, state } = message.payload;
+      setPlayerState(state);
       setEpisode(media);
     });
+    
+    pauseEmissionListener((message) => {
+      console.log('Options App', message, Date.now());
+      const { state } = message.payload;
+      setPlayerState(state);
+    })
   }, []);
 
-  return <App collection={collection} episode={episode} />;
+  return <App collection={collection} episode={episode} playerState={playerState} />;
 };

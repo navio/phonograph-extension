@@ -63,9 +63,6 @@ export interface BackgroundResponse extends MessageResponse {
 
 export interface InitializePopUp {
   action: typeof BACKGROUND_EVENTS.INIT_POPUP;
-  payload: {
-    id: string;
-  };
 }
 
 export interface InitializeOptions {

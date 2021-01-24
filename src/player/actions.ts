@@ -41,9 +41,9 @@ export const playing = (
   payload: { state, media },
 });
 
-export const paused = (audioState: AudioState): AudioPaused => ({
+export const paused = (state: AudioState, media: PlayableMedia): AudioPaused => ({
   action: PLAYER_EMITIONS.paused,
-  playload: audioState,
+  payload: { state, media },
 });
 
 export const ended = (): AudioEnded => ({
@@ -115,6 +115,8 @@ export const messagePlayerEmission = (
   callback?: ReducerRensposeFn
 ) => chrome.runtime.sendMessage(action, callback);
 
+
+
 export const playingEmissionListener = (
   callback: (message: AudioPlaying) => void
 ) => {
@@ -124,6 +126,28 @@ export const playingEmissionListener = (
     }
   });
 };
+
+export const pauseEmissionListener = (
+  callback: (message: AudioPaused) => void
+) => {
+  chrome.runtime.onMessage.addListener((message: AudioPaused) => {
+    if (message.action === PLAYER_EMITIONS.paused) {
+      callback(message);
+    }
+  });
+};
+
+
+export const endEmissionListener = (
+  callback: (message: AudioEnded) => void
+) => {
+  chrome.runtime.onMessage.addListener((message: AudioEnded) => {
+    if (message.action === PLAYER_EMITIONS.ended) {
+      callback(message);
+    }
+  });
+};
+
 
 export const Emitters = {
   loaded,

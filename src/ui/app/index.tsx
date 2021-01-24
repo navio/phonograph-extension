@@ -6,13 +6,14 @@ import Podcast from "./Podcast";
 
 import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { IEpisode } from "podcastsuite/dist/Format";
+import { AudioState } from "player/audio";
 
 export type IPodcast = IPodcastSuitePodcast;
 
 export const AppContext = React.createContext<{
   collection: IPodcast[];
   episode?: IEpisode;
-
+  playing?: boolean;
 }>({
   collection: []
 });
@@ -20,13 +21,14 @@ export const AppContext = React.createContext<{
 export interface IAppProps {
   collection: IPodcast[];
   episode: IEpisode;
+  playerState: AudioState;
 }
 
 export default function App(props: IAppProps) {
-  const { collection, episode } = props;
-
+  const { collection, episode, playerState } = props;
+  const playing = playerState ? playerState.playing : false;
   return (
-    <AppContext.Provider value={{ collection, episode }}>
+    <AppContext.Provider value={{ collection, episode, playing }}>
       <Router>
         <Switch>
           <Route path="/podcast/:podcast">
