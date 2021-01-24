@@ -32,7 +32,7 @@ export default () => {
       setPlayerState(state);
       setEpisode(media);
     });
-    
+
     pauseEmissionListener((message) => {
       console.log('Options App', message, Date.now());
       const { state } = message.payload;
@@ -40,5 +40,5 @@ export default () => {
     })
   }, []);
 
-  return <App collection={collection} episode={episode} playerState={playerState} />;
+  return <App collection={collection} episode={episode} audioState={playerState} />;
 };

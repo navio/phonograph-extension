@@ -85,10 +85,11 @@ const PlayerIcon = (props: {
   color: IColor;
   episode: IEpisode;
   currentEpisode: IEpisode;
-  playing: boolean;
+  audioState: AudioState;
 }) => {
   const classes = useStyles();
-  const { color, episode, currentEpisode, playing } = props;
+  const { color, episode, currentEpisode, audioState } = props;
+  const playing = audioState ? audioState.playing : false;
   const isPlaying =
     currentEpisode && episode.guid === currentEpisode.guid && playing;
 
@@ -136,8 +137,7 @@ export default function EpisodeList(props: {
   const classes = useStyles();
   const { podcast, image } = props;
   const episodeList = podcast.items.slice(0, 20 * amount);
-  const { episode: selectedEpisode, playing } = useContext(AppContext);
-  console.log('playing:', playing);
+  const { episode: selectedEpisode, audioState } = useContext(AppContext);
   return (
     <div className={classes.root}>
       <Divider />
@@ -153,7 +153,7 @@ export default function EpisodeList(props: {
             <ListItem button>
               <PlayerIcon
                 color={image.colors[0]}
-                playing={playing}
+                audioState={audioState}
                 currentEpisode={selectedEpisode}
                 episode={episode}
               />
