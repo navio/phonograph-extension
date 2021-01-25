@@ -3,8 +3,9 @@ import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import { IPodcast } from "../index";
 import { PodcastImage } from "ui/utils/imageSaver";
 import { clearText, dateFrom } from "ui/utils/stringsTools";
-import { getRGBA, contrastColor } from "ui/utils/color";
+import { getRGBA, getRGB, contrastColor } from "ui/utils/color";
 import MicIcon from "@material-ui/icons/MicNoneOutlined";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,8 +30,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default (props: { podcast: IPodcast; image: PodcastImage }) => {
-  const { podcast, image } = props;
+export default (props: {
+  podcast: IPodcast;
+  image: PodcastImage;
+  subscribed: boolean;
+  subscribe: () => void;
+}) => {
+  const { podcast, image, subscribed, subscribe } = props;
   const classes = useStyles();
   return (
     <div
@@ -64,6 +70,20 @@ export default (props: { podcast: IPodcast; image: PodcastImage }) => {
           >
             {clearText(podcast.description)}
           </span>
+          {subscribed && (
+            <Button
+              style={{
+                width: "200px",
+                margin: "1rem 0",
+                color: getRGB(image.colors[2]),
+                borderColor: getRGB(image.colors[2]),
+              }}
+              onClick={() => subscribe()}
+              variant="outlined"
+            >
+              Subscribe
+            </Button>
+          )}
         </div>
       </div>
     </div>

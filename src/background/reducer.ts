@@ -16,8 +16,13 @@ import {
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import { IEpisodeState } from "../State";
 import AudioElement from "player/audio";
+import { podcasts } from "./config";
 
-const background = (engine: Engine, state: ApplicationState, player: AudioElement) => {
+const background = (
+  engine: Engine,
+  state: ApplicationState,
+  player: AudioElement
+) => {
   const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
     switch (message.action) {
       case PODCAST_EVENTS.SET_EPISODE: {
@@ -41,13 +46,9 @@ const background = (engine: Engine, state: ApplicationState, player: AudioElemen
 
       case PODCAST_EVENTS.GET_PODCAST: {
         const { url, save } = message.payload;
-        const podcastPromise: Promise<IPodcast> = save
-          ? engine.getPodcast(url)
-          : Engine.fetch(new URL(url));
-
-        podcastPromise.then((podcast) =>
-          sendResponse(getPodcastReponse(podcast))
-        );
+          engine.getPodcast(url, {save})
+          .then((podcast) => sendResponse(getPodcastReponse(podcast)))
+          .catch((error) => console.error("Error", error));
         return true;
       }
 
@@ -58,10 +59,8 @@ const background = (engine: Engine, state: ApplicationState, player: AudioElemen
       }
 
       case BACKGROUND_EVENTS.INIT_POPUP: {
-          const audioState = player.state;
-          sendResponse(
-            initializeResponsePopUp(state.getEpisode(), audioState )
-          );
+        const audioState = player.state;
+        sendResponse(initializeResponsePopUp(state.getEpisode(), audioState));
 
         return true;
       }
