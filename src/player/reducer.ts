@@ -14,10 +14,15 @@ export default (
   // player.audioElement.autoplay = true;
 
   audioElement.addEventListener("pause", () =>
-    messagePlayerEmission(Emitters.paused({
-      ...player.state,
-      playing: false,
-    }, state.getEpisode()))
+    messagePlayerEmission(
+      Emitters.paused(
+        {
+          ...player.state,
+          playing: false,
+        },
+        state.getEpisode()
+      )
+    )
   );
   audioElement.addEventListener("play", () => {
     messagePlayerEmission(Emitters.playing(player.state, state.getEpisode()));
@@ -32,11 +37,9 @@ export default (
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
       case PLAYER_EVENTS.LOAD:
-
         const { episode } = message.payload;
         const currentEpisode = state.getEpisode();
-        
-        // If i
+
         if (episode.guid === currentEpisode.guid) {
           audioElement
             .play()
@@ -51,23 +54,25 @@ export default (
 
         audioElement.src = url;
         sendResponse(Emitters.loaded());
-        audioElement.play().then(() => Emitters.playing(player.state, episode))
+        audioElement.play().then(() => Emitters.playing(player.state, episode));
         return true;
 
-      case PLAYER_EVENTS.PLAY:
-        audioElement
-          .play()
-          .then(() =>
-            sendResponse(Emitters.playing(player.state, state.getEpisode()))
-          );
+      case PLAYER_EVENTS.PLAY: {
+          audioElement.play().then(() => {
+            sendResponse(Emitters.playing(player.state, state.getEpisode()));
+          });
         return true;
+      }
       case PLAYER_EVENTS.STOP:
         audioElement.pause();
         sendResponse(
-          Emitters.paused({
-            ...player.state,
-            playing: false,
-          }, state.getEpisode())
+          Emitters.paused(
+            {
+              ...player.state,
+              playing: false,
+            },
+            state.getEpisode()
+          )
         );
         return true;
       case PLAYER_EVENTS.FORWARD:

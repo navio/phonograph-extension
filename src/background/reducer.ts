@@ -58,8 +58,9 @@ const background = (engine: Engine, state: ApplicationState, player: AudioElemen
       }
 
       case BACKGROUND_EVENTS.INIT_POPUP: {
+          const audioState = player.state;
           sendResponse(
-            initializeResponsePopUp(state.getEpisode())
+            initializeResponsePopUp(state.getEpisode(), audioState )
           );
 
         return true;
@@ -69,7 +70,7 @@ const background = (engine: Engine, state: ApplicationState, player: AudioElemen
         engine.getPodcasts().then((library) => {
           const episode = state.getEpisode();
           const time = episode ? episode.time : 0;
-          sendResponse(initializeOptionsResponse(library, episode, time));
+          sendResponse(initializeOptionsResponse(library, episode));
         });
         return true;
       }

@@ -24,6 +24,7 @@ import { getRGBA, IColor } from "ui/utils/color";
 import { messagePlayerAction, Triggers } from "player/actions";
 import { AppContext } from "../index";
 import { AudioState } from "player/audio";
+import AudioButton from "ui/common/AudioButton";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -81,54 +82,6 @@ const EpisodeListDescription = (props: { episode: IEpisode }) => {
   );
 };
 
-const PlayerIcon = (props: {
-  color: IColor;
-  episode: IEpisode;
-  currentEpisode: IEpisode;
-  audioState: AudioState;
-}) => {
-  const classes = useStyles();
-  const { color, episode, currentEpisode, audioState } = props;
-  const playing = audioState ? audioState.playing : false;
-  const isPlaying =
-    currentEpisode && episode.guid === currentEpisode.guid && playing;
-
-  return (
-    <ListItemIcon
-      onClick={() => {
-        if (isPlaying) {
-          pauseAudio();
-        } else {
-          playAudio(episode);
-        }
-      }}
-    >
-      {isPlaying ? (
-        <PauseIcon
-          style={{ color: getRGBA(color) }}
-          className={classes.mediaButton}
-        />
-      ) : (
-        <PlayIcon
-          style={{ color: getRGBA(color) }}
-          className={classes.mediaButton}
-        />
-      )}
-    </ListItemIcon>
-  );
-};
-
-const pauseAudio = () =>
-  messagePlayerAction(Triggers.stop(), (response) => {
-    // console.log(response);
-  });
-
-const playAudio = (episode: IEpisode) => {
-  messagePlayerAction(Triggers.load(episode), (response) => {
-    // console.log(response);
-  });
-};
-
 export default function EpisodeList(props: {
   podcast: IPodcast;
   image: PodcastImage;
@@ -151,7 +104,7 @@ export default function EpisodeList(props: {
         {episodeList.map((episode) => (
           <>
             <ListItem button>
-              <PlayerIcon
+              <AudioButton
                 color={image.colors[0]}
                 audioState={audioState}
                 currentEpisode={selectedEpisode}

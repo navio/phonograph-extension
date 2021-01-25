@@ -1,3 +1,4 @@
+import { AudioState } from "player/audio";
 import { IEpisode } from "podcastsuite/dist/Format";
 import {
     POPUP_EVENTS,
@@ -5,8 +6,9 @@ import {
   } from "./types";
 
   export const initializeResponsePopUp = (
-    episode: IEpisode
+    episode: IEpisode,
+    state: AudioState
   ): InitializePopUpResponse => ({
     action: POPUP_EVENTS.INITIALIZATION,
-    payload: { episode },
+    payload: { episode, state },
   });

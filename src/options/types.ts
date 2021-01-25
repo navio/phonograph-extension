@@ -11,7 +11,6 @@ export interface InitializeOptionsResponse extends MessageResponse {
   payload: {
     library: IPodcast[];
     episode: IEpisode;
-    time?: number;
   };
 }
 

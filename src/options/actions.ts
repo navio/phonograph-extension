@@ -5,12 +5,10 @@ import { OPTIONS_EVENTS, InitializeOptionsResponse } from "./types";
 export const initializeOptionsResponse = (
   library: IPodcast[],
   episode?: IEpisode,
-  time?: number
 ): InitializeOptionsResponse => ({
   action: OPTIONS_EVENTS.INITIALIZATION,
   payload: {
     library,
     episode,
-    time,
   },
 });
