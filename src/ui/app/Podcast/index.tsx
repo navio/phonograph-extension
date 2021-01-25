@@ -43,7 +43,7 @@ export default () => {
 
   return podcast && image ? (
     <>
-      <Header media={image} />
+      <Header media={image} back />
       <Top podcast={podcast} image={image} />
       <List podcast={podcast} image={image} />
     </>
