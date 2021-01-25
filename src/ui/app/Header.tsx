@@ -10,10 +10,12 @@ import {
   Theme,
   makeStyles,
 } from "@material-ui/core/styles";
-import MenuIcon from "@material-ui/icons/Menu";
+import HeadsetIcon from '@material-ui/icons/Headset';
 import SearchIcon from "@material-ui/icons/Search";
 import { PodcastImage } from "ui/utils/imageSaver";
 import { COLORS, contrastColor, getRGBA } from "ui/utils/color";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -72,9 +74,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function SearchAppBar(props: { media?: PodcastImage }) {
+export default function SearchAppBar(props: { media?: PodcastImage, back?: boolean }) {
   const classes = useStyles();
-  const { media } = props;
+  const { media, back = false } = props;
+  let history = useHistory();
   const overwrite = media
     ? {
         backgroundColor: getRGBA(media.colors[1], 0.8),
@@ -90,8 +93,13 @@ export default function SearchAppBar(props: { media?: PodcastImage }) {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={ () => {
+              if(back){
+                history.push("/")
+              }
+            }}
           >
-            <MenuIcon />
+            {back ? <ArrowBackIcon/> :<HeadsetIcon />}
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             Phonograph
