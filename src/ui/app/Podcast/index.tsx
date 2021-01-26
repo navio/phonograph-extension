@@ -14,7 +14,7 @@ import { podcasts } from "background/config";
 export default () => {
   const [podcast, setPodcast] = useState<IPodcast>(null);
   const [image, setImage] = useState<PodcastImage>(null);
-  const [subscribe, setSubscribe] = useState<boolean>(false);
+  const [inLibrary, setInLibrary] = useState<boolean>(true);
   const { collection } = useContext(AppContext);
   const { podcast: PodcastURL } = useRouteMatch("/podcast/:podcast").params;
 
@@ -29,10 +29,10 @@ export default () => {
 
     if (podcast) {
       setPodcast(podcast);
+      setInLibrary(true);
     } else {
       setPodcast(undefined);
-      if(collection)
-      // setSubscribe(true);
+     setInLibrary(false);
       messageBackgroundAction(
         getPodcast(url),
         (response: GetPodcastResponse) => {
@@ -51,14 +51,14 @@ export default () => {
     }
   }, [podcast]);
 
-  const subscribePodcast = useCallback(() => {
+  const subscribePodcast = (url) => {
     messageBackgroundAction(
       getPodcast(url, true),
       (response: GetPodcastResponse) => {
-        setSubscribe(false);
+        setInLibrary(true);
       }
     );
-  }, [url]);
+  }
 
   return podcast && image ? (
     <>
@@ -66,7 +66,7 @@ export default () => {
       <Top
         podcast={podcast}
         image={image}
-        subscribed={subscribe}
+        inLibrary={inLibrary}
         subscribe={subscribePodcast}
       />
       <List podcast={podcast} image={image} />

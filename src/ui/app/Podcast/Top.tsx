@@ -5,6 +5,7 @@ import { PodcastImage } from "ui/utils/imageSaver";
 import { clearText, dateFrom } from "ui/utils/stringsTools";
 import { getRGBA, getRGB, contrastColor } from "ui/utils/color";
 import MicIcon from "@material-ui/icons/MicNoneOutlined";
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -33,10 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
 export default (props: {
   podcast: IPodcast;
   image: PodcastImage;
-  subscribed: boolean;
-  subscribe: () => void;
+  inLibrary: boolean;
+  subscribe: (url: string) => void;
 }) => {
-  const { podcast, image, subscribed, subscribe } = props;
+  const { podcast, image, inLibrary, subscribe } = props;
   const classes = useStyles();
   return (
     <div
@@ -70,18 +71,32 @@ export default (props: {
           >
             {clearText(podcast.description)}
           </span>
-          {subscribed && (
+          {inLibrary ? (
+            <Button
+            style={{
+              width: "200px",
+              margin: "1rem 0",
+              color: getRGB(image.colors[1]),
+              borderColor: getRGB(image.colors[1]),
+            }}
+            onClick={() => console.log('remove me!')}
+            variant="outlined"
+          >
+            Unsubscribe
+          </Button>
+          ):
+          (
             <Button
               style={{
                 width: "200px",
                 margin: "1rem 0",
-                color: getRGB(image.colors[2]),
-                borderColor: getRGB(image.colors[2]),
+                color: getRGB(image.colors[1]),
+                borderColor: getRGB(image.colors[1]),
               }}
-              onClick={() => subscribe()}
+              onClick={() => subscribe(podcast.url)}
               variant="outlined"
             >
-              Subscribe
+              <BookmarkIcon /> Subscribe
             </Button>
           )}
         </div>
