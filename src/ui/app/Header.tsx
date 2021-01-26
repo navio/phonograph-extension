@@ -10,11 +10,11 @@ import {
   Theme,
   makeStyles,
 } from "@material-ui/core/styles";
-import HeadsetIcon from '@material-ui/icons/Headset';
+import HeadsetIcon from "@material-ui/icons/Headset";
 import SearchIcon from "@material-ui/icons/Search";
 import { PodcastImage } from "ui/utils/imageSaver";
 import { COLORS, contrastColor, getRGBA } from "ui/utils/color";
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -74,9 +74,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function SearchAppBar(props: { media?: PodcastImage, back?: boolean }) {
+export default function SearchAppBar(props: {
+  media?: PodcastImage;
+  back?: boolean;
+  title?: string;
+}) {
   const classes = useStyles();
-  const { media, back = false } = props;
+  const { media, back = false, title = "Phonograph" } = props;
   let history = useHistory();
   const overwrite = media
     ? {
@@ -93,16 +97,16 @@ export default function SearchAppBar(props: { media?: PodcastImage, back?: boole
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            onClick={ () => {
-              if(back){
-                history.push("/")
+            onClick={() => {
+              if (back) {
+                history.push("/");
               }
             }}
           >
-            {back ? <ArrowBackIcon/> :<HeadsetIcon />}
+            {back ? <ArrowBackIcon /> : <HeadsetIcon />}
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Phonograph
+            {title}
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -116,8 +120,12 @@ export default function SearchAppBar(props: { media?: PodcastImage, back?: boole
               }}
               style={
                 overwrite.color === COLORS.black
-                  ? { border: `1px solid darkgray`, borderRadius: 'inherit' }
-                  : { border: `1px solid lightgray`, borderRadius: 'inherit', fontWeight: 'bold' }
+                  ? { border: `1px solid darkgray`, borderRadius: "inherit" }
+                  : {
+                      border: `1px solid lightgray`,
+                      borderRadius: "inherit",
+                      fontWeight: "bold",
+                    }
               }
               inputProps={{ "aria-label": "search" }}
             />

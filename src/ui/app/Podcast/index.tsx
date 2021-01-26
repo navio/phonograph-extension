@@ -62,7 +62,7 @@ export default () => {
 
   const unsubscribePodcast = (url: string) => {
     messageBackgroundAction(deletePodcast(url), () => {
-
+      setInLibrary(false);
     });
   }
 
