@@ -12,6 +12,8 @@ import {
   getPodcastsReponse,
   backgroundReponse,
   getEpisodeReponse,
+  emitLibraryUpdate,
+  messagePodcastEmission,
 } from "./actions";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import { IEpisodeState } from "../State";
@@ -48,12 +50,23 @@ const background = (
         const { url, save } = message.payload;
           engine.getPodcast(url, {save})
           .then((podcast) => sendResponse(getPodcastReponse(podcast)))
+          .then(() => {
+            if(save){
+              engine.getPodcasts().then( podcasts => {
+                messagePodcastEmission(emitLibraryUpdate(podcasts))
+              })
+            }
+          })
           .catch((error) => console.error("Error", error));
         return true;
       }
 
       case PODCAST_EVENTS.DELETE_PODCAST: {
         const { url } = message.payload;
+        engine.deletePodcast(url);
+        engine.getPodcasts().then( podcasts => {
+          messagePodcastEmission(emitLibraryUpdate(podcasts))
+        })
         sendResponse(backgroundReponse(true));
         return true;
       }

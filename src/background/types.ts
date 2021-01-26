@@ -19,6 +19,10 @@ export enum PODCAST_EVENTS {
   GET_EPISODE = "GET_EPISODE"
 }
 
+export enum PODCAST_EMMITER {
+  LIBRARY_UPDATE = "BACKGROUN_LIBRARY_UPDATED"
+}
+
 export enum PODCAST_RESPONSES {
   PODCAST = "BACKGROUND_PODCAST_RESPONSE",
   PODCASTS = "BACKGROUND_PODCASTS_RESPONSES",
@@ -105,6 +109,13 @@ export interface DeletePodcast {
   payload: {
     url: string;
   };
+}
+
+export interface LibraryUpdate {
+  action: typeof PODCAST_EMMITER.LIBRARY_UPDATE;
+  payload: {
+    library: IPodcast[]
+  }
 }
 
 export type BackgroundEventReducer = (

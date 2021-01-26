@@ -36,8 +36,9 @@ export default (props: {
   image: PodcastImage;
   inLibrary: boolean;
   subscribe: (url: string) => void;
+  unsubscribe: (url: string) => void;
 }) => {
-  const { podcast, image, inLibrary, subscribe } = props;
+  const { podcast, image, inLibrary, subscribe, unsubscribe } = props;
   const classes = useStyles();
   return (
     <div
@@ -79,7 +80,7 @@ export default (props: {
               color: getRGB(image.colors[1]),
               borderColor: getRGB(image.colors[1]),
             }}
-            onClick={() => console.log('remove me!')}
+            onClick={() => unsubscribe(podcast.url)}
             variant="outlined"
           >
             Unsubscribe

@@ -19,6 +19,8 @@ import {
   ClearEpisode,
   GetEpisodeReponse,
   GetEpisode,
+  PODCAST_EMMITER,
+  LibraryUpdate,
 } from "./types";
 
 export const messageBackgroundAction = (
@@ -101,3 +103,24 @@ export const deletePodcast = (url: string): DeletePodcast => ({
     url,
   },
 });
+
+
+export const emitLibraryUpdate = (library: IPodcast[]): LibraryUpdate => ({
+  action: PODCAST_EMMITER.LIBRARY_UPDATE,
+  payload: {
+    library
+  }
+})
+
+export const listenerLibraryUpdate = (CB: (library: IPodcast[]) => void ) => {
+  chrome.runtime.onMessage.addListener((message: LibraryUpdate) => {
+    if(message.action === PODCAST_EMMITER.LIBRARY_UPDATE){
+      CB(message.payload.library);
+    }
+  });
+}
+
+export const messagePodcastEmission = (
+  message: LibraryUpdate,
+  callback?: ReducerRensposeFn
+) => chrome.runtime.sendMessage(message, callback);

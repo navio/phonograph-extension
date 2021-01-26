@@ -7,7 +7,7 @@ import Top from "./Top";
 import List from "./List";
 import Header from "../Header";
 import engine from "podcastsuite";
-import { getPodcast, messageBackgroundAction } from "background/actions";
+import { deletePodcast, getPodcast, messageBackgroundAction } from "background/actions";
 import { GetPodcastResponse } from "background/types";
 import { podcasts } from "background/config";
 
@@ -51,13 +51,19 @@ export default () => {
     }
   }, [podcast]);
 
-  const subscribePodcast = (url) => {
+  const subscribePodcast = (url: string) => {
     messageBackgroundAction(
       getPodcast(url, true),
       (response: GetPodcastResponse) => {
         setInLibrary(true);
       }
     );
+  }
+
+  const unsubscribePodcast = (url: string) => {
+    messageBackgroundAction(deletePodcast(url), () => {
+
+    });
   }
 
   return podcast && image ? (
@@ -68,6 +74,7 @@ export default () => {
         image={image}
         inLibrary={inLibrary}
         subscribe={subscribePodcast}
+        unsubscribe={unsubscribePodcast}
       />
       <List podcast={podcast} image={image} />
     </>

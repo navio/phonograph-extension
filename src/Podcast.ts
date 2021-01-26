@@ -15,5 +15,9 @@ export default class extends PodcastSuite {
     this.getPodcasts();
     return this.library;
   }
+
+  deletePodcast(podcast: string){
+    PodcastSuite.db.del(podcast)
+  }
   
 }

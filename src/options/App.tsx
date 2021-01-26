@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import {
   messageBackgroundAction,
   initializeOptions,
+  listenerLibraryUpdate,
 } from "../background/actions";
 import { InitializeOptionsResponse } from "./types";
 
@@ -26,6 +27,8 @@ export default () => {
         setEpisode(episode);
       }
     );
+
+    listenerLibraryUpdate((library) => setCollection(library));
 
     playingEmissionListener((message) => {
       const { media, state } = message.payload;
