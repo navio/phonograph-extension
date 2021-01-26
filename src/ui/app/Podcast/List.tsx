@@ -119,7 +119,7 @@ export default function EpisodeList(props: {
           </>
         ))}
       </List>
-      <Button
+     { podcast.items.length < EpisodeList.length && <Button
         onClick={() => setAmount(amount + 1)}
         variant="outlined"
         style={{ margin: "1rem auto", width: "80%" }}
@@ -128,7 +128,7 @@ export default function EpisodeList(props: {
       >
         {" "}
         Load More Episodes{" "}
-      </Button>
+      </Button>}
     </div>
   );
 }

@@ -42,7 +42,7 @@ export default () => {
       );
     }
   }, [PodcastURL, collection]);
-
+  
   useEffect(() => {
     if (podcast) {
       imageFetcher(podcast.image).then((media) => {
