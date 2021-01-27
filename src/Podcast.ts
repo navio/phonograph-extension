@@ -2,6 +2,7 @@ import PodcastSuite from "podcastsuite";
 import { IPodcast, IPodcastSuiteConfig } from "podcastsuite/dist/PodcastSuite";
 
 export type ILibrary = Map<string, IPodcast>;
+export type ISimplePodcast = Omit<IPodcast, "items">
 
 export default class extends PodcastSuite {
   private library: ILibrary = new Map<string, IPodcast>();
