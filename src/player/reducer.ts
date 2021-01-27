@@ -40,7 +40,7 @@ export default (
         const { episode } = message.payload;
         const currentEpisode = state.getEpisode();
 
-        if (episode.guid === currentEpisode.guid) {
+        if (currentEpisode && episode.guid === currentEpisode.guid) {
           audioElement
             .play()
             .then(() => sendResponse(Emitters.playing(player.state, episode)));
