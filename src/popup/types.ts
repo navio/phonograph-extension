@@ -1,4 +1,4 @@
-import { AudioState } from "player/audio";
+import { AudioState } from "src/Audio";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { MessageResponse } from "../types";
 

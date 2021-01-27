@@ -23,7 +23,7 @@ import { getRGBA, IColor } from "ui/utils/color";
 
 import { messagePlayerAction, Triggers } from "player/actions";
 import { AppContext } from "../index";
-import { AudioState } from "player/audio";
+import { AudioState } from "src/Audio";
 import AudioButton from "ui/common/AudioButton";
 
 const useStyles = makeStyles((theme: Theme) =>

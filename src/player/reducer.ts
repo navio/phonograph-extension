@@ -1,5 +1,5 @@
 import { AudioEventsReducer, PLAYER_EVENTS, AudioState } from "./types";
-import AudioElement from "./audio";
+import AudioElement from "../Audio";
 import ApplicationState from "../State";
 import { Emitters, messagePlayerEmission } from "./actions";
 import Podcast from "../Podcast";

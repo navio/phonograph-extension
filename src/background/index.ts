@@ -3,7 +3,7 @@ import initPlayer from "player/reducer";
 import Engine from "../Podcast";
 import ApplicationState from "../State";
 import { podcasts } from "./config";
-import AudioElement from "player/audio";
+import AudioElement from "../Audio";
 
 chrome.browserAction.setTitle({ title: "The Phonograph Extension" });
 chrome.browserAction.setPopup({ popup: "popup.html" });

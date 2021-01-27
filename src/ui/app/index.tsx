@@ -6,7 +6,7 @@ import Podcast from "./Podcast";
 
 import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { IEpisode } from "podcastsuite/dist/Format";
-import { AudioState } from "player/audio";
+import { AudioState } from "src/Audio";
 
 export type IPodcast = IPodcastSuitePodcast;
 

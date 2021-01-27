@@ -17,7 +17,7 @@ import {
 } from "./actions";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import { IEpisodeState } from "../State";
-import AudioElement from "player/audio";
+import AudioElement from "src/Audio";
 import { podcasts } from "./config";
 
 const background = (
