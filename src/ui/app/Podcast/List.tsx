@@ -9,8 +9,6 @@ import { IPodcast } from "..";
 
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
-import PlayIcon from "@material-ui/icons/PlayArrow";
-import PauseIcon from "@material-ui/icons/PauseOutlined";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 import Button from "@material-ui/core/Button";
@@ -19,11 +17,8 @@ import Chip from "@material-ui/core/Chip";
 import { clearText, dateFrom } from "ui/utils/stringsTools";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { PodcastImage } from "ui/utils/imageSaver";
-import { getRGBA, IColor } from "ui/utils/color";
 
-import { messagePlayerAction, Triggers } from "player/actions";
 import { AppContext } from "../index";
-import { AudioState } from "src/Audio";
 import AudioButton from "ui/common/AudioButton";
 
 const useStyles = makeStyles((theme: Theme) =>

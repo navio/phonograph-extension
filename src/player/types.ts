@@ -93,6 +93,7 @@ export interface LoadAudio {
   action: typeof PLAYER_EVENTS.LOAD;
   payload: {
     episode: IEpisode;
+    podcast?: string;
   };
 }
 export interface PlayAudio {

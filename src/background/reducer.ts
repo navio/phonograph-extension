@@ -28,14 +28,15 @@ const background = (
   const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
     switch (message.action) {
       case PODCAST_EVENTS.SET_EPISODE: {
-        const { episode, time } = message.payload;
+        const { episode, time, url } = message.payload;
         const episodeState: IEpisodeState = { ...episode, time };
-        state.setEpisode(episodeState);
+        const podcastObject = url ? engine.getPodcast(url) : undefined;
+        state.setEpisode(episodeState, podcastObject);
         return true;
       }
 
       case PODCAST_EVENTS.REMOVE_EPISODE: {
-        state.setEpisode(undefined);
+        state.clearEpisode();
         return true;
       }
 

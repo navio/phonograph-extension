@@ -57,9 +57,9 @@ export const progress = (percentage: number): AudioProgress => ({
   },
 });
 
-export const load = (episode: IEpisode): LoadAudio => ({
+export const load = (episode: IEpisode, podcast?: string): LoadAudio => ({
   action: PLAYER_EVENTS.LOAD,
-  payload: { episode },
+  payload: { episode, podcast },
 });
 
 export const play = (): PlayAudio => ({

@@ -74,11 +74,12 @@ export const getPodcast = (url: string, save: boolean = false): GetPodcast => ({
   },
 });
 
-export const setEpisode = (episode: IEpisode, time: number): SetEpisode => ({
+export const setEpisode = (episode: IEpisode, time: number, url?: string): SetEpisode => ({
   action: PODCAST_EVENTS.SET_EPISODE,
   payload: {
     episode,
     time: time || 0,
+    url
   },
 });
 

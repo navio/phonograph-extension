@@ -6,7 +6,6 @@ import { IColor } from "ui/utils/color";
 import FetchImage, { PodcastImage } from "ui/utils/imageSaver";
 import Podcast, { ISimplePodcast } from "./Podcast";
 
-
 const CURRENT_EPISODE = "current_episode";
 const CURRENT_PODCAST_INFO = "current_podcast_info";
 const CURRENT_PODCAST_IMAGE = "current_podcast_image";
@@ -15,29 +14,27 @@ export interface IEpisodeState extends IEpisode {
   time: number;
 }
 
-
 export default class ApplicationState {
-
-  fetchSimplePodcast( podcast: IPodcast){
-    const {items, ...simplepodcast} = podcast;
-    FetchImage(simplepodcast.image).then(data => {
+  fetchSimplePodcast(podcast: IPodcast) {
+    const { items, ...simplepodcast } = podcast;
+    FetchImage(simplepodcast.image).then((data) => {
       this.setPodcast(simplepodcast, data);
     });
   }
-  
-  setPodcast(podcastInfo: ISimplePodcast, podcastImage: PodcastImage){
+
+  setPodcast(podcastInfo: ISimplePodcast, podcastImage: PodcastImage) {
     localStorage.setItem(CURRENT_PODCAST_INFO, JSON.stringify(podcastInfo));
     localStorage.setItem(CURRENT_PODCAST_IMAGE, JSON.stringify(podcastImage));
     return true;
   }
 
-  clearPodcast(){
-    localStorage.removeItem(CURRENT_PODCAST_INFO)
+  clearPodcast() {
+    localStorage.removeItem(CURRENT_PODCAST_INFO);
     localStorage.removeItem(CURRENT_PODCAST_IMAGE);
     return true;
   }
 
-  getSimplePodcast(): ISimplePodcast | undefined{
+  getSimplePodcast(): ISimplePodcast | undefined {
     const storedCurrent: string = localStorage.getItem(CURRENT_PODCAST_INFO);
     if (storedCurrent) {
       const currentObj: ISimplePodcast = JSON.parse(storedCurrent);
@@ -46,7 +43,7 @@ export default class ApplicationState {
     return;
   }
 
-  getPodcastImage(): PodcastImage | undefined{
+  getPodcastImage(): PodcastImage | undefined {
     const storedCurrent: string = localStorage.getItem(CURRENT_PODCAST_IMAGE);
     if (storedCurrent) {
       const currentObj: PodcastImage = JSON.parse(storedCurrent);
@@ -54,11 +51,16 @@ export default class ApplicationState {
     }
     return;
   }
-    
-  setEpisode(episode: IEpisodeState, podcast?: IPodcast) {
+
+  clearEpisode() {
+    localStorage.deleteItem(CURRENT_EPISODE);
+    return true;
+  }
+
+  setEpisode(episode: IEpisodeState, podcastPromise?: Promise<IPodcast>) {
     localStorage.setItem(CURRENT_EPISODE, JSON.stringify(episode));
-    if(podcast){
-      this.fetchSimplePodcast(podcast);
+    if (podcastPromise) {
+      podcastPromise.then((podcast) => this.fetchSimplePodcast(podcast));
     }
     return true;
   }

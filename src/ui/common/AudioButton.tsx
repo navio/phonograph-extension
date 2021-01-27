@@ -40,13 +40,16 @@ export default (props: {
   currentEpisode: IEpisode;
   audioState: AudioState;
 }) => {
+  
   const classes = useStyles();
   const { color = [0,0,0], episode, currentEpisode, audioState } = props;
   const playing = audioState ? audioState.playing : false;
-
   const isPlaying =
-    currentEpisode && episode.guid === currentEpisode.guid && playing;
-
+    currentEpisode && episode.guid === currentEpisode.guid;
+    if(isPlaying){
+      console.log(audioState)
+    }
+    
   return (
     <IconButton
       onClick={() => {

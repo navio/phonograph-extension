@@ -96,7 +96,8 @@ export interface SetEpisode {
   action: typeof PODCAST_EVENTS.SET_EPISODE;
   payload: {
     episode: IEpisode,
-    time?: number
+    time?: number,
+    url? : string,
   }
 }
 
