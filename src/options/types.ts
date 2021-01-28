@@ -1,3 +1,4 @@
+import { AudioState } from "player/types";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import { MessageResponse } from "../types";
@@ -11,6 +12,7 @@ export interface InitializeOptionsResponse extends MessageResponse {
   payload: {
     library: IPodcast[];
     episode: IEpisode;
+    state: AudioState;
   };
 }
 

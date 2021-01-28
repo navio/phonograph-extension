@@ -22,8 +22,9 @@ export default () => {
     messageBackgroundAction(
       initializeOptions("Init Whole APP"),
       (response: InitializeOptionsResponse) => {
-        const { library, episode } = response.payload;
+        const { library, episode, state } = response.payload;
         setCollection(library);
+        setPlayerState(state);
         setEpisode(episode);
       }
     );

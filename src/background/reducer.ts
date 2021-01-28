@@ -83,7 +83,8 @@ const background = (
         engine.getPodcasts().then((library) => {
           const episode = state.getEpisode();
           const time = episode ? episode.time : 0;
-          sendResponse(initializeOptionsResponse(library, episode));
+          const playerstate = player.state;
+          sendResponse(initializeOptionsResponse(library, playerstate, episode));
         });
         return true;
       }
