@@ -1,6 +1,6 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
-
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   mode: "production",
@@ -9,6 +9,14 @@ module.exports = {
     content: './src/content.ts',
     popup: `./src/popup`,
     options: `./src/options`
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+      }),
+    ],
   },
   // devtool: 'none',
   resolve: {

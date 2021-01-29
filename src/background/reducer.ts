@@ -15,7 +15,6 @@ import {
   emitLibraryUpdate,
   messagePodcastEmission,
 } from "./actions";
-import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import { IEpisodeState } from "../State";
 import AudioElement from "src/Audio";
 import { podcasts } from "./config";
@@ -74,7 +73,9 @@ const background = (
 
       case BACKGROUND_EVENTS.INIT_POPUP: {
         const audioState = player.state;
-        sendResponse(initializeResponsePopUp(state.getEpisode(), audioState));
+        const podcastImage = state.getPodcastImage();
+        const podcastInfo = state.getSimplePodcast();
+        sendResponse(initializeResponsePopUp(state.getEpisode(), audioState, podcastInfo, podcastImage ));
 
         return true;
       }

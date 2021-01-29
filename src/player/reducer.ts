@@ -37,7 +37,7 @@ export default (
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
       case PLAYER_EVENTS.LOAD:
-        const { episode, podcast } = message.payload;
+        const { episode, podcast: podcastURL } = message.payload;
         const currentEpisode = state.getEpisode();
 
         if (currentEpisode && episode.guid === currentEpisode.guid) {
@@ -48,7 +48,7 @@ export default (
         }
 
         const newEpisode = { ...episode, time: 0 };
-        state.setEpisode(newEpisode, engine.getPodcast(podcast));
+        state.setEpisode(newEpisode, engine.getPodcast(podcastURL));
         const url =
           typeof episode.media === "string" ? episode.media : episode.media.url;
 

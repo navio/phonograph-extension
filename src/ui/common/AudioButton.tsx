@@ -28,8 +28,8 @@ const pauseAudio = () =>
     // console.log(response);
   });
 
-const playAudio = (episode: IEpisode) => {
-  messagePlayerAction(Triggers.load(episode), (response) => {
+const playAudio = (episode: IEpisode, podcastURL?: string) => {
+  messagePlayerAction(Triggers.load(episode, podcastURL), (response) => {
     // console.log(response);
   });
 };
@@ -39,10 +39,11 @@ export default (props: {
   episode: IEpisode;
   currentEpisode: IEpisode;
   audioState: AudioState;
+  podcastURL?: string;
 }) => {
   
   const classes = useStyles();
-  const { color = [0,0,0], episode, currentEpisode, audioState } = props;
+  const { color = [0,0,0], episode, currentEpisode, audioState, podcastURL } = props;
   const playing = audioState ? audioState.playing : false;
   const isPlaying =
     currentEpisode && episode.guid === currentEpisode.guid;
@@ -56,7 +57,7 @@ export default (props: {
         if (isPlaying) {
           pauseAudio();
         } else {
-          playAudio(episode);
+          playAudio(episode, podcastURL);
         }
       }}
     >

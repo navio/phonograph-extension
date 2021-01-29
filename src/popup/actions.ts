@@ -4,11 +4,15 @@ import {
     POPUP_EVENTS,
     InitializePopUpResponse,
   } from "./types";
+import { ISimplePodcast } from "src/Podcast";
+import { PodcastImage } from "ui/utils/imageSaver";
 
   export const initializeResponsePopUp = (
     episode: IEpisode,
-    state: AudioState
+    state: AudioState,
+    podcast?: ISimplePodcast,
+    podcastImage?: PodcastImage
   ): InitializePopUpResponse => ({
     action: POPUP_EVENTS.INITIALIZATION,
-    payload: { episode, state },
+    payload: { episode, state, podcast, podcastImage },
   });

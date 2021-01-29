@@ -104,6 +104,7 @@ export default function EpisodeList(props: {
                 audioState={audioState}
                 currentEpisode={selectedEpisode}
                 episode={episode}
+                podcastURL={podcast.url}
               />
               <EpisodeListDescription episode={episode} />
               <ListItemSecondaryAction>

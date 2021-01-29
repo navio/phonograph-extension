@@ -5,18 +5,23 @@ import { InitializePopUpResponse } from "./types";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { AudioState } from "player/types";
 import PopUp from 'ui/mini';
+import { ISimplePodcast } from "src/Podcast";
+import { PodcastImage } from "ui/utils/imageSaver";
 
 const App = () => {
   const [episode, setEpisode] = useState<IEpisode>();
   const [playerState, setPlayerState] = useState<AudioState>();
+  const [podcast, setPodcast] = useState<ISimplePodcast>();
+  const [media, setMedia] = useState<PodcastImage>();
   useEffect(() => {
     messageBackgroundAction(
       initializePopUp(),
       (response: InitializePopUpResponse) => {
-        const { episode, state } = response.payload;
+        const { episode, state, podcast, podcastImage } = response.payload;
         setEpisode(episode);
         setPlayerState(state);
-        console.log(state);
+        setPodcast(podcast);
+        setMedia(podcastImage);
       }
     );
   }, []);
@@ -31,10 +36,9 @@ const App = () => {
     const { state, media } = message.payload;
     setPlayerState(state);
     setEpisode(media);
-
   })
 
-  return <PopUp episode={episode} audioState={playerState} /> ;
+  return <PopUp episode={episode} audioState={playerState} podcast={podcast} media={media} /> ;
 };
 
 export default App;
