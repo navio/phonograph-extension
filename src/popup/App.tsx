@@ -25,7 +25,6 @@ const App = () => {
       }
     );
   }, []);
-
   playingEmissionListener((message) => {
     const { media, state } = message.payload;
     setPlayerState(state);
@@ -42,3 +41,4 @@ const App = () => {
 };
 
 export default App;
+

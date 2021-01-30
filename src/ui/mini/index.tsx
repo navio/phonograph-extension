@@ -26,11 +26,14 @@ interface PopUpProps {
 export default (props: PopUpProps) => {
   const classes = useStyles();
   const { episode, audioState, podcast, media } = props;
+  console.log(episode, audioState, podcast, media);
   return (
-      episode && <Card title={episode.title} name={podcast && podcast.title} image={media && media.src}  />
+    (episode && audioState && podcast && media) ? 
+      <Card title={episode.title} name={podcast && podcast.title} image={media && media.src}  /> :
+      <>Loading</>
   );
 };
-
+// 
 
 {/* <span>{podcast && podcast.title}</span>
 <AudioButton
