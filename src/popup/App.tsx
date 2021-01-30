@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { messageBackgroundAction, initializePopUp } from "background/actions";
-import { messagePlayerAction, pauseEmissionListener, playingEmissionListener, Triggers } from "player/actions";
+import { endEmissionListener, messagePlayerAction, pauseEmissionListener, playingEmissionListener, Triggers } from "player/actions";
 import { InitializePopUpResponse } from "./types";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { AudioState } from "player/types";
@@ -18,6 +18,7 @@ const App = () => {
       initializePopUp(),
       (response: InitializePopUpResponse) => {
         const { episode, state, podcast, podcastImage } = response.payload;
+        console.log(state);
         setEpisode(episode);
         setPlayerState(state);
         setPodcast(podcast);
@@ -25,14 +26,22 @@ const App = () => {
       }
     );
   }, []);
+
+  endEmissionListener((message) => {
+    const { state } = message.payload;
+    setPlayerState(state);
+  })
+
   playingEmissionListener((message) => {
     const { media, state } = message.payload;
+    console.log(state);
     setPlayerState(state);
     setEpisode(media);
   });
 
   pauseEmissionListener((message) => {
     const { state, media } = message.payload;
+    console.log(state);
     setPlayerState(state);
     setEpisode(media);
   })

@@ -67,6 +67,9 @@ export interface AudioPaused extends MessageResponse {
 
 export interface AudioEnded extends MessageResponse {
   action: PLAYER_EMITIONS.ended;
+  payload: {
+    state: AudioState;
+  }
 }
 
 export interface AudioCanPlayThrough extends MessageResponse {

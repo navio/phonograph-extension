@@ -28,9 +28,9 @@ export const loaded = (): AudioLoaded => ({
   action: PLAYER_EMITIONS.loadeddata,
 });
 
-export const canPlay = (audioState: AudioState): AudioCanPlay => ({
+export const canPlay = (state: AudioState): AudioCanPlay => ({
   action: PLAYER_EMITIONS.canplay,
-  payload: audioState,
+  payload: { state },
 });
 
 export const playing = (
@@ -41,13 +41,17 @@ export const playing = (
   payload: { state, media },
 });
 
-export const paused = (state: AudioState, media: PlayableMedia): AudioPaused => ({
+export const paused = (
+  state: AudioState,
+  media: PlayableMedia
+): AudioPaused => ({
   action: PLAYER_EMITIONS.paused,
   payload: { state, media },
 });
 
-export const ended = (): AudioEnded => ({
+export const ended = (state: AudioState): AudioEnded => ({
   action: PLAYER_EMITIONS.ended,
+  payload: { state },
 });
 
 export const progress = (percentage: number): AudioProgress => ({
@@ -115,8 +119,6 @@ export const messagePlayerEmission = (
   callback?: ReducerRensposeFn
 ) => chrome.runtime.sendMessage(action, callback);
 
-
-
 export const playingEmissionListener = (
   callback: (message: AudioPlaying) => void
 ) => {
@@ -137,7 +139,6 @@ export const pauseEmissionListener = (
   });
 };
 
-
 export const endEmissionListener = (
   callback: (message: AudioEnded) => void
 ) => {
@@ -148,13 +149,13 @@ export const endEmissionListener = (
   });
 };
 
-
 export const Emitters = {
   loaded,
   canPlay,
   playing,
   paused,
   progress,
+  ended,
 };
 
 export default {

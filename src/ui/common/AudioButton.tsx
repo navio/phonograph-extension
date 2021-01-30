@@ -46,10 +46,7 @@ export default (props: {
   const { color = [0,0,0], episode, currentEpisode, audioState, podcastURL } = props;
   const playing = audioState ? audioState.playing : false;
   const isPlaying =
-    currentEpisode && episode.guid === currentEpisode.guid;
-    if(isPlaying){
-      console.log(audioState)
-    }
+    currentEpisode && episode.guid === currentEpisode.guid && playing;
     
   return (
     <IconButton

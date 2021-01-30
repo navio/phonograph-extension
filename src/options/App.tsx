@@ -9,7 +9,7 @@ import { InitializeOptionsResponse } from "./types";
 
 import App from "ui/app";
 import { IEpisode } from "podcastsuite/dist/Format";
-import { pauseEmissionListener, playingEmissionListener } from "player/actions";
+import { endEmissionListener, pauseEmissionListener, playingEmissionListener } from "player/actions";
 import { AudioState } from "player/types";
 
 
@@ -23,6 +23,7 @@ export default () => {
       initializeOptions("Init Whole APP"),
       (response: InitializeOptionsResponse) => {
         const { library, episode, state } = response.payload;
+        console.log(state);
         setCollection(library);
         setPlayerState(state);
         setEpisode(episode);
@@ -30,6 +31,11 @@ export default () => {
     );
 
     listenerLibraryUpdate((library) => setCollection(library));
+    
+    endEmissionListener((message) => {
+      const { state } = message.payload;
+      setPlayerState(state);
+    })
 
     playingEmissionListener((message) => {
       const { media, state } = message.payload;

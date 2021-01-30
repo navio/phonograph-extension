@@ -13,7 +13,6 @@ export interface AudioState {
 
 export default class AudioElement extends Audio {
   public audioElement: HTMLAudioElement;
-  public status: boolean = false;
 
   public getOvewritres: Map<IProperty, IGetOverwritesFn>;
   public setOvewritres: Map<IProperty, ISetOverwritesFn>;
@@ -35,15 +34,6 @@ export default class AudioElement extends Audio {
     } else {
       this.audioElement = audioElement;
     }
-    this.audioElement.addEventListener('play', () => {
-      this.status = true;
-    })
-    this.audioElement.addEventListener('paused', () => {
-      this.status = false;
-    })
-    this.audioElement.addEventListener('ended', () => {
-      this.status = false;
-    })
     // return this.generateProxy();
   }
 
@@ -75,7 +65,7 @@ export default class AudioElement extends Audio {
       duration: this.audioElement.duration,
       currentTime: this.audioElement.currentTime,
       ended: this.audioElement.ended,
-      playing: this.status
+      playing: !this.audioElement.paused
     };
     return this.audioState;
   }

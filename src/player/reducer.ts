@@ -31,7 +31,7 @@ export default (
     messagePlayerEmission(Emitters.canPlay(player.state))
   );
   audioElement.addEventListener("ended", () =>
-    messagePlayerEmission(Emitters.canPlay(player.state))
+    messagePlayerEmission(Emitters.ended(player.state))
   );
 
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
@@ -69,7 +69,6 @@ export default (
           Emitters.paused(
             {
               ...player.state,
-              playing: false,
             },
             state.getEpisode()
           )

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactComponentElement } from 'react';
 import { Theme, createStyles, makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
+import background from 'background/reducer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,18 +18,26 @@ const useStyles = makeStyles((theme: Theme) =>
     details: {
       display: 'flex',
       flexDirection: 'column',
+      width: '235px'
     },
     content: {
       flex: '1 0 auto',
+      padding: '.5rem',
+      paddingBottom: 0
     },
     cover: {
       width: 151,
+      height: 151
     },
     controls: {
       display: 'flex',
       alignItems: 'center',
-      paddingLeft: theme.spacing(1),
+      margin: '0 auto',
       paddingBottom: theme.spacing(1),
+    },
+    titleName: {
+      height: 50,
+      overflowY: 'hidden'
     },
     playIcon: {
       height: 38,
@@ -41,32 +50,30 @@ interface PlayerCardProps{
     title: string;
     name: string;
     image: string;
+    PlayerButton: JSX.Element
+    background?: string;
 }
 
-export default ({title, name, image} : PlayerCardProps) => {
+export default ({title, name, image, PlayerButton} : PlayerCardProps, background = '000') => {
   const classes = useStyles();
-  const theme = useTheme();
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} raised>
       <div className={classes.details}>
         <CardContent className={classes.content}>
-          <Typography component="h5" variant="h5">
+          <Typography className={classes.titleName} align="center" component="h1" variant="body1">
            {title}
           </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
+          <Typography noWrap variant="body1" align="center" color="textSecondary">
             {name}
           </Typography>
         </CardContent>
         <div className={classes.controls}>
           <IconButton aria-label="previous">
-            {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
+            <SkipPreviousIcon />
           </IconButton>
-          <IconButton aria-label="play/pause">
-            <PlayArrowIcon className={classes.playIcon} />
-          </IconButton>
-          <IconButton aria-label="next">
-            {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
+          { PlayerButton}
+          <IconButton aria-label="next"><SkipNextIcon />
           </IconButton>
         </div>
       </div>
