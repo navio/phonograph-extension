@@ -21,6 +21,7 @@ import {
   GetEpisode,
   PODCAST_EMMITER,
   LibraryUpdate,
+  OpenOptionsEvent,
 } from "./types";
 
 export const messageBackgroundAction = (
@@ -104,6 +105,10 @@ export const deletePodcast = (url: string): DeletePodcast => ({
     url,
   },
 });
+
+export const openOptionsPage = (podcast?: string ): OpenOptionsEvent => {
+  return { action: BACKGROUND_EVENTS.OPEN_OPTIONS, payload: { podcast } }
+}
 
 
 export const emitLibraryUpdate = (library: IPodcast[]): LibraryUpdate => ({

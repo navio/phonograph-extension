@@ -17,7 +17,6 @@ export interface IEpisodeState extends IEpisode {
 export default class ApplicationState {
   fetchSimplePodcast(podcast: IPodcast) {
     const { items, ...simplepodcast } = podcast;
-    console.log('Secreto');
     FetchImage(simplepodcast.image).then((data) => {
       this.setPodcast(simplepodcast, data);
     });
@@ -59,6 +58,7 @@ export default class ApplicationState {
   }
 
   setEpisode(episode: IEpisodeState, podcastPromise?: Promise<IPodcast>) {
+    this.clearPodcast();
     localStorage.setItem(CURRENT_EPISODE, JSON.stringify(episode));
     if (podcastPromise) {
       podcastPromise.then((podcast) => this.fetchSimplePodcast(podcast));

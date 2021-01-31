@@ -23,7 +23,6 @@ export default () => {
       initializeOptions("Init Whole APP"),
       (response: InitializeOptionsResponse) => {
         const { library, episode, state } = response.payload;
-        console.log(state);
         setCollection(library);
         setPlayerState(state);
         setEpisode(episode);

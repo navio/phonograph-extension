@@ -90,6 +90,15 @@ const background = (
         return true;
       }
 
+      case  BACKGROUND_EVENTS.OPEN_OPTIONS: {
+        const { podcast } = message.payload;
+        let url = '';
+        if (podcast) {
+          url = 'podcast/'+ podcast;
+        }
+        chrome.tabs.create({ 'url': `chrome-extension://${chrome.runtime.id}/options.html#/${url}` });
+      }
+
       case PODCAST_EVENTS.GET_PODCASTS: {
         engine.getPodcasts().then((library) => {
           sendResponse(getPodcastsReponse(library));

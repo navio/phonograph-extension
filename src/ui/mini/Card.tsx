@@ -6,19 +6,23 @@ import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
-import background from 'background/reducer';
+
+import { messageBackgroundAction, openOptionsPage } from 'background/actions';
+import { contrastColor, getRGB, getRGBA } from 'ui/utils/color';
+import { PodcastImage } from 'ui/utils/imageSaver';
+const openOptions = () => messageBackgroundAction(openOptionsPage(),() => {});
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
+      height: 152
     },
     details: {
       display: 'flex',
       flexDirection: 'column',
-      width: '235px'
+      width: 235
     },
     content: {
       flex: '1 0 auto',
@@ -33,10 +37,11 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       margin: '0 auto',
-      paddingBottom: theme.spacing(1),
+      // paddingBottom: theme.spacing(1),
     },
     titleName: {
-      height: 50,
+      minHeight: 35,
+      maxHeight: 50,
       overflowY: 'hidden'
     },
     playIcon: {
@@ -51,17 +56,20 @@ interface PlayerCardProps{
     name: string;
     image: string;
     PlayerButton: JSX.Element
-    background?: string;
+    background?: PodcastImage;
+    imageClick: () => void;
 }
 
-export default ({title, name, image, PlayerButton} : PlayerCardProps, background = '000') => {
-  const classes = useStyles();
 
+export default ({title, name, image, PlayerButton, imageClick, background } : PlayerCardProps) => {
+  const classes = useStyles();
+  console.log(background);
   return (
-    <Card className={classes.root} raised>
+    <div className={classes.root} style={{backgroundColor: background ? getRGBA(background.colors[3]) : 'white' }} >
       <div className={classes.details}>
         <CardContent className={classes.content}>
-          <Typography className={classes.titleName} align="center" component="h1" variant="body1">
+          <Typography className={classes.titleName} style={{'color':contrastColor(background.colors[3])}} 
+            align="center" component="h1" variant="body1">
            {title}
           </Typography>
           <Typography noWrap variant="body1" align="center" color="textSecondary">
@@ -78,10 +86,11 @@ export default ({title, name, image, PlayerButton} : PlayerCardProps, background
         </div>
       </div>
       <CardMedia
+        onClick={() => imageClick()}
         className={classes.cover}
         image={image}
         title={name}
       />
-    </Card>
+    </div>
   );
 }

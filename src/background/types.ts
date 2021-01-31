@@ -7,6 +7,7 @@ export { ReducerRensposeFn };
 export enum BACKGROUND_EVENTS {
   INIT_POPUP = "BACKGROUND_INIT_POPUP",
   INIT_OPTIONS = "BACKGROUND_INIT_OPTIONS",
+  OPEN_OPTIONS = "BACKGROUND_OPEN_OPTIONS"
 }
 
 export enum PODCAST_EVENTS {
@@ -76,6 +77,13 @@ export interface InitializeOptions {
   };
 }
 
+export interface OpenOptionsEvent {
+  action: typeof BACKGROUND_EVENTS.OPEN_OPTIONS;
+  payload: {
+    podcast?: string;
+  }
+}
+
 export interface GetEpisode {
   action: typeof PODCAST_EVENTS.GET_EPISODE
 }
@@ -128,6 +136,7 @@ export type BackgroundEventReducer = (
 export type BackgroundActions =
   | InitializePopUp
   | InitializeOptions
+  | OpenOptionsEvent
   | SetEpisode
   | ClearEpisode
   | GetEpisode
