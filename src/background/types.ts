@@ -2,7 +2,7 @@ import { IEpisode } from "podcastsuite/dist/Format";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import { MessageResponse, ReducerRensposeFn } from "../types";
 
-export { ReducerRensposeFn };
+// export { ReducerRensposeFn };
 
 export enum BACKGROUND_EVENTS {
   INIT_POPUP = "BACKGROUND_INIT_POPUP",

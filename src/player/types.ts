@@ -1,8 +1,8 @@
-import { ReducerRensposeFn } from "background/types";
+import { ReducerRensposeFn } from "../types";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { MessageResponse } from "../types";
 
-export { ReducerRensposeFn };
+// export { ReducerRensposeFn };
 
 export interface AudioState {
   currentTime: number;
