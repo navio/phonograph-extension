@@ -1,5 +1,5 @@
 
-import { BACKGROUND_EVENTS,BACKGROUND_RESPONSES, PODCAST_RESPONSES,   BackgroundActions } from "background/types";
+import { BACKGROUND_EVENTS,BACKGROUND_RESPONSES, PODCAST_RESPONSES, BackgroundActions } from "background/types";
 import { POPUP_EVENTS, PopUpActions } from "popup/types";
 import { OPTIONS_EVENTS, OptionsActions } from "options/types";
 import { PLAYER_EMITIONS } from "player/types";

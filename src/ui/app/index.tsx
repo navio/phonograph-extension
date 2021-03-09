@@ -27,6 +27,7 @@ export interface IAppProps {
 
 export default function App(props: IAppProps) {
   const { collection, episode, audioState } = props;
+  
   return (
     <AppContext.Provider value={{ collection, episode, audioState }}>
       <Router>

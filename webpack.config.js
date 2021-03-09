@@ -7,10 +7,15 @@ module.exports = {
   entry: {
     background: './src/background',
     content: './src/content.ts',
-    popup: `./src/popup`,
-    options: `./src/options`
+    popup: { import: `./src/popup`, dependOn: ['react', 'materialUI']},
+    options: {import: `./src/options`, dependOn: ['react', 'materialUI']},
+    react: 'react',
+    materialUI: '@material-ui/core'
   },
   optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
     minimize: true,
     minimizer: [
       new ESBuildMinifyPlugin()
