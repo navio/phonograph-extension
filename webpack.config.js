@@ -1,6 +1,6 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
+const { ESBuildPlugin, ESBuildMinifyPlugin } = require('esbuild-loader');
 
 module.exports = {
   mode: "production",
@@ -13,10 +13,8 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new TerserPlugin({
-        parallel: true,
-      }),
-    ],
+      new ESBuildMinifyPlugin()
+    ]
   },
   // devtool: 'none',
   resolve: {
@@ -39,9 +37,11 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
+        test: /\.ts(x?)$/,
+        loader: 'esbuild-loader',
+        options: {
+          loader: 'tsx',
+        }
       },
     ],
   },
@@ -51,6 +51,7 @@ module.exports = {
         { from: 'assets' },
       ],
     }),
+    new ESBuildPlugin()
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
