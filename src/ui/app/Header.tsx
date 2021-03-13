@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: theme.transitions.create("width"),
       width: "100%",
       [theme.breakpoints.up("sm")]: {
-        width: "12ch",
+        width: "17ch",
         "&:focus": {
           width: "20ch",
         },
@@ -122,7 +122,7 @@ export default function SearchAppBar(props: {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Search for podcasts"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,

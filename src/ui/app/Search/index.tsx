@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Card from "../Discovery/Card";
+import Card from "./Card";
 import styled from "styled-components";
 import { Typography } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
@@ -25,6 +25,7 @@ interface IPodcastResult {
   trackName: string;
   feedUrl: string;
   artworkUrl100: string;
+  artworkUrl600: string;
   artistName: string;
 }
 
@@ -33,7 +34,7 @@ const searchTransformer = (data: IAPodcastsResults) => {
     const {
       trackName: title,
       feedUrl: id,
-      artworkUrl100: thumbnail,
+      artworkUrl600: thumbnail,
       artistName: description,
     } = element;
     return { title, id, thumbnail, description };
@@ -44,8 +45,7 @@ const useQuery = () => new URLSearchParams(useLocation().search);
 
 export default () => {
   const [data, setData] = useState(null);
-  const term = useQuery().get('q');
-  console.log('Search', term);
+  const term = useQuery().get('q') || 'NPR';
   
   useEffect(() => {
     fetch(`https://itunes.apple.com/search?media=podcast&limit=20&term=${term}`)
@@ -57,8 +57,8 @@ export default () => {
 
   return (
     <>
-      <Title gutterBottom variant="h3" component="h1">
-        Search
+      <Title gutterBottom variant="h4" component="h1">
+        Results for: {term}
       </Title>
       <Container>
         {data &&
