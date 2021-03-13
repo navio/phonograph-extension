@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -39,10 +39,11 @@ const useStyles = makeStyles((theme: Theme) =>
       "&:hover": {
         backgroundColor: fade(theme.palette.common.white, 0.25),
       },
+      marginRight: theme.spacing(2),
       marginLeft: 0,
       width: "100%",
       [theme.breakpoints.up("sm")]: {
-        marginLeft: theme.spacing(1),
+        marginLeft: theme.spacing(3),
         width: "auto",
       },
     },
@@ -79,6 +80,7 @@ export default function SearchAppBar(props: {
   back?: boolean;
   title?: string;
 }) {
+  const [query, setQuery] = useState<string>("");
   const classes = useStyles();
   const { media, back = false, title = "Phonograph" } = props;
   let history = useHistory();
@@ -88,6 +90,13 @@ export default function SearchAppBar(props: {
         color: contrastColor(media.colors[1]),
       }
     : {};
+
+  const searchHandler = (event) => {
+    var enterKey = 13;
+    if (event.which == enterKey) {
+      history.push(`/search?q=${query}`);
+    }
+  };
   return (
     <div className={classes.root}>
       <AppBar position="static" style={overwrite}>
@@ -127,6 +136,8 @@ export default function SearchAppBar(props: {
                       fontWeight: "bold",
                     }
               }
+              onKeyUp={searchHandler}
+              onChange={(ev) => setQuery(ev.currentTarget.value)}
               inputProps={{ "aria-label": "search" }}
             />
           </div>

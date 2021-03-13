@@ -7,7 +7,8 @@ import Podcast from "./Podcast";
 import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { AudioState } from "src/Audio";
-import Discovery from "./Discovery";
+import Disovery from './Discovery';
+import Search from "./Search";
 
 export type IPodcast = IPodcastSuitePodcast;
 
@@ -37,7 +38,11 @@ export default function App(props: IAppProps) {
           </Route>
           <Route path="/discovery">
             <Header title="Discovery" />
-            <Discovery />
+            <Disovery />
+          </Route>
+          <Route path="/search">
+            <Header title="Search" />
+            <Search />
           </Route>
           <Route path="/">
             <Header />

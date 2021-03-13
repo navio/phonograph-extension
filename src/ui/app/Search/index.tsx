@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Card from "./Card";
+import Card from "../Discovery/Card";
 import styled from "styled-components";
 import { Typography } from "@material-ui/core";
+import { useLocation } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -16,19 +17,48 @@ const Title = styled(Typography)`
   padding-top: 1rem;
 `;
 
+interface IAPodcastsResults {
+  resultCount: number;
+  results: IPodcastResult[];
+}
+interface IPodcastResult {
+  trackName: string;
+  feedUrl: string;
+  artworkUrl100: string;
+  artistName: string;
+}
+
+const searchTransformer = (data: IAPodcastsResults) => {
+  return data.results.map((element) => {
+    const {
+      trackName: title,
+      feedUrl: id,
+      artworkUrl100: thumbnail,
+      artistName: description,
+    } = element;
+    return { title, id, thumbnail, description };
+  });
+};
+
+const useQuery = () => new URLSearchParams(useLocation().search);
+
 export default () => {
   const [data, setData] = useState(null);
+  const term = useQuery().get('q');
+  console.log('Search', term);
+  
   useEffect(() => {
-    fetch("https://odd-lake-0e8b.navio.workers.dev")
+    fetch(`https://itunes.apple.com/search?media=podcast&limit=20&term=${term}`)
       .then((response) => response.json())
-      .then((response) => response["podcasts"])
+      .then((response) => searchTransformer(response))
       .then(setData);
   }, []);
-  const podcastRSS = (id:string) => btoa(`https://www.listennotes.com/c/r/${id}`);
+  const podcastRSS = (id:string) => btoa(`${id}`);
+
   return (
     <>
       <Title gutterBottom variant="h3" component="h1">
-        Trending
+        Search
       </Title>
       <Container>
         {data &&

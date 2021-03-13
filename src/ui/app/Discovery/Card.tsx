@@ -36,7 +36,7 @@ const useStyles = makeStyles({
     height: 60,
   }
 });
-const podcastRSS = (id:string) => btoa(`https://www.listennotes.com/c/r/${id}`);
+
 
 interface MediaCardProps {
     id: string;
@@ -46,7 +46,7 @@ interface MediaCardProps {
 }
 export default function MediaCard({title, image, description, id}: MediaCardProps) {
   const classes = useStyles();
-  const rss = podcastRSS(id);
+  const rss = (id);
   const history = useHistory();
   return (
     <Card className={classes.root}>
