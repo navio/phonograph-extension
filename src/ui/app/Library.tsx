@@ -32,7 +32,7 @@ const PodcatImage = (props: { podcast: IPodcast }) => {
 
   React.useEffect(() => {
     imageFetcher(podcast.image).then((media) => {
-      setImage(media.url);
+     setImage(media.src);
     });
   }, []);
   return (
