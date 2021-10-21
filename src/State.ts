@@ -36,7 +36,7 @@ export default class ApplicationState {
 
   getSimplePodcast(): ISimplePodcast | undefined {
     const storedCurrent: string = localStorage.getItem(CURRENT_PODCAST_INFO);
-    if (storedCurrent) {
+    if (storedCurrent && storedCurrent.length > 0) {
       const currentObj: ISimplePodcast = JSON.parse(storedCurrent);
       return currentObj;
     }
@@ -45,7 +45,7 @@ export default class ApplicationState {
 
   getPodcastImage(): PodcastImage | undefined {
     const storedCurrent: string = localStorage.getItem(CURRENT_PODCAST_IMAGE);
-    if (storedCurrent) {
+    if (storedCurrent && storedCurrent.length > 0) {
       const currentObj: PodcastImage = JSON.parse(storedCurrent);
       return currentObj;
     }
