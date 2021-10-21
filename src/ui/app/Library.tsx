@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: `10vw`,
     },
     gridElement: {
-      backgroundColor: theme.palette.secondary.light,
+      backgroundColor: theme.palette.background.paper,
       width: `10vw`,
       height: `10vw`,
       display: `block`,
@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
 
 const PodcatImage = (props: { podcast: IPodcast }) => {
   const { podcast } = props;
@@ -37,7 +38,7 @@ const PodcatImage = (props: { podcast: IPodcast }) => {
   }, []);
   return (
     <Link to={`/podcast/${btoa(podcast.url)}`} className={classes.gridElement}>
-      <img src={image} title={podcast.title} className={classes.images} />
+      {image && <img src={image} title={podcast.title} className={classes.images} />}
     </Link>
   );
 };
