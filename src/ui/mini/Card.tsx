@@ -5,12 +5,13 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
-
+import Replay10Icon from '@material-ui/icons/Replay10';
+import Forward30Icon from '@material-ui/icons/Forward30';
 import { messageBackgroundAction, openOptionsPage } from 'background/actions';
 import { contrastColor, getRGB, getRGBA } from 'ui/utils/color';
 import { PodcastImage } from 'ui/utils/imageSaver';
+import { messagePlayerAction, Triggers } from "player/actions";
+
 const openOptions = () => messageBackgroundAction(openOptionsPage(),() => {});
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,6 +61,9 @@ interface PlayerCardProps{
     imageClick: () => void;
 }
 
+const forwardButtonHandler = () => messagePlayerAction(Triggers.fastforwad(30), (response) => {});
+const rewindsButtonHandler = () => messagePlayerAction(Triggers.rewind(10), (response) => {});
+
 
 export default ({title, name, image, PlayerButton, imageClick, background } : PlayerCardProps) => {
   const classes = useStyles();
@@ -77,11 +81,12 @@ export default ({title, name, image, PlayerButton, imageClick, background } : Pl
           </Typography>
         </CardContent>
         <div className={classes.controls}>
-          <IconButton aria-label="previous">
-            <SkipPreviousIcon />
+          <IconButton onClick={rewindsButtonHandler} aria-label="previous">
+            <Replay10Icon fontSize="large"  />
           </IconButton>
           { PlayerButton}
-          <IconButton aria-label="next"><SkipNextIcon />
+          <IconButton onClick={forwardButtonHandler} aria-label="next">
+            <Forward30Icon fontSize="large" />
           </IconButton>
         </div>
       </div>
