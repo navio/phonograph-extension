@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "baseUrl": "src",
+      "paths": {
+        "background": "/background/*",
+        "options": "src/options/*",
+        "popup": "src/popup/*",
+        "player": "src/player/*",
+        "ui": "src/ui/*"
+      }
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
+  }
