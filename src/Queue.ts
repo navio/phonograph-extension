@@ -20,6 +20,12 @@ export class Queue {
     if (init) this.build(init);
   }
 
+  public getNext(){
+      const episode = this.playlist.pop();
+      this.map.delete(episode.guid);
+      return episode;
+  }
+
   public queueEpisode(episode: IEpisodeState, first = false): boolean {
     if (!this.map.get(episode.guid)) return false;
     this.map.set(episode.guid, episode);
