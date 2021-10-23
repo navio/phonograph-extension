@@ -17,7 +17,7 @@ import {
   BackgroundResponse,
   SetEpisode,
   ClearEpisode,
-  GetEpisodeReponse,
+  GetEpisodeResponse,
   GetEpisode,
   PODCAST_EMMITER,
   LibraryUpdate,
@@ -40,27 +40,27 @@ export const initializeOptions = (id: string): InitializeOptions => ({
 
 // Responses
 
-export const getEpisodeReponse = (
+export const getEpisodeResponse = (
   podcast: IEpisode,
   time: number
-): GetEpisodeReponse => ({
+): GetEpisodeResponse => ({
   action: PODCAST_RESPONSES.EPISODE,
   payload: { podcast, time },
 });
 
-export const backgroundReponse = (payload: any): BackgroundResponse => ({
+export const backgroundResponse = (payload: any): BackgroundResponse => ({
   action: BACKGROUND_RESPONSES.GENERAL,
   payload,
 });
 
-export const getPodcastsReponse = (
+export const getPodcastsResponse = (
   library: IPodcast[]
 ): GetPodcastsResponse => ({
   action: PODCAST_RESPONSES.PODCASTS,
   payload: { library },
 });
 
-export const getPodcastReponse = (podcast: IPodcast): GetPodcastResponse => ({
+export const getPodcastResponse = (podcast: IPodcast): GetPodcastResponse => ({
   action: PODCAST_RESPONSES.PODCAST,
   payload: { podcast },
 });

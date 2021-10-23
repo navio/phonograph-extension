@@ -8,15 +8,15 @@ import { initializeOptionsResponse } from "options/actions";
 import Engine from "../Podcast";
 import ApplicationState from "../State";
 import {
-  getPodcastReponse,
-  getPodcastsReponse,
-  backgroundReponse,
-  getEpisodeReponse,
+  getPodcastResponse,
+  getPodcastsResponse,
+  backgroundResponse,
+  getEpisodeResponse,
   emitLibraryUpdate,
   messagePodcastEmission,
 } from "./actions";
 import { IEpisodeState } from "../State";
-import AudioElement from "src/Audio";
+import AudioElement from "../Audio";
 import { podcasts } from "./config";
 
 const background = (
@@ -42,14 +42,14 @@ const background = (
       case PODCAST_EVENTS.GET_EPISODE: {
         const episode = state.getEpisode();
         const time = episode ? episode.time : 0;
-        sendResponse(getEpisodeReponse(episode, time));
+        sendResponse(getEpisodeResponse(episode, time));
         return true;
       }
 
       case PODCAST_EVENTS.GET_PODCAST: {
         const { url, save } = message.payload;
           engine.getPodcast(url, {save})
-          .then((podcast) => sendResponse(getPodcastReponse(podcast)))
+          .then((podcast) => sendResponse(getPodcastResponse(podcast)))
           .then(() => {
             if(save){
               engine.getPodcasts().then( podcasts => {
@@ -67,7 +67,7 @@ const background = (
         engine.getPodcasts().then( podcasts => {
           messagePodcastEmission(emitLibraryUpdate(podcasts))
         })
-        sendResponse(backgroundReponse(true));
+        sendResponse(backgroundResponse(true));
         return true;
       }
 
@@ -101,7 +101,7 @@ const background = (
 
       case PODCAST_EVENTS.GET_PODCASTS: {
         engine.getPodcasts().then((library) => {
-          sendResponse(getPodcastsReponse(library));
+          sendResponse(getPodcastsResponse(library));
           return true;
         });
       }

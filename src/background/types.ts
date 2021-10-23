@@ -36,7 +36,7 @@ export enum BACKGROUND_RESPONSES {
 
 // RESPONSES
 
-export interface GetEpisodeReponse extends MessageResponse {
+export interface GetEpisodeResponse extends MessageResponse {
   action: PODCAST_RESPONSES.EPISODE,
   payload: {
     podcast?: IEpisode,
