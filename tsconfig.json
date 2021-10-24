@@ -6,7 +6,8 @@
         "options": ["src/options/*"],
         "popup": ["src/popup/*"],
         "player": ["src/player/*"],
-        "ui": ["src/ui/*"]
+        "ui": ["src/ui/*"],
+        "playlist": ["src/playlist/*"]
       }
     },
     "include": ["src/**/*"],

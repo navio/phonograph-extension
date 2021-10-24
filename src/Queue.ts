@@ -76,6 +76,12 @@ export class Queue {
     this.playlist.splice(index, 1);
   }
 
+  public clearPlaylist(){
+    this.map.clear();
+    this.playlist.length = 0;
+    return true;
+  }
+
   public storePlaylist() {
     return JSON.stringify(this.playlist);
   }
