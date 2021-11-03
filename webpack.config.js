@@ -32,7 +32,8 @@ module.exports = {
       "stream": require.resolve("stream-browserify"),
       "buffer": require.resolve("buffer/"),
       "string_decoder": require.resolve("string_decoder/"),
-      "events": require.resolve("events/")
+      "events": require.resolve("events/"),
+      "constants": require.resolve("constants-browserify"),
     }
   },
   module: {

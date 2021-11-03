@@ -1450,6 +1450,11 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
+constants-browserify@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/constants-browserify/-/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
+  integrity sha1-wguW2MYXdIqvHBYCF2DNJ/y4y3U=
+
 convert-source-map@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.7.0.tgz#17a2cb882d7f77d3490585e2ce6c524424a3a442"

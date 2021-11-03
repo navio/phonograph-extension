@@ -3,7 +3,7 @@ import ApplicationState from "../State";
 import AudioElement from "../Audio";
 import * as T from "./types";
 import { getNextResponse, playListEventResponse } from "./actions";
-import { Queue } from "Queue";
+import { Queue } from "../Queue";
 
 const playlist = new Queue();
 export default (

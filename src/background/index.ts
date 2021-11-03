@@ -1,5 +1,6 @@
 import reducer from "./reducer";
 import initPlayer from "player/reducer";
+import playlist from "playlist/reducer";
 import Engine from "../Podcast";
 import ApplicationState from "../State";
 import { podcasts } from "./config";
@@ -17,3 +18,4 @@ const player = new AudioElement();
 // Initialize Reducer
 chrome.runtime.onMessage.addListener(reducer(engine, state, player));
 chrome.runtime.onMessage.addListener(initPlayer(engine, state, player));
+chrome.runtime.onMessage.addListener(playlist(engine, state, player));
