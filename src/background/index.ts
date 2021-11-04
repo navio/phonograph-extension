@@ -5,9 +5,11 @@ import Engine from "../Podcast";
 import ApplicationState from "../State";
 import { podcasts } from "./config";
 import AudioElement from "../Audio";
+import browser from "../Browser";
 
-chrome.browserAction.setTitle({ title: "The Phonograph Extension" });
-chrome.browserAction.setPopup({ popup: "popup.html" });
+
+browser.setTitle("The Phonograph Extension");
+browser.setClickToPopup();
 
 // Global Objects
 

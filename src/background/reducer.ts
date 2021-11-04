@@ -18,6 +18,7 @@ import {
 import { IEpisodeState } from "../State";
 import AudioElement from "../Audio";
 import { podcasts } from "./config";
+import Browser from "../Browser";
 
 const background = (
   engine: Engine,
@@ -75,8 +76,11 @@ const background = (
         const audioState = player.state;
         const podcastImage = state.getPodcastImage();
         const podcastInfo = state.getSimplePodcast();
+        if(!audioState.loaded){
+          // if no audio is loaded redirect to library.
+          Browser.openOptionPage()
+        }
         sendResponse(initializeResponsePopUp(state.getEpisode(), audioState, podcastInfo, podcastImage ));
-
         return true;
       }
 
@@ -84,8 +88,8 @@ const background = (
         engine.getPodcasts().then((library) => {
           const episode = state.getEpisode();
           const time = episode ? episode.time : 0;
-          const playerstate = player.state;
-          sendResponse(initializeOptionsResponse(library, playerstate, episode));
+          const playerState = player.state;
+          sendResponse(initializeOptionsResponse(library, playerState, episode));
         });
         return true;
       }
