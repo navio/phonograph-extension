@@ -122,8 +122,8 @@ export default function SearchAppBar(props: {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search for podcasts"
-              classes={{
+              placeholder="Search podcasts"
+               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
