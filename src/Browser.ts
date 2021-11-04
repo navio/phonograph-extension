@@ -1,5 +1,6 @@
 const browser = chrome;
 export default {
+  instance: browser,
   setTitle: (title: string) => browser.browserAction.setTitle({ title }),
 
   setClickToPopup: (popup = "popup.html") =>

@@ -1,8 +1,8 @@
-import { podcasts } from "background/config";
-import PodcastSuite from "podcastsuite";
+// import { podcasts } from "background/config";
+// import PodcastSuite from "podcastsuite";
+// import { IColor } from "ui/utils/color";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { IPodcast } from "ui/app";
-import { IColor } from "ui/utils/color";
 import FetchImage, { PodcastImage } from "ui/utils/imageSaver";
 import Podcast, { ISimplePodcast } from "./Podcast";
 
