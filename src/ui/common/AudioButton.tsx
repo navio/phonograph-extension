@@ -1,3 +1,4 @@
+import React from "react";
 import {
   createStyles,
   ListItemIcon,
@@ -10,7 +11,6 @@ import { IEpisode } from "podcastsuite/dist/Format";
 import { getRGBA, IColor } from "ui/utils/color";
 import PlayIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/PauseOutlined";
-import React from "react";
 import { messagePlayerAction, Triggers } from "player/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -40,10 +40,11 @@ export default (props: {
   currentEpisode: IEpisode;
   audioState: AudioState;
   podcastURL?: string;
+  size?: string;
 }) => {
   
   const classes = useStyles();
-  const { color = [0,0,0], episode, currentEpisode, audioState, podcastURL } = props;
+  const { color = [0,0,0], episode, currentEpisode, audioState, podcastURL, size = "1.5rem" } = props;
   const playing = audioState ? audioState.playing : false;
   const isPlaying =
     currentEpisode && episode.guid === currentEpisode.guid && playing;
@@ -60,12 +61,12 @@ export default (props: {
     >
       {isPlaying ? (
         <PauseIcon
-          style={{ color: getRGBA(color) }}
+          style={{ fontSize: size , color: getRGBA(color) }}
           className={classes.mediaButton}
         />
       ) : (
         <PlayIcon
-          style={{ color: getRGBA(color) }}
+          style={{ fontSize: size || standard, color: getRGBA(color) }}
           className={classes.mediaButton}
         />
       )}

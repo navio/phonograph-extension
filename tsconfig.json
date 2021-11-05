@@ -3,6 +3,7 @@
       "jsx": "react",
       "baseUrl": "src",
       "paths": {
+        "src": ["src"],
         "background": ["/background/*"],
         "options": ["src/options/*"],
         "popup": ["src/popup/*"],

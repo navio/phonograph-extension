@@ -25,7 +25,8 @@ module.exports = {
       popup: path.resolve(__dirname, 'src/popup/'),
       player: path.resolve(__dirname, 'src/player/'),
       ui: path.resolve(__dirname, 'src/ui/'),
-      playlist: path.resolve(__dirname, 'src/playlist/')
+      playlist: path.resolve(__dirname, 'src/playlist/'),
+      src: path.resolve(__dirname, 'src/')
     },
     fallback: {
       "timers": require.resolve("timers-browserify"),

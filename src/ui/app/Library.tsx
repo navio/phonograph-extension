@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import { AppContext, IPodcast } from "./index";
 import imageFetcher from "ui/utils/imageSaver";
+import Typography from "@material-ui/core/Typography";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -24,7 +26,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
 
 const PodcatImage = (props: { podcast: IPodcast }) => {
   const { podcast } = props;

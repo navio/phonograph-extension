@@ -1,4 +1,3 @@
-
 type IProperty = string | number | symbol;
 type IGetOverwritesFn = (target: any, property: IProperty) => any;
 type ISetOverwritesFn = (target: any, property: IProperty, value: any) => any;
@@ -65,7 +64,7 @@ export default class AudioElement extends Audio {
       duration: this.audioElement.duration,
       currentTime: this.audioElement.currentTime,
       ended: this.audioElement.ended,
-      playing: !this.audioElement.paused
+      playing: !this.audioElement.paused,
     };
     return this.audioState;
   }
@@ -73,3 +72,8 @@ export default class AudioElement extends Audio {
     return (100 * this.audioElement.currentTime) / this.audioElement.duration;
   }
 }
+
+export const percentPlayed = (audio: AudioState) =>
+  audio.loaded && audio.currentTime > 0 && audio.duration
+    ? (100 * audio.currentTime) / audio.duration
+    : 0;
