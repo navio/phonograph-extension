@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { AppContext, IPodcast, IAppContext } from "./index";
 import Typography from "@material-ui/core/Typography";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { Slider } from "@material-ui/core";
 import AudioButton from "../common/AudioButton";
 import { percentPlayed } from "src/Audio";
 
@@ -21,25 +22,24 @@ const MediaControls = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
-  margin: 1.2rem;
+  margin: 0.2rem 1.2rem 0.2rem .8rem;
 `;
 
 const Title = styled.div`
   position: absolute;
-  top: 0;
+  top: .8rem;
   font-size: 1.3rem;
 `;
 
 const HorizontalContainer = styled.div`
   display: flex;
-  margin: 0 2rem;
+  margin: 0px 2rem 0px .5rem;
 `;
 const ProgressContainer = styled.div`
   position: relative;
   display: block;
-  border: 1 px solid red;
   width: 100%;
-  & > div.MuiLinearProgress-root {
+  & > div.MuiLinearProgress-root, span.MuiSlider-root {
     position: absolute;
     top: 50%;
     width: 100%;
@@ -71,6 +71,12 @@ export default () => {
                   value={percentPlayed(audioState)}
                   valueBuffer={100}
                 />
+                 <Slider
+                    style={{ padding: "0px" }}
+                    value={percentPlayed(audioState)}
+                    aria-labelledby="audio"
+                    // onChange={props.seek}
+                  />
               </ProgressContainer>
             </HorizontalContainer>
           </MediaControls>
