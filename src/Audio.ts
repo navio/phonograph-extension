@@ -75,5 +75,5 @@ export default class AudioElement extends Audio {
 
 export const percentPlayed = (audio: AudioState) =>
   audio.loaded && audio.currentTime > 0 && audio.duration
-    ? (100 * audio.currentTime) / audio.duration
+    ?  Number.parseInt( (100 * audio.currentTime / audio.duration).toFixed(2))
     : 0;

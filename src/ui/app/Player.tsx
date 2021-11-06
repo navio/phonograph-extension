@@ -22,24 +22,26 @@ const MediaControls = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
-  margin: 0.2rem 1.2rem 0.2rem .8rem;
+  margin: 0.2rem 1.2rem 0.2rem 0.8rem;
 `;
 
 const Title = styled.div`
   position: absolute;
-  top: .8rem;
+  top: 0.8rem;
   font-size: 1.3rem;
 `;
 
 const HorizontalContainer = styled.div`
   display: flex;
-  margin: 0px 2rem 0px .5rem;
+  margin: 0px 2rem 0px 0.5rem;
 `;
 const ProgressContainer = styled.div`
   position: relative;
   display: block;
   width: 100%;
-  & > div.MuiLinearProgress-root, span.MuiSlider-root {
+
+  & > div.MuiLinearProgress-root,
+  span.MuiSlider-root {
     position: absolute;
     top: 50%;
     width: 100%;
@@ -63,20 +65,19 @@ export default () => {
                 size={"3.2rem"}
               />
               <ProgressContainer>
-                <Title align="center">
-                    {episode.title}
-                </Title>
+                <Title align="center">{episode.title}</Title>
                 <LinearProgress
                   variant="buffer"
                   value={percentPlayed(audioState)}
                   valueBuffer={100}
                 />
-                 <Slider
-                    style={{ padding: "0px" }}
-                    value={percentPlayed(audioState)}
-                    aria-labelledby="audio"
-                    // onChange={props.seek}
-                  />
+                <Slider
+                  style={{ padding: "0px" }}
+                  value={percentPlayed(audioState)}
+                  aria-labelledby="audio"
+                  valueLabelDisplay={'auto'}
+                  // onChange={props.seek}
+                />
               </ProgressContainer>
             </HorizontalContainer>
           </MediaControls>
