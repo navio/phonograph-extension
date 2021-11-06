@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Card } from "@material-ui/core";
 import styled from "styled-components";
 import { AppContext, IPodcast, IAppContext } from "./index";
@@ -7,6 +7,8 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { Slider } from "@material-ui/core";
 import AudioButton from "../common/AudioButton";
 import { percentPlayed } from "src/Audio";
+import { messagePlayerAction, progressEmissionListener, Triggers } from "player/actions";
+import { AudioState } from "Audio";
 
 const MediaControlsWrapper = styled.div`
   & > div {
@@ -48,18 +50,37 @@ const ProgressContainer = styled.div`
   }
 `;
 
+const seekHandler = (event, value) => {
+  console.log(value);
+  messagePlayerAction(Triggers.seek(value), (response) => {});
+}
+
 export default () => {
   const { episode, audioState }: IAppContext = useContext(AppContext);
+  const [audioStateInternal, setAudioStateInternal] =
+    useState<AudioState>(audioState);
 
-  console.log(episode, audioState);
+  useEffect(() => {
+    progressEmissionListener(({ payload }) => {
+      const currentTime: number = payload.percentage;
+      setAudioStateInternal((state) => {
+        return { ...state, currentTime };
+      });
+    });
+  }, [progressEmissionListener]);
+
+  useEffect(() => {
+    setAudioStateInternal(audioState);
+  }, [audioState]);
+
   return (
     <MediaControlsWrapper>
-      {!!audioState?.loaded && episode && (
+      {!!audioStateInternal?.loaded && episode && (
         <Card variant="outlined">
           <MediaControls>
             <HorizontalContainer>
               <AudioButton
-                audioState={audioState}
+                audioState={audioStateInternal}
                 currentEpisode={episode}
                 episode={episode}
                 size={"3.2rem"}
@@ -68,15 +89,15 @@ export default () => {
                 <Title align="center">{episode.title}</Title>
                 <LinearProgress
                   variant="buffer"
-                  value={percentPlayed(audioState)}
+                  value={percentPlayed(audioStateInternal)}
                   valueBuffer={100}
                 />
                 <Slider
                   style={{ padding: "0px" }}
-                  value={percentPlayed(audioState)}
+                  value={percentPlayed(audioStateInternal)}
                   aria-labelledby="audio"
-                  valueLabelDisplay={'auto'}
-                  // onChange={props.seek}
+                  // valueLabelDisplay={"auto"}
+                  onChange={seekHandler}
                 />
               </ProgressContainer>
             </HorizontalContainer>

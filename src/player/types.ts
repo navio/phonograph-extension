@@ -22,6 +22,7 @@ export enum PLAYER_EVENTS {
   QUEUE = "QUEUE_AUDIO",
   QUEUE_NEXT = "QUEUE_AUDIO_NEXT",
   STATE = "STATEOF_AUDIO",
+  SEEK = "SEEK_AUDIO"
 }
 
 export enum PLAYER_EMITIONS {
@@ -114,6 +115,13 @@ export interface FastForwardAudio {
   };
 }
 
+export interface SeekAudio {
+  action: typeof PLAYER_EVENTS.SEEK;
+  payload: {
+    time: number;
+  };
+}
+
 export interface RewindAudio {
   action: typeof PLAYER_EVENTS.REWIND;
   payload: {
@@ -152,6 +160,7 @@ export type AudioRequestEvents =
   | NextAudio
   | QueueAudio
   | QueueNextAudio
+  | SeekAudio
   | StateOfAudio;
 
 export type AudioEventsReducer = (

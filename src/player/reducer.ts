@@ -34,6 +34,10 @@ export default (
     messagePlayerEmission(Emitters.ended(player.state))
   );
 
+  audioElement.addEventListener("timeupdate", () => {
+    messagePlayerEmission(Emitters.progress(audioElement.currentTime));
+  });
+
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
       case PLAYER_EVENTS.LOAD:
@@ -58,9 +62,9 @@ export default (
         return true;
 
       case PLAYER_EVENTS.PLAY: {
-          audioElement.play().then(() => {
-            sendResponse(Emitters.playing(player.state, state.getEpisode()));
-          });
+        audioElement.play().then(() => {
+          sendResponse(Emitters.playing(player.state, state.getEpisode()));
+        });
         return true;
       }
       case PLAYER_EVENTS.STOP:
@@ -80,6 +84,10 @@ export default (
         return true;
       case PLAYER_EVENTS.REWIND:
         audioElement.currentTime -= message.payload.time;
+        sendResponse(Emitters.playing(player.state, state.getEpisode()));
+        return true;
+      case PLAYER_EVENTS.SEEK:
+        audioElement.currentTime = message.payload.time;
         sendResponse(Emitters.playing(player.state, state.getEpisode()));
         return true;
       case PLAYER_EVENTS.STATE:

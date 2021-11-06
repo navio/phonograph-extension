@@ -7,6 +7,7 @@ import {
   FastForwardAudio,
   RewindAudio,
   NextAudio,
+  SeekAudio,
   QueueAudio,
   QueueNextAudio,
   AudioCanPlay,
@@ -84,6 +85,11 @@ export const rewind = (time: number): RewindAudio => ({
   payload: { time },
 });
 
+export const seek = (time: number): SeekAudio => ({
+  action: PLAYER_EVENTS.SEEK,
+  payload: { time },
+});
+
 export const next = (): NextAudio => ({
   action: PLAYER_EVENTS.NEXT,
 });
@@ -107,6 +113,7 @@ export const Triggers = {
   rewind,
   queue,
   queuenext,
+  seek
 };
 
 export const messagePlayerAction = (
@@ -134,6 +141,16 @@ export const pauseEmissionListener = (
 ) => {
   chrome.runtime.onMessage.addListener((message: AudioPaused) => {
     if (message.action === PLAYER_EMITIONS.paused) {
+      callback(message);
+    }
+  });
+};
+
+export const progressEmissionListener = (
+  callback: (message: AudioProgress) => void
+) => {
+  chrome.runtime.onMessage.addListener((message: AudioProgress) => {
+    if (message.action === PLAYER_EMITIONS.progress) {
       callback(message);
     }
   });

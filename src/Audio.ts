@@ -10,6 +10,13 @@ export interface AudioState {
   ended?: boolean;
 }
 
+export type TypeEventFn = (event: Event) => void;
+
+export const percentPlayed = (audio: AudioState) =>
+  audio.loaded && audio.currentTime > 0 && audio.duration
+    ?  Number.parseInt( (100 * audio.currentTime / audio.duration).toFixed(2))
+    : 0;
+
 export default class AudioElement extends Audio {
   public audioElement: HTMLAudioElement;
 
@@ -57,7 +64,8 @@ export default class AudioElement extends Audio {
     });
   }
 
-  get state() {
+
+  get state(): AudioState {
     this.audioState = {
       ...this.audioState,
       loaded: this.audioElement.src,
@@ -68,12 +76,10 @@ export default class AudioElement extends Audio {
     };
     return this.audioState;
   }
+
   get durationPercentage(): number {
-    return (100 * this.audioElement.currentTime) / this.audioElement.duration;
+    return percentPlayed(this.audioState);
   }
 }
 
-export const percentPlayed = (audio: AudioState) =>
-  audio.loaded && audio.currentTime > 0 && audio.duration
-    ?  Number.parseInt( (100 * audio.currentTime / audio.duration).toFixed(2))
-    : 0;
+
