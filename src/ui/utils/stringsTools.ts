@@ -21,7 +21,6 @@ export const displayTime = (time): string => {
 
 
   seconds = allSeconds % 60;
-  console.log(allSeconds);
   const remainingSeconds = Math.floor(allSeconds / 60);
 
   if (remainingSeconds > 0) {

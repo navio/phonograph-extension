@@ -35,7 +35,7 @@ export default (
   );
 
   audioElement.addEventListener("timeupdate", () => {
-    messagePlayerEmission(Emitters.progress(audioElement.currentTime));
+    messagePlayerEmission(Emitters.progress(audioElement.currentTime, audioElement.duration));
   });
 
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {

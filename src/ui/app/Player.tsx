@@ -81,8 +81,9 @@ export default () => {
   useEffect(() => {
     progressEmissionListener(({ payload }) => {
       const currentTime: number = payload.percentage;
+      const duration: number = payload.duration;
       setAudioStateInternal((state) => {
-        return { ...state, currentTime };
+        return { ...state, currentTime, duration };
       });
     });
   }, [progressEmissionListener]);
@@ -98,6 +99,7 @@ export default () => {
     });
     messagePlayerAction(Triggers.seek(currentTime), (response) => {});
   };
+  console.log(audioStateInternal)
 
   return (
     <>
@@ -121,7 +123,7 @@ export default () => {
                 <LinearProgress
                   variant="buffer"
                   value={percentPlayed(audioStateInternal)}
-                  valueBuffer={100}
+                  valueBuffer={audioStateInternal.duration > 0 ? 100 : 0}
                 />
                 <Slider
                   style={{ padding: "0px" }}

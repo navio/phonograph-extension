@@ -55,10 +55,11 @@ export const ended = (state: AudioState): AudioEnded => ({
   payload: { state },
 });
 
-export const progress = (percentage: number): AudioProgress => ({
+export const progress = (percentage: number, duration: number): AudioProgress => ({
   action: PLAYER_EMITIONS.progress,
   payload: {
     percentage,
+    duration
   },
 });
 

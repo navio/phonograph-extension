@@ -42,10 +42,6 @@ export interface AudioLoaded extends MessageResponse {
   action: PLAYER_EMITIONS.loadeddata;
 }
 
-export interface AudioProgress extends MessageResponse {
-  action: PLAYER_EMITIONS.progress;
-}
-
 export interface AudioCanPlay extends MessageResponse {
   action: PLAYER_EMITIONS.canplay;
 }
@@ -81,6 +77,7 @@ export interface AudioProgress extends MessageResponse {
   action: PLAYER_EMITIONS.progress;
   payload: {
     percentage: number;
+    duration: number;
   };
 }
 
