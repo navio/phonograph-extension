@@ -13,6 +13,7 @@ import {
   Triggers,
 } from "player/actions";
 import { displayTime } from "ui/utils/stringsTools";
+import { IEpisode } from "podcastsuite/dist/Format";
 
 const MediaControlsWrapper = styled.div`
   & > div {
@@ -61,6 +62,11 @@ const ProgressContainer = styled.div`
   }
 `;
 
+const EpisodeImage = styled.img`
+  height: 4rem;
+  padding-top: 0.3rem;
+`;
+
 
 
 export default () => {
@@ -95,6 +101,7 @@ export default () => {
         <Card variant="outlined">
           <MediaControls>
             <HorizontalContainer>
+              <EpisodeImage src={episode.image} />
               <AudioButton
                 audioState={audioStateInternal}
                 currentEpisode={episode}
