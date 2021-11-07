@@ -7,8 +7,13 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { Slider } from "@material-ui/core";
 import AudioButton from "../common/AudioButton";
 import { percentPlayed } from "src/Audio";
-import { messagePlayerAction, progressEmissionListener, Triggers } from "player/actions";
+import {
+  messagePlayerAction,
+  progressEmissionListener,
+  Triggers,
+} from "player/actions";
 import { AudioState } from "Audio";
+import { displayTime } from "ui/utils/stringsTools";
 
 const MediaControlsWrapper = styled.div`
   & > div {
@@ -28,9 +33,15 @@ const MediaControls = styled.div`
 `;
 
 const Title = styled.div`
-  position: absolute;
-  top: 0.8rem;
-  font-size: 1.3rem;
+  font-size: 1rem;
+  padding-top: 0.5rem;
+`;
+
+const TimeDisplay = styled.div`
+  display: flex;
+  margin: 0px 1rem;
+  align-items: center;
+  font-size: 1.2rem;
 `;
 
 const HorizontalContainer = styled.div`
@@ -53,7 +64,7 @@ const ProgressContainer = styled.div`
 const seekHandler = (event, value) => {
   console.log(value);
   messagePlayerAction(Triggers.seek(value), (response) => {});
-}
+};
 
 export default () => {
   const { episode, audioState }: IAppContext = useContext(AppContext);
@@ -83,8 +94,11 @@ export default () => {
                 audioState={audioStateInternal}
                 currentEpisode={episode}
                 episode={episode}
-                size={"3.2rem"}
+                size={"2rem"}
               />
+              <TimeDisplay align="center">
+                {displayTime(audioStateInternal.currentTime)}
+              </TimeDisplay>
               <ProgressContainer>
                 <Title align="center">{episode.title}</Title>
                 <LinearProgress
@@ -100,6 +114,9 @@ export default () => {
                   onChange={seekHandler}
                 />
               </ProgressContainer>
+              <TimeDisplay align="center">
+                {displayTime(audioStateInternal.duration)}
+              </TimeDisplay>
             </HorizontalContainer>
           </MediaControls>
         </Card>
