@@ -41,6 +41,7 @@ const TimeDisplay = styled.div`
   margin: 0px 1rem;
   align-items: center;
   font-size: 1.2rem;
+  width: 3rem;
 `;
 
 const HorizontalContainer = styled.div`
