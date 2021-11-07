@@ -13,7 +13,6 @@ import {
   Triggers,
 } from "player/actions";
 import { displayTime } from "ui/utils/stringsTools";
-import { IEpisode } from "podcastsuite/dist/Format";
 
 const MediaControlsWrapper = styled.div`
   & > div {
@@ -68,6 +67,11 @@ const EpisodeImage = styled.img`
 `;
 
 
+const ContentExtender = styled.div`
+height: 5rem;
+`;
+
+
 
 export default () => {
   const { episode, audioState }: IAppContext = useContext(AppContext);
@@ -96,6 +100,7 @@ export default () => {
   };
 
   return (
+    <>
     <MediaControlsWrapper>
       {!!audioStateInternal?.loaded && episode && (
         <Card variant="outlined">
@@ -134,5 +139,7 @@ export default () => {
         </Card>
       )}
     </MediaControlsWrapper>
+    <ContentExtender />
+    </>
   );
 };
