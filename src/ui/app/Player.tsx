@@ -6,13 +6,12 @@ import Typography from "@material-ui/core/Typography";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { Slider } from "@material-ui/core";
 import AudioButton from "../common/AudioButton";
-import { percentPlayed } from "src/Audio";
+import { percentPlayed, AudioState, timeByPercentage } from "src/Audio";
 import {
   messagePlayerAction,
   progressEmissionListener,
   Triggers,
 } from "player/actions";
-import { AudioState } from "Audio";
 import { displayTime } from "ui/utils/stringsTools";
 
 const MediaControlsWrapper = styled.div`
@@ -61,10 +60,7 @@ const ProgressContainer = styled.div`
   }
 `;
 
-const seekHandler = (event, value) => {
-  console.log(value);
-  messagePlayerAction(Triggers.seek(value), (response) => {});
-};
+
 
 export default () => {
   const { episode, audioState }: IAppContext = useContext(AppContext);
@@ -83,6 +79,14 @@ export default () => {
   useEffect(() => {
     setAudioStateInternal(audioState);
   }, [audioState]);
+
+  const seekHandler = (event, value) => {
+    const currentTime = timeByPercentage(value, audioState);
+    setAudioStateInternal((state) => {
+      return { ...state, currentTime };
+    });
+    messagePlayerAction(Triggers.seek(currentTime), (response) => {});
+  };
 
   return (
     <MediaControlsWrapper>
@@ -110,7 +114,7 @@ export default () => {
                   style={{ padding: "0px" }}
                   value={percentPlayed(audioStateInternal)}
                   aria-labelledby="audio"
-                  // valueLabelDisplay={"auto"}
+                  valueLabelDisplay={"auto"}
                   onChange={seekHandler}
                 />
               </ProgressContainer>
