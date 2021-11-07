@@ -7,12 +7,19 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { Slider } from "@material-ui/core";
 import AudioButton from "../common/AudioButton";
 import { percentPlayed, AudioState, timeByPercentage } from "src/Audio";
+import { messageBackgroundAction, initializePopUp, getPlayerState } from "background/actions";
 import {
   messagePlayerAction,
   progressEmissionListener,
   Triggers,
 } from "player/actions";
 import { displayTime } from "ui/utils/stringsTools";
+import { InitializePopUpResponse } from "popup/types";
+import { ISimplePodcast } from "Podcast";
+import { PodcastImage } from "ui/utils/imageSaver";
+import { getRGBA } from "ui/utils/color";
+import { GetPlayerState } from "background/types";
+import { GetPlayerStatusResponse } from "options/types";
 
 const MediaControlsWrapper = styled.div`
   & > div {
@@ -34,6 +41,10 @@ const MediaControls = styled.div`
 const Title = styled.div`
   font-size: 1rem;
   padding-top: 0.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 65vw;
 `;
 
 const TimeDisplay = styled.div`
@@ -56,7 +67,7 @@ const ProgressContainer = styled.div`
   & > div.MuiLinearProgress-root,
   span.MuiSlider-root {
     position: absolute;
-    top: 50%;
+    top: 55%;
     width: 100%;
   }
 `;
@@ -66,17 +77,23 @@ const EpisodeImage = styled.img`
   padding-top: 0.3rem;
 `;
 
-
 const ContentExtender = styled.div`
-height: 5rem;
+  height: 5rem;
 `;
 
-
+const LinearProgressStyled = styled(LinearProgress)`
+  & .MuiLinearProgress-colorPrimary, & .MuiLinearProgress-barColorPrimary{
+    background-color: ${props => props.color};
+  }
+`;
 
 export default () => {
   const { episode, audioState }: IAppContext = useContext(AppContext);
   const [audioStateInternal, setAudioStateInternal] =
     useState<AudioState>(audioState);
+
+  const [podcast, setPodcast] = useState<ISimplePodcast>();
+  const [media, setMedia] = useState<PodcastImage>();
 
   useEffect(() => {
     progressEmissionListener(({ payload }) => {
@@ -89,59 +106,76 @@ export default () => {
   }, [progressEmissionListener]);
 
   useEffect(() => {
+    messageBackgroundAction(
+      getPlayerState (),
+      (response: GetPlayerStatusResponse ) => {
+        console.log('response',response.payload);
+        const { podcast, podcastImage } = response.payload;
+        setPodcast(podcast);
+        setMedia(podcastImage);
+      }
+    );
+  }, [episode]);
+
+  useEffect(() => {;
     setAudioStateInternal(audioState);
   }, [audioState]);
 
-  const seekHandler = (event, value) => {
+  const seekHandler = (_, value) => {
     const currentTime = timeByPercentage(value, audioState);
     setAudioStateInternal((state) => {
       return { ...state, currentTime };
     });
     messagePlayerAction(Triggers.seek(currentTime), (response) => {});
   };
-  console.log(audioStateInternal)
+
+  const masterColor = getRGBA(media?.colors[0] || [0, 0, 0]);
 
   return (
     <>
-    <MediaControlsWrapper>
-      {!!audioStateInternal?.loaded && episode && (
-        <Card variant="outlined">
-          <MediaControls>
-            <HorizontalContainer>
-              <EpisodeImage src={episode.image} />
-              <AudioButton
-                audioState={audioStateInternal}
-                currentEpisode={episode}
-                episode={episode}
-                size={"2rem"}
-              />
-              <TimeDisplay align="center">
-                {displayTime(audioStateInternal.currentTime)}
-              </TimeDisplay>
-              <ProgressContainer>
-                <Title align="center">{episode.title}</Title>
-                <LinearProgress
-                  variant="buffer"
-                  value={percentPlayed(audioStateInternal)}
-                  valueBuffer={audioStateInternal.duration > 0 ? 100 : 0}
+      <MediaControlsWrapper>
+        {!!audioStateInternal?.loaded && episode && (
+          <Card variant="outlined">
+            <MediaControls>
+              <HorizontalContainer>
+                <EpisodeImage src={episode?.image || media?.src || null} />
+                <AudioButton
+                  audioState={audioStateInternal}
+                  currentEpisode={episode}
+                  episode={episode}
+                  size={"2rem"}
+                  color={media?.colors[0]}
                 />
-                <Slider
-                  style={{ padding: "0px" }}
-                  value={percentPlayed(audioStateInternal)}
-                  aria-labelledby="audio"
-                  valueLabelDisplay={"auto"}
-                  onChange={seekHandler}
-                />
-              </ProgressContainer>
-              <TimeDisplay align="center">
-                {displayTime(audioStateInternal.duration)}
-              </TimeDisplay>
-            </HorizontalContainer>
-          </MediaControls>
-        </Card>
-      )}
-    </MediaControlsWrapper>
-    <ContentExtender />
+                <TimeDisplay align="center">
+                  {displayTime(audioStateInternal.currentTime)}
+                </TimeDisplay>
+                <ProgressContainer>
+                  <Title align="center">
+                    {episode.title}
+                    </Title>
+                  <LinearProgressStyled
+                    color={masterColor}
+                    variant="buffer"
+                    value={percentPlayed(audioStateInternal)}
+                    valueBuffer={audioStateInternal.duration > 0 ? 100 : 0}
+                  />
+                  <Slider
+                    style={{ padding: "0px", color: masterColor }}
+                    value={percentPlayed(audioStateInternal)}
+                    aria-labelledby="audio"
+                    valueLabelDisplay={"auto"}
+                    onChange={seekHandler}
+                  />
+                </ProgressContainer>
+                <TimeDisplay align="center">
+                  {displayTime(audioStateInternal.duration)}
+                </TimeDisplay>
+              </HorizontalContainer>
+            </MediaControls>
+          </Card>
+        )}
+      </MediaControlsWrapper>
+      <ContentExtender />
     </>
   );
 };

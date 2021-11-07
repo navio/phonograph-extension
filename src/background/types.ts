@@ -7,7 +7,8 @@ export { ReducerRensposeFn };
 export enum BACKGROUND_EVENTS {
   INIT_POPUP = "BACKGROUND_INIT_POPUP",
   INIT_OPTIONS = "BACKGROUND_INIT_OPTIONS",
-  OPEN_OPTIONS = "BACKGROUND_OPEN_OPTIONS"
+  OPEN_OPTIONS = "BACKGROUND_OPEN_OPTIONS",
+  GET_PLAYER_STATE = "BACKGROUND_GET_PLAYER_STATE"
 }
 
 export enum PODCAST_EVENTS {
@@ -17,7 +18,7 @@ export enum PODCAST_EVENTS {
   DELETE_PODCAST = "BACKGROUND_PODCAST_DELETE",
   SET_EPISODE = "SET_EPISODE",
   REMOVE_EPISODE = "REMOVE_EPISODE",
-  GET_EPISODE = "GET_EPISODE"
+  GET_EPISODE = "GET_EPISODE",
 }
 
 export enum PODCAST_EMMITER {
@@ -63,8 +64,11 @@ export interface BackgroundResponse extends MessageResponse {
   payload: any
 }
 
-
 // REQUEST
+
+export interface GetPlayerState{
+  action: typeof BACKGROUND_EVENTS.GET_PLAYER_STATE
+}
 
 export interface InitializePopUp {
   action: typeof BACKGROUND_EVENTS.INIT_POPUP;
@@ -137,6 +141,7 @@ export type BackgroundActions =
   | InitializePopUp
   | InitializeOptions
   | OpenOptionsEvent
+  | GetPlayerState
   | SetEpisode
   | ClearEpisode
   | GetEpisode

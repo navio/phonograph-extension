@@ -4,7 +4,7 @@ import {
   BackgroundEventReducer,
 } from "./types";
 import { initializeResponsePopUp } from "popup/actions";
-import { initializeOptionsResponse } from "options/actions";
+import { getPlayerStatusResponse, initializeOptionsResponse } from "options/actions";
 import Engine from "../Podcast";
 import ApplicationState from "../State";
 import {
@@ -18,7 +18,6 @@ import {
 import { IEpisodeState } from "../State";
 import AudioElement from "../Audio";
 import { podcasts } from "./config";
-import Browser from "../Browser";
 
 const background = (
   engine: Engine,
@@ -76,9 +75,9 @@ const background = (
         const audioState = player.state;
         const podcastImage = state.getPodcastImage();
         const podcastInfo = state.getSimplePodcast();
-        if(!audioState.loaded){
+        if(audioState?.loaded){
           // if no audio is loaded redirect to library.
-          Browser.openOptionPage()
+          chrome.tabs.create({ 'url': `chrome-extension://${chrome.runtime.id}/options.html#/${url}` });
         }
         sendResponse(initializeResponsePopUp(state.getEpisode(), audioState, podcastInfo, podcastImage ));
         return true;
@@ -108,6 +107,15 @@ const background = (
           sendResponse(getPodcastsResponse(library));
           return true;
         });
+      }
+
+      case BACKGROUND_EVENTS.GET_PLAYER_STATE: {
+        console.log('requested')
+        const audioState = player.state;
+        const podcastImage = state.getPodcastImage();
+        const podcastInfo = state.getSimplePodcast();
+        sendResponse(getPlayerStatusResponse(state.getEpisode(), audioState, podcastInfo, podcastImage));
+        return true;
       }
     }
   };

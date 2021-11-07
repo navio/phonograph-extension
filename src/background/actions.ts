@@ -22,6 +22,7 @@ import {
   PODCAST_EMMITER,
   LibraryUpdate,
   OpenOptionsEvent,
+  GetPlayerState,
 } from "./types";
 
 export const messageBackgroundAction = (
@@ -37,6 +38,10 @@ export const initializeOptions = (id: string): InitializeOptions => ({
   action: BACKGROUND_EVENTS.INIT_OPTIONS,
   payload: { id },
 });
+
+export const getPlayerState = (): GetPlayerState => ({
+  action: BACKGROUND_EVENTS.GET_PLAYER_STATE
+})
 
 // Responses
 

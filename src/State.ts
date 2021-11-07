@@ -29,6 +29,7 @@ export default class ApplicationState {
   }
 
   clearPodcast() {
+    console.log('yeap')
     localStorage.removeItem(CURRENT_PODCAST_INFO);
     localStorage.removeItem(CURRENT_PODCAST_IMAGE);
     return true;
@@ -58,10 +59,10 @@ export default class ApplicationState {
   }
 
   setEpisode(episode: IEpisodeState, podcastPromise?: Promise<IPodcast>) {
-    this.clearPodcast();
+    
     localStorage.setItem(CURRENT_EPISODE, JSON.stringify(episode));
     if (podcastPromise) {
-      podcastPromise.then((podcast) => this.fetchSimplePodcast(podcast));
+      podcastPromise.then((podcast) => this.fetchSimplePodcast(podcast)).then(() => this.clearPodcast());
     }
     return true;
   }

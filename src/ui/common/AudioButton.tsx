@@ -66,7 +66,7 @@ export default (props: {
         />
       ) : (
         <PlayIcon
-          style={{ fontSize: size || standard, color: getRGBA(color) }}
+          style={{ fontSize: size , color: getRGBA(color) }}
           className={classes.mediaButton}
         />
       )}
