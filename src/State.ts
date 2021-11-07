@@ -29,7 +29,6 @@ export default class ApplicationState {
   }
 
   clearPodcast() {
-    console.log('yeap')
     localStorage.removeItem(CURRENT_PODCAST_INFO);
     localStorage.removeItem(CURRENT_PODCAST_IMAGE);
     return true;

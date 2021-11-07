@@ -18,7 +18,6 @@ const App = () => {
       initializePopUp(),
       (response: InitializePopUpResponse) => {
         const { episode, state, podcast, podcastImage } = response.payload;
-        console.log(state);
         setEpisode(episode);
         setPlayerState(state);
         setPodcast(podcast);

@@ -25,12 +25,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const pauseAudio = () =>
   messagePlayerAction(Triggers.stop(), (response) => {
-    // console.log(response);
   });
 
 const playAudio = (episode: IEpisode, podcastURL?: string) => {
   messagePlayerAction(Triggers.load(episode, podcastURL), (response) => {
-    // console.log(response);
   });
 };
 
