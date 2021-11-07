@@ -16,6 +16,7 @@ import { PodcastImage } from "ui/utils/imageSaver";
 import { COLORS, contrastColor, getRGBA } from "ui/utils/color";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,11 +27,18 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(2),
     },
     title: {
-      flexGrow: 1,
+      marginLet: "1rem",
       display: "none",
+      textDecoration: "none",
+      color: "white",
+      fontSize: "x-large",
       [theme.breakpoints.up("sm")]: {
         display: "block",
       },
+      flexGrow: 100,
+    },
+    discovery: {
+      flexGrow: 1
     },
     search: {
       position: "relative",
@@ -114,9 +122,9 @@ export default function SearchAppBar(props: {
           >
             {back ? <ArrowBackIcon /> : <HeadsetIcon />}
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            {title}
-          </Typography>
+            <Link to={'/discovery'} className={classes.title}>
+              Discover
+            </Link>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

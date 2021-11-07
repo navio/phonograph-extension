@@ -13,14 +13,15 @@ const today = dayjs();
 export const dateFrom = (date: number) => today.from(date, true);
 
 export const displayTime = (time): string => {
-  if (Number.isNaN(time)) return "";
+  const allSeconds = +Number.parseFloat(time).toFixed();
+  if (Number.isNaN(allSeconds)) return "∞";
 
   let seconds, minutes, hours;
   seconds = minutes = hours = 0;
 
-  const allSeconds = +Number.parseFloat(time).toFixed();
 
   seconds = allSeconds % 60;
+  console.log(allSeconds);
   const remainingSeconds = Math.floor(allSeconds / 60);
 
   if (remainingSeconds > 0) {
