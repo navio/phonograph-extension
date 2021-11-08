@@ -21,7 +21,7 @@ export enum PODCAST_EVENTS {
   GET_EPISODE = "GET_EPISODE",
 }
 
-export enum PODCAST_EMMITER {
+export enum PODCAST_EMITTER {
   LIBRARY_UPDATE = "BACKGROUN_LIBRARY_UPDATED"
 }
 
@@ -125,7 +125,7 @@ export interface DeletePodcast {
 }
 
 export interface LibraryUpdate {
-  action: typeof PODCAST_EMMITER.LIBRARY_UPDATE;
+  action: typeof PODCAST_EMITTER.LIBRARY_UPDATE;
   payload: {
     library: IPodcast[]
   }

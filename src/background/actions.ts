@@ -2,7 +2,7 @@ import { IEpisode } from "podcastsuite/dist/Format";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import {
   BackgroundActions,
-  ReducerRensposeFn,
+  ReducerResponseFn,
   InitializePopUp,
   BACKGROUND_EVENTS,
   BACKGROUND_RESPONSES,
@@ -19,7 +19,7 @@ import {
   ClearEpisode,
   GetEpisodeResponse,
   GetEpisode,
-  PODCAST_EMMITER,
+  PODCAST_EMITTER,
   LibraryUpdate,
   OpenOptionsEvent,
   GetPlayerState,
@@ -27,7 +27,7 @@ import {
 
 export const messageBackgroundAction = (
   action: BackgroundActions,
-  callback: ReducerRensposeFn
+  callback: ReducerResponseFn
 ) => chrome.runtime.sendMessage(action, callback);
 
 export const initializePopUp = (): InitializePopUp => ({
@@ -117,7 +117,7 @@ export const openOptionsPage = (podcast?: string ): OpenOptionsEvent => {
 
 
 export const emitLibraryUpdate = (library: IPodcast[]): LibraryUpdate => ({
-  action: PODCAST_EMMITER.LIBRARY_UPDATE,
+  action: PODCAST_EMITTER.LIBRARY_UPDATE,
   payload: {
     library
   }
@@ -125,7 +125,7 @@ export const emitLibraryUpdate = (library: IPodcast[]): LibraryUpdate => ({
 
 export const listenerLibraryUpdate = (CB: (library: IPodcast[]) => void ) => {
   chrome.runtime.onMessage.addListener((message: LibraryUpdate) => {
-    if(message.action === PODCAST_EMMITER.LIBRARY_UPDATE){
+    if(message.action === PODCAST_EMITTER.LIBRARY_UPDATE){
       CB(message.payload.library);
     }
   });
@@ -133,5 +133,5 @@ export const listenerLibraryUpdate = (CB: (library: IPodcast[]) => void ) => {
 
 export const messagePodcastEmission = (
   message: LibraryUpdate,
-  callback?: ReducerRensposeFn
+  callback?: ReducerResponseFn
 ) => chrome.runtime.sendMessage(message, callback);
