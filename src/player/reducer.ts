@@ -1,8 +1,8 @@
 import { AudioEventsReducer, PLAYER_EVENTS, AudioState } from "./types";
-import AudioElement from "../Audio";
-import ApplicationState from "../State";
+import AudioElement from "../lib/Audio";
+import ApplicationState from "../lib/State";
 import { Emitters, messagePlayerEmission } from "./actions";
-import Podcast from "../Podcast";
+import Podcast from "../lib/Podcast";
 
 export default (
   engine: Podcast,
@@ -35,12 +35,14 @@ export default (
   );
 
   audioElement.addEventListener("timeupdate", () => {
-    messagePlayerEmission(Emitters.progress(audioElement.currentTime, audioElement.duration));
+    messagePlayerEmission(
+      Emitters.progress(audioElement.currentTime, audioElement.duration)
+    );
   });
 
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
-      case PLAYER_EVENTS.LOAD:
+      case PLAYER_EVENTS.LOAD: {
         const { episode, podcast: podcastURL } = message.payload;
         const currentEpisode = state.getEpisode();
 
@@ -60,7 +62,7 @@ export default (
         sendResponse(Emitters.loaded());
         audioElement.play().then(() => Emitters.playing(player.state, episode));
         return true;
-
+      }
       case PLAYER_EVENTS.PLAY: {
         audioElement.play().then(() => {
           sendResponse(Emitters.playing(player.state, state.getEpisode()));

@@ -1,5 +1,5 @@
 import { AudioState } from "player/types";
-import { ISimplePodcast } from "Podcast";
+import { ISimplePodcast } from "lib/Podcast";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import { PodcastImage } from "ui/utils/imageSaver";

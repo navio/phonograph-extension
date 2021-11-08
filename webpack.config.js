@@ -26,6 +26,7 @@ module.exports = {
       player: path.resolve(__dirname, 'src/player/'),
       ui: path.resolve(__dirname, 'src/ui/'),
       playlist: path.resolve(__dirname, 'src/playlist/'),
+      lib: path.resolve(__dirname, 'src/lib/'),
       src: path.resolve(__dirname, 'src/')
     },
     fallback: {

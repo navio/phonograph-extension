@@ -1,11 +1,11 @@
 import reducer from "./reducer";
 import initPlayer from "player/reducer";
 import playlist from "playlist/reducer";
-import Engine from "../Podcast";
-import ApplicationState from "../State";
+import Engine from "lib/Podcast";
+import ApplicationState from "lib/State";
 import { podcasts } from "./config";
-import AudioElement from "../Audio";
-import browser from "../Browser";
+import AudioElement from "lib/Audio";
+import browser from "lib/Browser";
 
 
 browser.setTitle("The Phonograph Extension");

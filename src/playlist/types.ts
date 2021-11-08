@@ -1,4 +1,4 @@
-import { IEpisodeState } from "State";
+import { IEpisodeState } from "lib/State";
 import { MessageResponse, ReducerRensposeFn } from "../types";
 
 export enum PLAYLIST_EVENTS {

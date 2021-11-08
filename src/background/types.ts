@@ -1,8 +1,8 @@
 import { IEpisode } from "podcastsuite/dist/Format";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
-import { MessageResponse, ReducerRensposeFn } from "../types";
+import { MessageResponse, ReducerResponseFn } from "../types";
 
-export { ReducerRensposeFn };
+export { ReducerResponseFn };
 
 export enum BACKGROUND_EVENTS {
   INIT_POPUP = "BACKGROUND_INIT_POPUP",
@@ -134,7 +134,7 @@ export interface LibraryUpdate {
 export type BackgroundEventReducer = (
   message: BackgroundActions,
   sender: chrome.runtime.MessageSender,
-  sendResponse: ReducerRensposeFn
+  sendResponse: ReducerResponseFn
 ) => void;
 
 export type BackgroundActions =

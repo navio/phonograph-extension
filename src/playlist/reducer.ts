@@ -1,9 +1,9 @@
-import Engine from "../Podcast";
-import ApplicationState from "../State";
-import AudioElement from "../Audio";
+import Engine from "../lib/Podcast";
+import ApplicationState from "lib/State";
+import AudioElement from "lib/Audio";
 import * as T from "./types";
 import { getNextResponse, playListEventResponse } from "./actions";
-import { Queue } from "../Queue";
+import { Queue } from "lib/Queue";
 
 const playlist = new Queue();
 export default (

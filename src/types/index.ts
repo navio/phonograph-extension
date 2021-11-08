@@ -1,6 +1,6 @@
 
 import { BACKGROUND_EVENTS,BACKGROUND_RESPONSES, PODCAST_RESPONSES, BackgroundActions } from "background/types";
-import {PLAYLIST_EVENT_RESPONSES} from "/playlist/types";
+import {PLAYLIST_EVENT_RESPONSES} from "../playlist/types";
 import { POPUP_EVENTS, PopUpActions } from "popup/types";
 import { OPTIONS_EVENTS, OptionsActions } from "options/types";
 import { PLAYER_EMITIONS } from "player/types";
@@ -23,7 +23,7 @@ export interface MessageResponse {
 // Response Types
 export type PopupEventFn = (props: PopUpActions) => void;
 export type OptionsEventFn = (props: OptionsActions) => void;
-export type ReducerRensposeFn = (props: MessageResponse) => void;
+export type ReducerResponseFn = (props: MessageResponse) => void;
 
 
 // All Actions

@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { Slider } from "@material-ui/core";
 import AudioButton from "../common/AudioButton";
-import { percentPlayed, AudioState, timeByPercentage } from "src/Audio";
+import { percentPlayed, AudioState, timeByPercentage } from "lib/Audio";
 import { messageBackgroundAction, initializePopUp, getPlayerState } from "background/actions";
 import {
   messagePlayerAction,
@@ -15,7 +15,7 @@ import {
 } from "player/actions";
 import { displayTime } from "ui/utils/stringsTools";
 import { InitializePopUpResponse } from "popup/types";
-import { ISimplePodcast } from "Podcast";
+import { ISimplePodcast } from "lib/Podcast";
 import { PodcastImage } from "ui/utils/imageSaver";
 import { getRGBA } from "ui/utils/color";
 import { GetPlayerState } from "background/types";
@@ -109,9 +109,10 @@ export default () => {
     messageBackgroundAction(
       getPlayerState (),
       (response: GetPlayerStatusResponse ) => {
-        const { podcast, podcastImage } = response.payload;
+        const { podcast, podcastImage, state } = response.payload;
         setPodcast(podcast);
         setMedia(podcastImage);
+        setAudioStateInternal(state);
       }
     );
   }, [episode]);
@@ -121,7 +122,7 @@ export default () => {
   }, [audioState]);
 
   const seekHandler = (_, value) => {
-    const currentTime = timeByPercentage(value, audioState);
+    const currentTime = timeByPercentage(value, audioStateInternal);
     setAudioStateInternal((state) => {
       return { ...state, currentTime };
     });

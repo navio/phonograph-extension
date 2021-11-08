@@ -1,5 +1,5 @@
 import exp = require("constants");
-import { IEpisodeState } from "State";
+import { IEpisodeState } from "lib/State";
 import * as T from "./types";
 
 export const getNext = (): T.GetNext => ({

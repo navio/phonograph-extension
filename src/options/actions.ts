@@ -1,7 +1,7 @@
-import { ISimplePodcast } from "Podcast";
+import { ISimplePodcast } from "lib/Podcast";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
-import { AudioState } from "src/Audio";
+import { AudioState } from "lib/Audio";
 import { PodcastImage } from "ui/utils/imageSaver";
 import { OPTIONS_EVENTS, InitializeOptionsResponse, GetPlayerStatusResponse } from "./types";
 

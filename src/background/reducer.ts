@@ -5,8 +5,8 @@ import {
 } from "./types";
 import { initializeResponsePopUp } from "popup/actions";
 import { getPlayerStatusResponse, initializeOptionsResponse } from "options/actions";
-import Engine from "../Podcast";
-import ApplicationState from "../State";
+import Engine from "../lib/Podcast";
+import ApplicationState from "../lib/State";
 import {
   getPodcastResponse,
   getPodcastsResponse,
@@ -15,8 +15,8 @@ import {
   emitLibraryUpdate,
   messagePodcastEmission,
 } from "./actions";
-import { IEpisodeState } from "../State";
-import AudioElement from "../Audio";
+import { IEpisodeState } from "../lib/State";
+import AudioElement from "../lib/Audio";
 import { podcasts } from "./config";
 
 const background = (

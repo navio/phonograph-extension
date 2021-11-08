@@ -9,6 +9,7 @@
         "popup": ["src/popup/*"],
         "player": ["src/player/*"],
         "ui": ["src/ui/*"],
+        "lib": ["src/lib/*"],
         "playlist": ["src/playlist/*"]
       }
     },
