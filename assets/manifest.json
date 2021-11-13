@@ -5,6 +5,9 @@
   "browser_action": {
     "name": "Phonograph"
   },
+  "permissions": [
+    "storage"
+  ],
   "background": {
     "scripts": [
       "background.js"
