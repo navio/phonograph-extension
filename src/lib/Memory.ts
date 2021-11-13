@@ -45,11 +45,13 @@ export default class Memory {
   private memory: IMemory;
   private local;
 
-  constructor({
-    podcasts = [],
-    listened = {},
-    playlist = [],
-  }: IMemoryElements) {
+  constructor(props: IMemoryElements = {}) {
+    const {
+      podcasts = [],
+      listened = {},
+      playlist = [],
+    } = props;
+
     this.listened = listened;
     this.library = podcasts;
     this.playlist = playlist;
@@ -100,6 +102,10 @@ export default class Memory {
     await this.local.listened.delete(key);
     return true;
   }
+  
+  async sync(){
+    return await this.setStorageMemory(this.memory);
+  }
 
   getEpisode(episode: IEpisodeState | IEpisode): IMemoryState | undefined {
     const { link: key, guid } = episode;
@@ -112,9 +118,6 @@ export default class Memory {
     return this.listened[key];
   }
 
-  async sync(){
-    return await this.setStorageMemory(this.memory);
-  }
 
   private async init() {
     const sync = await this.getStorageMemory();
