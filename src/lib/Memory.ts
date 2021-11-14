@@ -38,7 +38,13 @@ const LISTENED = "LISTENED";
 const LIBRARY = "LIBRARY";
 const PLAYLIST = "PLAYLIST";
 
+interface IAddEpisodeConfig {
+  hard: boolean;
+  async?: boolean;
+}
+
 export default class Memory {
+  public ready: boolean;
   private listened: IMemoryListened;
   private library: IPodcastLibrary;
   private playlist: IEpisodeState[];
@@ -46,11 +52,7 @@ export default class Memory {
   private local;
 
   constructor(props: IMemoryElements = {}) {
-    const {
-      podcasts = [],
-      listened = {},
-      playlist = [],
-    } = props;
+    const { podcasts = [], listened = {}, playlist = [] } = props;
 
     this.listened = listened;
     this.library = podcasts;
@@ -67,11 +69,14 @@ export default class Memory {
       podcasts: PodcastSuite.createDatabase(LIBRARY, DBNAME),
       playlist: PodcastSuite.createDatabase(PLAYLIST, DBNAME),
     };
-    this.init();
+
   }
 
-  async addEpisode(episode: IEpisodeState): Promise<boolean> {
-    const { link: key, time, duration, guid } = episode;
+  async addEpisode(
+    episode: IEpisodeState,
+    {hard}: IAddEpisodeConfig = { hard: false, async: false }
+  ): Promise<boolean> {
+    const { podcast: key, time, duration, guid } = episode;
     const episodeState: IMemoryState = {
       guid,
       lastPosition: time,
@@ -83,7 +88,10 @@ export default class Memory {
     };
     podcastMemory.episodes[guid] = episodeState;
     this.listened[key] = podcastMemory;
-    return this.local.set(key, JSON.stringify(podcastMemory)).then(true);
+    if (!hard) return Promise.resolve(true);
+    return this.local.listened
+      .set(key, JSON.stringify(podcastMemory))
+      .then(true);
   }
 
   async markEpisodeComplete(
@@ -93,7 +101,7 @@ export default class Memory {
       ...episode,
       time: episode.duration,
     };
-    return await this.addEpisode(completeEpisode);
+    return await this.addEpisode(completeEpisode, { hard: true });
   }
 
   async erasePodcast(podcast: string | ISimplePodcast) {
@@ -102,15 +110,20 @@ export default class Memory {
     await this.local.listened.delete(key);
     return true;
   }
-  
-  async sync(){
+
+  async sync() {
     return await this.setStorageMemory(this.memory);
   }
 
   getEpisode(episode: IEpisodeState | IEpisode): IMemoryState | undefined {
-    const { link: key, guid } = episode;
+    const { podcast: key, guid } = episode;
     const podcastMemory: IMemoryPodcast = this.listened[key];
-    return podcastMemory && podcastMemory[guid];
+    return podcastMemory && podcastMemory.episodes[guid];
+  }
+
+  getEpisodeTime(episode: IEpisodeState | IEpisode): number {
+    const response = this.getEpisode(episode);
+    return response ? response.lastPosition : 0;
   }
 
   getPodcast(podcast: string | ISimplePodcast): IMemoryPodcast | undefined {
@@ -118,25 +131,39 @@ export default class Memory {
     return this.listened[key];
   }
 
+  isReady() {
+    return this.ready;
+  }
 
   private async init() {
     const sync = await this.getStorageMemory();
+    const listenedLocalArray = await this.local.listened.entries();
+    const listenedLocal: IMemoryListened = listenedLocalArray.reduce(
+      (final, current) => {
+        const parsed = JSON.parse(current);
+        const currentObj = { [parsed.url]: parsed };
+        return { currentObj, ...final };
+      },
+      {}
+    );
 
     this.listened = {
       ...sync.listened,
-      ...JSON.parse((await this.local.listened) || {}),
+      ...listenedLocal,
       ...this.listened,
     };
     this.library = {
       ...sync.podcasts,
-      ...JSON.parse((await this.local.podcasts) || {}),
-      ...this.library,
+      // ...JSON.parse((await this.local.podcasts) || {}),
+      //...this.library,
     };
     this.playlist = {
       ...sync.playlist,
-      ...JSON.parse((await this.local.playlist) || {}),
-      ...this.playlist,
+      // ...JSON.parse((await this.local.playlist) || {}),
+      // ...this.playlist,
     };
+
+    this.ready = true;
     return true;
   }
 

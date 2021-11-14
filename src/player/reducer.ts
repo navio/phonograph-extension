@@ -3,11 +3,13 @@ import AudioElement from "../lib/Audio";
 import ApplicationState from "../lib/State";
 import { Emitters, messagePlayerEmission } from "./actions";
 import Podcast from "../lib/Podcast";
+import Memory from "lib/Memory";
 
 export default (
   engine: Podcast,
   state: ApplicationState,
-  player: AudioElement
+  player: AudioElement,
+  memory: Memory
 ) => {
   const { audioElement } = player;
 
@@ -39,34 +41,53 @@ export default (
       Emitters.progress(audioElement.currentTime, audioElement.duration)
     );
   });
+  
+  const hard = true;
 
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
       case PLAYER_EVENTS.LOAD: {
         const { episode, podcast: podcastURL } = message.payload;
         const currentEpisode = state.getEpisode();
+        
 
+        // If same episode receive play
         if (currentEpisode && episode.guid === currentEpisode.guid) {
           audioElement
             .play()
-            .then(() => sendResponse(Emitters.playing(player.state, episode)));
+            .then(() => sendResponse(Emitters.playing(player.state, episode)))
+            .then(() => memory.addEpisode({ ...currentEpisode, time: audioElement.currentTime}, {hard}));
           return true;
         }
-
-        const newEpisode = { ...episode, time: 0 };
+        // If a different episode was selected.
+        // save the position of the previous.
+        memory.addEpisode({ ...currentEpisode, url: podcastURL, time: audioElement.currentTime}, {hard});
+        
+        // Create the new episode information. 
+        // Initializing time from memory.∫
+        const initialTime = memory.getEpisodeTime({...episode, url: podcastURL});
+        const newEpisode = { ...episode, url: podcastURL, time: initialTime };
         state.setEpisode(newEpisode, engine.getPodcast(podcastURL));
         const url =
           typeof episode.media === "string" ? episode.media : episode.media.url;
-
+        
+        // console.log('todo', initialTime, newEpisode);
         audioElement.src = url;
+        audioElement.currentTime = initialTime;
+        
+        // console.log(newEpisode, audioElement.currentTime);
+        
         sendResponse(Emitters.loaded());
-        audioElement.play().then(() => Emitters.playing(player.state, episode));
+        audioElement.play()
+        .then(() => Emitters.playing(player.state, episode))
+        .then(() => memory.addEpisode(newEpisode, {hard}));
         return true;
       }
       case PLAYER_EVENTS.PLAY: {
         audioElement.play().then(() => {
           sendResponse(Emitters.playing(player.state, state.getEpisode()));
-        });
+        })
+        .then(() => memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime}, {hard}));
         return true;
       }
       case PLAYER_EVENTS.STOP:
@@ -79,18 +100,22 @@ export default (
             state.getEpisode()
           )
         );
+        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime});
         return true;
       case PLAYER_EVENTS.FORWARD:
         audioElement.currentTime += message.payload.time;
         sendResponse(Emitters.playing(player.state, state.getEpisode()));
+        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime});
         return true;
       case PLAYER_EVENTS.REWIND:
         audioElement.currentTime -= message.payload.time;
         sendResponse(Emitters.playing(player.state, state.getEpisode()));
+        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime});
         return true;
       case PLAYER_EVENTS.SEEK:
         audioElement.currentTime = message.payload.time;
         sendResponse(Emitters.playing(player.state, state.getEpisode()));
+        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime});
         return true;
       case PLAYER_EVENTS.STATE:
         sendResponse(Emitters.playing(player.state, state.getEpisode()));

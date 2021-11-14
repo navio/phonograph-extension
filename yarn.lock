@@ -3760,10 +3760,10 @@ pngjs@^3.3.3:
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.4.0.tgz#99ca7d725965fb655814eaf65f38f12bbdbf555f"
   integrity sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==
 
-podcastsuite@^1.1.9:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/podcastsuite/-/podcastsuite-1.1.9.tgz#408f5d49ccc165cc9253d049fe2496cf19517f58"
-  integrity sha512-oH5eAjPvvqTY1dHiELlM1OxPf76pNcb5JMagiiimtWuOaRZPu9jdwKhIH4qSrXGLq7SmWxwzwTPPNTtebrVudg==
+podcastsuite@^1.1.10:
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/podcastsuite/-/podcastsuite-1.1.10.tgz#14bd71099156bb0fe428b0bcf3df59cd9455cdab"
+  integrity sha512-z6F17IzrY4P0OPiv7cs3DROHv+YhVMNNvcR1HXuqF8fwpN2xS8IWGhM+Mygduj+PqVQjfeC6VkR3lHbUo/6hdA==
   dependencies:
     "@babel/plugin-proposal-decorators" "^7.8.3"
     idb-keyval "^3.2.0"
