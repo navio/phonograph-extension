@@ -10,9 +10,11 @@ import engine from "podcastsuite";
 import { deletePodcast, getPodcast, messageBackgroundAction } from "background/actions";
 import { GetPodcastResponse } from "background/types";
 import { podcasts } from "background/config";
+import { IMemoryEpisodes, IMemoryPodcast } from "lib/Memory";
 
 export default () => {
   const [podcast, setPodcast] = useState<IPodcast>(null);
+  const [listened, setListened] = useState<IMemoryEpisodes>({})
   const [image, setImage] = useState<PodcastImage>(null);
   const [inLibrary, setInLibrary] = useState<boolean>(true);
   const { collection } = useContext(AppContext);
@@ -36,8 +38,10 @@ export default () => {
       messageBackgroundAction(
         getPodcast(url),
         (response: GetPodcastResponse) => {
-          const { podcast: fetchedPodcast } = response.payload;
+          const { podcast: fetchedPodcast, listened } = response.payload;
+          const { episodes: listenedEpisodes = {}} = listened;
           setPodcast(fetchedPodcast);
+          setListened(listenedEpisodes)
         }
       );
     }
@@ -76,7 +80,7 @@ export default () => {
         subscribe={subscribePodcast}
         unsubscribe={unsubscribePodcast}
       />
-      <List podcast={podcast} image={image} />
+      <List podcast={podcast} listened={listened} image={image} />
     </>
   ) : (
     <Loading />

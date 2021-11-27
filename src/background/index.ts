@@ -19,6 +19,6 @@ const state = new ApplicationState();
 const player = new AudioElement();
 
 // Initialize Reducer
-browser.instance.runtime.onMessage.addListener(reducer(engine, state, player));
+browser.instance.runtime.onMessage.addListener(reducer(engine, state, player, memory));
 browser.instance.runtime.onMessage.addListener(initPlayer(engine, state, player, memory));
 browser.instance.runtime.onMessage.addListener(playlist(engine, state, player));

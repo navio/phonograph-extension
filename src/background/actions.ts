@@ -1,3 +1,4 @@
+import { IMemoryPodcast } from "lib/Memory";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import {
@@ -65,9 +66,9 @@ export const getPodcastsResponse = (
   payload: { library },
 });
 
-export const getPodcastResponse = (podcast: IPodcast): GetPodcastResponse => ({
+export const getPodcastResponse = (podcast: IPodcast, listened: IMemoryPodcast): GetPodcastResponse => ({
   action: PODCAST_RESPONSES.PODCAST,
-  payload: { podcast },
+  payload: { podcast, listened },
 });
 
 // Podcast

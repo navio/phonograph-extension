@@ -1,3 +1,4 @@
+import { IMemoryPodcast } from "lib/Memory";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { IPodcast } from "podcastsuite/dist/PodcastSuite";
 import { MessageResponse, ReducerResponseFn } from "../types";
@@ -56,6 +57,7 @@ export interface GetPodcastResponse extends MessageResponse {
   action: PODCAST_RESPONSES.PODCAST,
   payload: {
     podcast: IPodcast;
+    listened: IMemoryPodcast;
   };
 }
 

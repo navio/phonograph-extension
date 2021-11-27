@@ -20,6 +20,7 @@ import { PodcastImage } from "ui/utils/imageSaver";
 
 import { AppContext } from "../index";
 import AudioButton from "ui/common/AudioButton";
+import { IMemoryEpisodes, IMemoryPodcast, IMemoryState } from "lib/Memory";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,8 +48,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const EpisodeListDescription = (props: { episode: IEpisode }) => {
-  const { episode } = props;
+const EpisodeListDescription = (props: { episode: IEpisode, listened: IMemoryState }) => {
+  const { episode, listened } = props;
   return (
     <ListItemText
       primary={
@@ -57,7 +58,7 @@ const EpisodeListDescription = (props: { episode: IEpisode }) => {
             <Typography color={"secondary"}>Season {episode.season}</Typography>
           )}
           <Typography component="div" variant="subtitle1" noWrap>
-            {clearText(episode.title)}
+            {clearText(episode.title)} {listened && listened.lastPosition}
           </Typography>
           <Typography variant="overline" component="div">
             {episode.episodeType && episode.episodeType !== "full" && (
@@ -80,10 +81,11 @@ const EpisodeListDescription = (props: { episode: IEpisode }) => {
 export default function EpisodeList(props: {
   podcast: IPodcast;
   image: PodcastImage;
+  listened: IMemoryEpisodes;
 }) {
   const [amount, setAmount] = useState<number>(1);
   const classes = useStyles();
-  const { podcast, image } = props;
+  const { podcast, image, listened } = props;
   const episodeList = podcast.items.slice(0, 20 * amount);
   const { episode: selectedEpisode, audioState } = useContext(AppContext);
   return (
@@ -106,7 +108,7 @@ export default function EpisodeList(props: {
                 episode={episode}
                 podcastURL={podcast.url}
               />
-              <EpisodeListDescription episode={episode} />
+              <EpisodeListDescription listened={listened[episode.guid]} episode={episode} />
               <ListItemSecondaryAction>
                 <MoreVertIcon />
               </ListItemSecondaryAction>

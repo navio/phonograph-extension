@@ -18,11 +18,13 @@ import {
 import { IEpisodeState } from "../lib/State";
 import AudioElement from "../lib/Audio";
 import { podcasts } from "./config";
+import Memory, { IMemory, IMemoryPodcast } from "lib/Memory";
 
 const background = (
   engine: Engine,
   state: ApplicationState,
-  player: AudioElement
+  player: AudioElement,
+  memory: Memory
 ) => {
   const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
     switch (message.action) {
@@ -48,8 +50,9 @@ const background = (
 
       case PODCAST_EVENTS.GET_PODCAST: {
         const { url, save } = message.payload;
+          const podcastMemory: IMemoryPodcast = memory.getPodcast(url);
           engine.getPodcast(url, {save})
-          .then((podcast) => sendResponse(getPodcastResponse(podcast)))
+          .then((podcast) => sendResponse(getPodcastResponse(podcast, podcastMemory)))
           .then(() => {
             if(save){
               engine.getPodcasts().then( podcasts => {

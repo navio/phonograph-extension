@@ -1,10 +1,10 @@
-import { AudioState } from "src/Audio";
+import { AudioState } from "lib/Audio";
 import { IEpisode } from "podcastsuite/dist/Format";
 import {
     POPUP_EVENTS,
     InitializePopUpResponse,
   } from "./types";
-import { ISimplePodcast } from "src/Podcast";
+import { ISimplePodcast } from "lib/Podcast";
 import { PodcastImage } from "ui/utils/imageSaver";
 
   export const initializeResponsePopUp = (

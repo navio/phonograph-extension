@@ -127,8 +127,8 @@ export default class Memory {
   }
 
   getPodcast(podcast: string | ISimplePodcast): IMemoryPodcast | undefined {
-    const key = typeof podcast === "string" ? podcast : podcast.url;
-    return this.listened[key];
+    const url = typeof podcast === "string" ? podcast : podcast.url;
+    return this.listened[url] || {url};
   }
 
   isReady() {
