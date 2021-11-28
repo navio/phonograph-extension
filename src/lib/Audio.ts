@@ -23,8 +23,8 @@ export const timeByPercentage = (percentage, audio: AudioState) =>
 export default class AudioElement extends Audio {
   public audioElement: HTMLAudioElement;
 
-  public getOvewritres: Map<IProperty, IGetOverwritesFn>;
-  public setOvewritres: Map<IProperty, ISetOverwritesFn>;
+  public getOverwrites: Map<IProperty, IGetOverwritesFn>;
+  public setOverwrites: Map<IProperty, ISetOverwritesFn>;
 
   private audioState: AudioState = {
     currentTime: 0,
@@ -34,8 +34,8 @@ export default class AudioElement extends Audio {
 
   constructor(audioElement?: HTMLAudioElement) {
     super();
-    this.getOvewritres = new Map();
-    this.setOvewritres = new Map();
+    this.getOverwrites = new Map();
+    this.setOverwrites = new Map();
     if (!audioElement) {
       const defaultElement: HTMLAudioElement = document.createElement("audio");
       document.body.appendChild(defaultElement);
@@ -49,14 +49,14 @@ export default class AudioElement extends Audio {
   private generateProxy() {
     return new Proxy(this, {
       get: (target, property) => {
-        if (this.getOvewritres.has(property)) {
-          return this.getOvewritres.get(property)(this.audioElement, property);
+        if (this.getOverwrites.has(property)) {
+          return this.getOverwrites.get(property)(this.audioElement, property);
         }
         return Reflect.get(this.audioElement, property);
       },
       set: (target, property, value) => {
-        if (this.setOvewritres.has(property)) {
-          return this.setOvewritres.get(property)(
+        if (this.setOverwrites.has(property)) {
+          return this.setOverwrites.get(property)(
             this.audioElement,
             property,
             value
