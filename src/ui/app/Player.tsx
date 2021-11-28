@@ -109,7 +109,6 @@ export default () => {
     messageBackgroundAction(
       getPlayerState (),
       (response: GetPlayerStatusResponse ) => {
-        // console.log(response);
         const { podcast, podcastImage, state } = response.payload;
         setPodcast(podcast);
         setMedia(podcastImage);

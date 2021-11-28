@@ -18,6 +18,7 @@ import {
 import { IEpisodeState } from "../lib/State";
 import AudioElement from "../lib/Audio";
 import { podcasts } from "./config";
+import FetchImage, { PodcastImage } from "ui/utils/imageSaver";
 import Memory, { IMemory, IMemoryPodcast } from "lib/Memory";
 
 const background = (
@@ -113,11 +114,20 @@ const background = (
       }
 
       case BACKGROUND_EVENTS.GET_PLAYER_STATE: {
-        console.log('requested')
         const audioState = player.state;
-        const podcastImage = state.getPodcastImage();
-        const podcastInfo = state.getSimplePodcast();
-        sendResponse(getPlayerStatusResponse(state.getEpisode(), audioState, podcastInfo, podcastImage));
+        const episode: IEpisodeState = state.getEpisode();
+
+        const { url } = episode;
+
+        const getCurrentEpisode = async (url: string) => {
+          const {items, ...podcastInfo} = await engine.getPodcast(url);
+          const podcastImage = await FetchImage(podcastInfo.image);
+          return {podcastInfo, podcastImage}
+        }
+
+        getCurrentEpisode(url).then(({podcastImage, podcastInfo}) => {
+          sendResponse(getPlayerStatusResponse(episode, audioState, podcastInfo, podcastImage));
+        });
         return true;
       }
     }
