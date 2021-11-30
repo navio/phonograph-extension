@@ -70,6 +70,8 @@ export default class Memory {
       playlist: PodcastSuite.createDatabase(PLAYLIST, DBNAME),
     };
 
+    this.init();
+
   }
 
   async addEpisode(
@@ -91,6 +93,7 @@ export default class Memory {
     if (!hard) return Promise.resolve(true);
     return this.local.listened
       .set(key, JSON.stringify(podcastMemory))
+      .then(() => console.log(podcastMemory))
       .then(true);
   }
 
@@ -136,32 +139,35 @@ export default class Memory {
   }
 
   private async init() {
-    const sync = await this.getStorageMemory();
+    const sync = await this.getStorageMemory() || { listened: {}, podcasts: {}, playlist: {} };
     const listenedLocalArray = await this.local.listened.entries();
     const listenedLocal: IMemoryListened = listenedLocalArray.reduce(
       (final, current) => {
         const parsed = JSON.parse(current);
         const currentObj = { [parsed.url]: parsed };
-        return { currentObj, ...final };
+        return { ...currentObj, ...final };
       },
       {}
     );
 
+
     this.listened = {
-      ...sync.listened,
-      ...listenedLocal,
       ...this.listened,
+      ...listenedLocal,
+      ...sync.listened,
     };
-    this.library = {
-      ...sync.podcasts,
-      // ...JSON.parse((await this.local.podcasts) || {}),
-      //...this.library,
-    };
-    this.playlist = {
-      ...sync.playlist,
-      // ...JSON.parse((await this.local.playlist) || {}),
-      // ...this.playlist,
-    };
+    
+    // this.library = {
+    //   ...sync.podcasts,
+    //   // ...JSON.parse((await this.local.podcasts) || {}),
+    //   //...this.library,
+    //   // 'empty': 1;
+    // };
+    // this.playlist = {
+    //   ...sync.playlist,
+    //   // ...JSON.parse((await this.local.playlist) || {}),
+    //   // ...this.playlist,
+    // };
 
     this.ready = true;
     return true;

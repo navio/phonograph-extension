@@ -12,7 +12,7 @@ export default (
   memory: Memory
 ) => {
   const { audioElement } = player;
-
+  const hard = true;
   // player.audioElement.autoplay = true;
 
   audioElement.addEventListener("pause", () =>
@@ -33,7 +33,11 @@ export default (
     messagePlayerEmission(Emitters.canPlay(player.state))
   );
   audioElement.addEventListener("ended", () =>
-    messagePlayerEmission(Emitters.ended(player.state))
+    {
+      messagePlayerEmission(Emitters.ended(player.state));
+      const currentEpisode = state.getEpisode();
+      memory.addEpisode({ ...currentEpisode, time: audioElement.currentTime, duration: audioElement.duration}, {hard});
+    }
   );
 
   audioElement.addEventListener("timeupdate", () => {
@@ -42,7 +46,6 @@ export default (
     );
   });
   
-  const hard = true;
 
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
@@ -87,7 +90,7 @@ export default (
         audioElement.play().then(() => {
           sendResponse(Emitters.playing(player.state, state.getEpisode()));
         })
-        .then(() => memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime}, {hard}));
+        .then(() => memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime, duration: audioElement.duration}, {hard}));
         return true;
       }
       case PLAYER_EVENTS.STOP:
@@ -100,22 +103,22 @@ export default (
             state.getEpisode()
           )
         );
-        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime});
+        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime, duration: audioElement.duration},{hard});
         return true;
       case PLAYER_EVENTS.FORWARD:
         audioElement.currentTime += message.payload.time;
         sendResponse(Emitters.playing(player.state, state.getEpisode()));
-        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime});
+        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime, duration: audioElement.duration});
         return true;
       case PLAYER_EVENTS.REWIND:
         audioElement.currentTime -= message.payload.time;
         sendResponse(Emitters.playing(player.state, state.getEpisode()));
-        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime});
+        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime, duration: audioElement.duration});
         return true;
       case PLAYER_EVENTS.SEEK:
         audioElement.currentTime = message.payload.time;
         sendResponse(Emitters.playing(player.state, state.getEpisode()));
-        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime});
+        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime, duration: audioElement.duration});
         return true;
       case PLAYER_EVENTS.STATE:
         sendResponse(Emitters.playing(player.state, state.getEpisode()));
