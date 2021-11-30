@@ -122,7 +122,7 @@ export default function SearchAppBar(props: {
           >
             {back ? <ArrowBackIcon /> : <HeadsetIcon />}
           </IconButton>
-            <Link to={'/discovery'} className={classes.title}>
+            <Link style={{color: overwrite.color }} to={'/discovery'} className={classes.title}>
               Discover
             </Link>
           <div className={classes.search}>
