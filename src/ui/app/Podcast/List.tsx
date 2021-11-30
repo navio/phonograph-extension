@@ -86,7 +86,7 @@ const EpisodeListDescription = (props: {
               style={{ marginLeft: "5px" }}
               size="small"
               icon={<HeadsetIcon />}
-              label={ !listened.completed ? 'Completed' :`${displayTime(listened.lastPosition)}`}
+              label={ listened.completed ? 'Completed' :`${displayTime(listened.lastPosition)}`}
             />
           ) : (
             ""

@@ -7,14 +7,18 @@ import Top from "./Top";
 import List from "./List";
 import Header from "../Header";
 import engine from "podcastsuite";
-import { deletePodcast, getPodcast, messageBackgroundAction } from "background/actions";
+import {
+  deletePodcast,
+  getPodcast,
+  messageBackgroundAction,
+} from "background/actions";
 import { GetPodcastResponse } from "background/types";
 import { podcasts } from "background/config";
 import { IMemoryEpisodes, IMemoryPodcast } from "lib/Memory";
 
 export default () => {
   const [podcast, setPodcast] = useState<IPodcast>(null);
-  const [listened, setListened] = useState<IMemoryEpisodes>({})
+  const [listened, setListened] = useState<IMemoryEpisodes>({});
   const [image, setImage] = useState<PodcastImage>(null);
   const [inLibrary, setInLibrary] = useState<boolean>(true);
   const { collection } = useContext(AppContext);
@@ -34,19 +38,16 @@ export default () => {
       setInLibrary(true);
     } else {
       setPodcast(undefined);
-     setInLibrary(false);
-      messageBackgroundAction(
-        getPodcast(url),
-        (response: GetPodcastResponse) => {
-          const { podcast: fetchedPodcast, listened } = response.payload;
-          const { episodes: listenedEpisodes = {}} = listened;
-          setPodcast(fetchedPodcast);
-          setListened(listenedEpisodes)
-        }
-      );
+      setInLibrary(false);
     }
+    messageBackgroundAction(getPodcast(url), (response: GetPodcastResponse) => {
+      const { podcast: fetchedPodcast, listened } = response.payload;
+      const { episodes: listenedEpisodes = {} } = listened;
+      setPodcast(fetchedPodcast);
+      setListened(listenedEpisodes);
+    });
   }, [PodcastURL, collection]);
-  
+
   useEffect(() => {
     if (podcast) {
       imageFetcher(podcast.image).then((media) => {
@@ -62,13 +63,13 @@ export default () => {
         setInLibrary(true);
       }
     );
-  }
+  };
 
   const unsubscribePodcast = (url: string) => {
     messageBackgroundAction(deletePodcast(url), () => {
       setInLibrary(false);
     });
-  }
+  };
 
   return podcast && image ? (
     <>

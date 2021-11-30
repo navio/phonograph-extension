@@ -56,12 +56,12 @@ export default (
           audioElement
             .play()
             .then(() => sendResponse(Emitters.playing(player.state, episode)))
-            .then(() => memory.addEpisode({ ...currentEpisode, time: audioElement.currentTime}, {hard}));
+            .then(() => memory.addEpisode({ ...currentEpisode, time: audioElement.currentTime, duration: audioElement.duration}, {hard}));
           return true;
         }
         // If a different episode was selected.
         // save the position of the previous.
-        memory.addEpisode({ ...currentEpisode, url: podcastURL, time: audioElement.currentTime}, {hard});
+        memory.addEpisode({ ...currentEpisode, url: podcastURL, time: audioElement.currentTime, duration: audioElement.duration}, {hard});
         
         // Create the new episode information. 
         // Initializing time from memory.∫
