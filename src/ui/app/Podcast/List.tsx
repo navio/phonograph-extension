@@ -10,11 +10,12 @@ import { IPodcast } from "..";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import HeadsetIcon from "@material-ui/icons/Headset";
 
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 
-import { clearText, dateFrom } from "ui/utils/stringsTools";
+import { clearText, dateFrom, displayTime } from "ui/utils/stringsTools";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { PodcastImage } from "ui/utils/imageSaver";
 
@@ -48,7 +49,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const EpisodeListDescription = (props: { episode: IEpisode, listened: IMemoryState }) => {
+const EpisodeListDescription = (props: {
+  episode: IEpisode;
+  listened: IMemoryState;
+}) => {
   const { episode, listened } = props;
   return (
     <ListItemText
@@ -57,9 +61,6 @@ const EpisodeListDescription = (props: { episode: IEpisode, listened: IMemorySta
           {episode.season && (
             <Typography color={"secondary"}>Season {episode.season}</Typography>
           )}
-          <Typography component="div" variant="subtitle1" noWrap>
-            {clearText(episode.title)} {listened && listened.lastPosition}
-          </Typography>
           <Typography variant="overline" component="div">
             {episode.episodeType && episode.episodeType !== "full" && (
               <Chip
@@ -71,9 +72,27 @@ const EpisodeListDescription = (props: { episode: IEpisode, listened: IMemorySta
               />
             )}
           </Typography>
+          <Typography component="div" variant="subtitle1" noWrap>
+            {clearText(episode.title)}
+          </Typography>
         </>
       }
-      secondary={dateFrom(episode.created)}
+      secondary={
+        <>
+          {dateFrom(episode.created)}{" "}
+          
+          {listened ? (
+            <Chip
+              style={{ marginLeft: "5px" }}
+              size="small"
+              icon={<HeadsetIcon />}
+              label={ !listened.completed ? 'Completed' :`${displayTime(listened.lastPosition)}`}
+            />
+          ) : (
+            ""
+          )}
+        </>
+      }
     />
   );
 };
@@ -108,7 +127,10 @@ export default function EpisodeList(props: {
                 episode={episode}
                 podcastURL={podcast.url}
               />
-              <EpisodeListDescription listened={listened[episode.guid]} episode={episode} />
+              <EpisodeListDescription
+                listened={listened[episode.guid]}
+                episode={episode}
+              />
               <ListItemSecondaryAction>
                 <MoreVertIcon />
               </ListItemSecondaryAction>
@@ -117,16 +139,18 @@ export default function EpisodeList(props: {
           </>
         ))}
       </List>
-     { podcast.items.length > episodeList.length && <Button
-        onClick={() => setAmount(amount + 1)}
-        variant="outlined"
-        style={{ margin: "1rem auto", width: "80%" }}
-        size="large"
-        color="primary"
-      >
-        {" "}
-        Load More Episodes{" "}
-      </Button>}
+      {podcast.items.length > episodeList.length && (
+        <Button
+          onClick={() => setAmount(amount + 1)}
+          variant="outlined"
+          style={{ margin: "1rem auto", width: "80%" }}
+          size="large"
+          color="primary"
+        >
+          {" "}
+          Load More Episodes{" "}
+        </Button>
+      )}
     </div>
   );
 }
