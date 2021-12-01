@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { IPodcast as IPodcastSuitePodcast } from "podcastsuite/dist/PodcastSuite";
 import Header from "./Header";
 import Library from "./Library";
@@ -8,8 +8,12 @@ import Player from "./Player";
 import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { AudioState } from "src/Audio";
-import Discovery from './Discovery';
+import Discovery from "./Discovery";
 import Search from "./Search";
+
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({});
 
 export type IPodcast = IPodcastSuitePodcast;
 
@@ -19,38 +23,39 @@ export interface IAppProps {
   audioState: AudioState;
 }
 
-export type IAppContext = Partial<IAppProps>
+export type IAppContext = Partial<IAppProps>;
 
 export const AppContext = React.createContext<IAppContext>({
-  collection: []
+  collection: [],
 });
-
 
 export default function App(props: IAppProps) {
   const { collection, episode, audioState } = props;
-  
+
   return (
-    <AppContext.Provider value={{ collection, episode, audioState }}>
-      <Router>
-        <Switch>
-          <Route path="/podcast/:podcast">
-            <Podcast />
-          </Route>
-          <Route path="/discovery">
-            <Header back title="Discovery" />
-            <Discovery />
-          </Route>
-          <Route path="/search">
-            <Header title="Search" />
-            <Search />
-          </Route>
-          <Route path="/">
-            <Header title="Library" />
-            <Library />
-          </Route>
-        </Switch>
-      </Router>
-      <Player />
-    </AppContext.Provider>
+    <ThemeProvider theme={theme}>
+      <AppContext.Provider value={{ collection, episode, audioState }}>
+        <Router>
+          <Switch>
+            <Route path="/podcast/:podcast">
+              <Podcast />
+            </Route>
+            <Route path="/discovery">
+              <Header back title="Discovery" />
+              <Discovery />
+            </Route>
+            <Route path="/search">
+              <Header title="Search" />
+              <Search />
+            </Route>
+            <Route path="/">
+              <Header title="Library" />
+              <Library />
+            </Route>
+          </Switch>
+        </Router>
+        <Player />
+      </AppContext.Provider>
+    </ThemeProvider>
   );
 }

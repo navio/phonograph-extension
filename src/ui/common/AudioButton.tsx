@@ -1,16 +1,12 @@
 import React from "react";
-import {
-  createStyles,
-  ListItemIcon,
-  makeStyles,
-  Theme,
-  IconButton,
-} from "@material-ui/core";
+import { ListItemIcon, Theme, IconButton } from "@mui/material";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import { AudioState } from "player/types";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { getRGBA, IColor } from "ui/utils/color";
-import PlayIcon from "@material-ui/icons/PlayArrow";
-import PauseIcon from "@material-ui/icons/PauseOutlined";
+import PlayIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/PauseOutlined";
 import { messagePlayerAction, Triggers } from "player/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -56,7 +52,7 @@ export default (props: {
           playAudio(episode, podcastURL);
         }
       }}
-    >
+      size="large">
       {isPlaying ? (
         <PauseIcon
           style={{ fontSize: size , color: getRGBA(color) }}

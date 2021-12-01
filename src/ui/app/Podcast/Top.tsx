@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { Theme } from "@mui/material/styles";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import { IPodcast } from "../index";
 import { PodcastImage } from "ui/utils/imageSaver";
 import { clearText, dateFrom } from "ui/utils/stringsTools";
 import { getRGBA, getRGB, contrastColor } from "ui/utils/color";
-import MicIcon from "@material-ui/icons/MicNoneOutlined";
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import { Button } from "@material-ui/core";
+import MicIcon from "@mui/icons-material/MicNoneOutlined";
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { Button } from "@mui/material";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

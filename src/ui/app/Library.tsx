@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import { AppContext, IPodcast } from "./index";
 import imageFetcher from "ui/utils/imageSaver";
-import Typography from "@material-ui/core/Typography";
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import Typography from "@mui/material/Typography";
+import { Theme } from "@mui/material/styles";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>

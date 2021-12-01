@@ -1,19 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import { Theme } from "@mui/material/styles";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import { IPodcast } from "..";
 
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import HeadsetIcon from "@material-ui/icons/Headset";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import HeadsetIcon from "@mui/icons-material/Headset";
 
-import Button from "@material-ui/core/Button";
-import Chip from "@material-ui/core/Chip";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 
 import { clearText, dateFrom, displayTime } from "ui/utils/stringsTools";
 import { IEpisode } from "podcastsuite/dist/Format";

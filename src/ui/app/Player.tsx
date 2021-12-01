@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Card } from "@material-ui/core";
+import { Card } from "@mui/material";
 import styled from "styled-components";
 import { AppContext, IPodcast, IAppContext } from "./index";
-import Typography from "@material-ui/core/Typography";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import { Slider } from "@material-ui/core";
+import Typography from "@mui/material/Typography";
+import LinearProgress from "@mui/material/LinearProgress";
+import { Slider } from "@mui/material";
 import AudioButton from "../common/AudioButton";
 import { percentPlayed, AudioState, timeByPercentage } from "lib/Audio";
 import { messageBackgroundAction, initializePopUp, getPlayerState } from "background/actions";
@@ -67,7 +67,7 @@ const ProgressContainer = styled.div`
   & > div.MuiLinearProgress-root,
   span.MuiSlider-root {
     position: absolute;
-    top: 55%;
+    top: 50%;
     width: 100%;
   }
 `;
@@ -153,12 +153,12 @@ export default () => {
                   <Title align="center">
                     {episode.title}
                     </Title>
-                  <LinearProgressStyled
+                  {/* <LinearProgressStyled
                     color={masterColor}
                     variant="buffer"
                     value={percentPlayed(audioStateInternal)}
                     valueBuffer={audioStateInternal.duration > 0 ? 100 : 0}
-                  />
+                  /> */}
                   <Slider
                     style={{ padding: "0px", color: masterColor }}
                     value={percentPlayed(audioStateInternal)}

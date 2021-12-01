@@ -114,10 +114,6 @@ export default class Memory {
     return true;
   }
 
-  async sync() {
-    return await this.setStorageMemory(this.memory);
-  }
-
   getEpisode(episode: IEpisodeState | IEpisode): IMemoryState | undefined {
     const { podcast: key, guid } = episode;
     const podcastMemory: IMemoryPodcast = this.listened[key];
@@ -139,7 +135,7 @@ export default class Memory {
   }
 
   private async init() {
-    const sync = await this.getStorageMemory() || { listened: {}, podcasts: {}, playlist: {} };
+    const sync = (await this.getStorageMemory()) || { listened: {}, podcasts: {}, playlist: {} };
     const listenedLocalArray = await this.local.listened.entries();
     const listenedLocal: IMemoryListened = listenedLocalArray.reduce(
       (final, current) => {
@@ -179,6 +175,10 @@ export default class Memory {
     );
   }
 
+  async sync() {
+    return await this.setStorageMemory(this.memory);
+  }
+  
   private setStorageMemory(memory: IMemoryElements): Promise<boolean> {
     return new Promise((acc) =>
       chrome.storage.sync.set(memory, () => acc(true))

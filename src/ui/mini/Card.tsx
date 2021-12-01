@@ -1,12 +1,14 @@
 import React, { ReactComponentElement } from 'react';
-import { Theme, createStyles, makeStyles, useTheme } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Replay10Icon from '@material-ui/icons/Replay10';
-import Forward30Icon from '@material-ui/icons/Forward30';
+import { Theme, useTheme } from '@mui/material/styles';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Replay10Icon from '@mui/icons-material/Replay10';
+import Forward30Icon from '@mui/icons-material/Forward30';
 import { messageBackgroundAction, openOptionsPage } from 'background/actions';
 import { contrastColor, getRGB, getRGBA } from 'ui/utils/color';
 import { PodcastImage } from 'ui/utils/imageSaver';
@@ -27,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flex: '1 0 auto',
-      padding: '.5rem',
+      padding: '6px !important',
       paddingBottom: 0
     },
     cover: {
@@ -69,10 +71,10 @@ export default ({title, name, image, PlayerButton, imageClick, background } : Pl
   const classes = useStyles();
   console.log(background);
   return (
-    <div className={classes.root} style={{backgroundColor: background ? getRGBA(background.colors[3]) : 'white' }} >
+    <div className={classes.root} style={{backgroundColor: background ? getRGBA(background.colors[0]) : 'white' }} >
       <div className={classes.details}>
         <CardContent className={classes.content}>
-          <Typography className={classes.titleName} style={{'color':contrastColor(background.colors[3])}} 
+          <Typography className={classes.titleName} style={{'color':contrastColor(background.colors[0])}} 
             align="center" component="h1" variant="body1">
            {title}
           </Typography>
@@ -81,11 +83,11 @@ export default ({title, name, image, PlayerButton, imageClick, background } : Pl
           </Typography>
         </CardContent>
         <div className={classes.controls}>
-          <IconButton onClick={rewindsButtonHandler} aria-label="previous">
+          <IconButton onClick={rewindsButtonHandler} aria-label="previous" size="large">
             <Replay10Icon fontSize="large"  />
           </IconButton>
           { PlayerButton}
-          <IconButton onClick={forwardButtonHandler} aria-label="next">
+          <IconButton onClick={forwardButtonHandler} aria-label="next" size="large">
             <Forward30Icon fontSize="large" />
           </IconButton>
         </div>
