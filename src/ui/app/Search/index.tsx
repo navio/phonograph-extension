@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import styled from "styled-components";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
 const Container = styled.div`

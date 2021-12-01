@@ -1,25 +1,23 @@
 import React, { useState } from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
-import {
-  createStyles,
-  fade,
-  Theme,
-  makeStyles,
-} from "@material-ui/core/styles";
-import HeadsetIcon from "@material-ui/icons/Headset";
-import SearchIcon from "@material-ui/icons/Search";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import InputBase from "@mui/material/InputBase";
+import { alpha, Theme } from "@mui/material/styles";
+import createStyles from "@mui/styles/createStyles";
+import makeStyles from "@mui/styles/makeStyles";
+import HeadsetIcon from "@mui/icons-material/Headset";
+import SearchIcon from "@mui/icons-material/Search";
 import { PodcastImage } from "ui/utils/imageSaver";
 import { COLORS, contrastColor, getRGBA } from "ui/utils/color";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles((theme: Theme) => {
+  console.log(theme);
+  return createStyles({
     root: {
       flexGrow: 1,
     },
@@ -38,14 +36,14 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 100,
     },
     discovery: {
-      flexGrow: 1
+      flexGrow: 1,
     },
     search: {
       position: "relative",
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
+      backgroundColor: alpha(theme.palette.common.white, 0.15),
       "&:hover": {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
       },
       marginRight: theme.spacing(2),
       marginLeft: 0,
@@ -70,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) =>
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create("width"),
       width: "100%",
       [theme.breakpoints.up("sm")]: {
@@ -80,8 +78,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
       },
     },
-  })
-);
+  });
+});
 
 export default function SearchAppBar(props: {
   media?: PodcastImage;
@@ -119,19 +117,24 @@ export default function SearchAppBar(props: {
                 history.push("/");
               }
             }}
+            size="large"
           >
             {back ? <ArrowBackIcon /> : <HeadsetIcon />}
           </IconButton>
-            <Link style={{color: overwrite.color }} to={'/discovery'} className={classes.title}>
-              Discover
-            </Link>
+          <Link
+            style={{ color: overwrite.color }}
+            to={"/discovery"}
+            className={classes.title}
+          >
+            Discover
+          </Link>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
               placeholder="Search podcasts"
-               classes={{
+              classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}

@@ -135,7 +135,7 @@ export default class Memory {
   }
 
   private async init() {
-    const sync = await this.getStorageMemory() || { listened: {}, podcasts: {}, playlist: {} };
+    const sync = (await this.getStorageMemory()) || { listened: {}, podcasts: {}, playlist: {} };
     const listenedLocalArray = await this.local.listened.entries();
     const listenedLocal: IMemoryListened = listenedLocalArray.reduce(
       (final, current) => {
