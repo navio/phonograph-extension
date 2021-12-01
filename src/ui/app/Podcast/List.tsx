@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: "column",
       backgroundColor: theme.palette.background.paper,
       justifyContent: "center",
+      color: theme.palette.text.primary
     },
     list: {
       margin: "0 4rem",
@@ -74,7 +75,7 @@ const EpisodeListDescription = (props: {
               />
             )}
           </Typography>
-          <Typography component="div" variant="subtitle1" noWrap>
+          <Typography component="p" variant="subtitle1" noWrap>
             {clearText(episode.title)}
           </Typography>
         </>

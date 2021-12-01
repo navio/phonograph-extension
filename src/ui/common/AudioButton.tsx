@@ -1,4 +1,5 @@
 import React from "react";
+import { useTheme } from '@mui/material/styles';
 import { ListItemIcon, Theme, IconButton } from "@mui/material";
 import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
@@ -36,13 +37,14 @@ export default (props: {
   podcastURL?: string;
   size?: string;
 }) => {
-  
+  const theme = useTheme();
   const classes = useStyles();
   const { color = [0,0,0], episode, currentEpisode, audioState, podcastURL, size = "1.5rem" } = props;
   const playing = audioState ? audioState.playing : false;
   const isPlaying =
     currentEpisode && episode.guid === currentEpisode.guid && playing;
-    
+  
+  const buttonColor = theme.palette.mode === 'dark' ? theme.palette.primary.main : getRGBA(color);
   return (
     <IconButton
       onClick={() => {
@@ -55,12 +57,12 @@ export default (props: {
       size="large">
       {isPlaying ? (
         <PauseIcon
-          style={{ fontSize: size , color: getRGBA(color) }}
+          style={{ fontSize: size , color: buttonColor }}
           className={classes.mediaButton}
         />
       ) : (
         <PlayIcon
-          style={{ fontSize: size , color: getRGBA(color) }}
+          style={{ fontSize: size , color: buttonColor }}
           className={classes.mediaButton}
         />
       )}
