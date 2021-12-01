@@ -65,9 +65,9 @@ const useStyles = makeStyles((theme: Theme) => {
       color: "inherit",
     },
     inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
+      padding: `${theme.spacing(1, 1, 1, 0)} !important`,
       // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+      paddingLeft: `calc(1em + ${theme.spacing(4)}) !important`,
       transition: theme.transitions.create("width"),
       width: "100%",
       [theme.breakpoints.up("sm")]: {
@@ -137,7 +137,16 @@ export default function SearchAppBar(props: {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-            
+              style={
+                overwrite.color === COLORS.black
+                  ? { border: `1px solid darkgray`, borderRadius: "inherit" }
+                  : {
+                      // border: `1px solid lightgray`,
+                      borderRadius: "inherit",
+                      fontWeight: "bold",
+                      color: 'white'
+                    }
+              }
               onKeyUp={searchHandler}
               onChange={(ev) => setQuery(ev.currentTarget.value)}
               inputProps={{ "aria-label": "search" }}
