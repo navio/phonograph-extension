@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { IPodcast as IPodcastSuitePodcast } from "podcastsuite/dist/PodcastSuite";
 import Header from "./Header";
 import Library from "./Library";

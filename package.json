@@ -11,6 +11,11 @@
     "clean": "rm -rf ./dist"
   },
   "devDependencies": {
+    "@mui/icons-material": "^5.2.0",
+    "@mui/material": "^5.2.2",
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
+    "@mui/styled-engine-sc": "^5.1.0",
+    "@mui/styles": "^5.2.2",
     "@types/chrome": "0.0.127",
     "@types/node": "^14.14.13",
     "@types/react": "^17.0.0",
@@ -32,14 +37,9 @@
     "styled-components": "^5.3.3",
     "timers-browserify": "^2.0.12",
     "webpack": "^5.10.1",
-    "webpack-cli": "^4.3.1",
-    "@mui/icons-material": "^5.2.0",
-    "@mui/material": "^5.2.2",
-    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
-    "@mui/styled-engine-sc": "^5.1.0",
-    "@mui/styles": "^5.2.2"
+    "webpack-cli": "^4.3.1"
   },
-    "resolutions": {
+  "resolutions": {
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest"
   }
 }
