@@ -13,11 +13,7 @@ import Search from "./Search";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const theme = createTheme({
-  shape: {
-    borderRadius: 4,
-  },
-});
+const theme = createTheme({});
 
 export type IPodcast = IPodcastSuitePodcast;
 

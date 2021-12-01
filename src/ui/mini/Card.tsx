@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flex: '1 0 auto',
-      padding: '.5rem',
+      padding: '6px !important',
       paddingBottom: 0
     },
     cover: {
@@ -71,10 +71,10 @@ export default ({title, name, image, PlayerButton, imageClick, background } : Pl
   const classes = useStyles();
   console.log(background);
   return (
-    <div className={classes.root} style={{backgroundColor: background ? getRGBA(background.colors[3]) : 'white' }} >
+    <div className={classes.root} style={{backgroundColor: background ? getRGBA(background.colors[0]) : 'white' }} >
       <div className={classes.details}>
         <CardContent className={classes.content}>
-          <Typography className={classes.titleName} style={{'color':contrastColor(background.colors[3])}} 
+          <Typography className={classes.titleName} style={{'color':contrastColor(background.colors[0])}} 
             align="center" component="h1" variant="body1">
            {title}
           </Typography>

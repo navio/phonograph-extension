@@ -16,7 +16,6 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => {
-  console.log(theme);
   return createStyles({
     root: {
       flexGrow: 1,
@@ -138,15 +137,7 @@ export default function SearchAppBar(props: {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              style={
-                overwrite.color === COLORS.black
-                  ? { border: `1px solid darkgray`, borderRadius: "inherit" }
-                  : {
-                      border: `1px solid lightgray`,
-                      borderRadius: "inherit",
-                      fontWeight: "bold",
-                    }
-              }
+            
               onKeyUp={searchHandler}
               onChange={(ev) => setQuery(ev.currentTarget.value)}
               inputProps={{ "aria-label": "search" }}

@@ -10,6 +10,9 @@ import { getRGBA } from "ui/utils/color";
 import { PodcastImage } from "ui/utils/imageSaver";
 import Card from './Card';
 import { messageBackgroundAction, openOptionsPage } from 'background/actions';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({});
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,7 +38,7 @@ export default (props: PopUpProps) => {
   console.log( episode, audioState, (podcast && podcast.url), media);
   return (
     (episode && audioState && podcast && media) ? 
-      <Card 
+      <ThemeProvider theme={theme}><Card 
         title={episode.title} 
         name={podcast && podcast.title} 
         image={media && media.src} 
@@ -46,9 +49,9 @@ export default (props: PopUpProps) => {
           audioState={audioState}
           currentEpisode={episode}
           episode={episode}
-          color={media.colors[0]}
+          color={media.colors[1]}
         />
-        }  /> :
+        }  /></ThemeProvider> :
       <>Loading</>
   );
 };
