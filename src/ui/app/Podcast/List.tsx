@@ -13,6 +13,7 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import HeadsetIcon from "@mui/icons-material/Headset";
+import EpisodeDisplay from './EpisodeDisplay';
 
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
@@ -24,6 +25,7 @@ import { PodcastImage } from "ui/utils/imageSaver";
 import { AppContext } from "../index";
 import AudioButton from "ui/common/AudioButton";
 import { IMemoryEpisodes, IMemoryPodcast, IMemoryState } from "lib/Memory";
+import { AudioState } from "player/types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,10 +57,12 @@ const useStyles = makeStyles((theme: Theme) =>
 const EpisodeListDescription = (props: {
   episode: IEpisode;
   listened: IMemoryState;
+  onClick: React.MouseEventHandler<HTMLDivElement>
 }) => {
   const { episode, listened } = props;
   return (
     <ListItemText
+      onClick={props.onClick}
       primary={
         <>
           {episode.season && (
@@ -100,6 +104,8 @@ const EpisodeListDescription = (props: {
   );
 };
 
+
+
 export default function EpisodeList(props: {
   podcast: IPodcast;
   image: PodcastImage;
@@ -110,6 +116,8 @@ export default function EpisodeList(props: {
   const { podcast, image, listened } = props;
   const episodeList = podcast.items.slice(0, 20 * amount);
   const { episode: selectedEpisode, audioState } = useContext(AppContext);
+  const [clickedEpisode, setClickedEpisode] = useState<IEpisode>();
+
   return (
     <div className={classes.root}>
       <Divider />
@@ -122,7 +130,7 @@ export default function EpisodeList(props: {
         <Divider />
         {episodeList.map((episode) => (
           <>
-            <ListItem button>
+            <ListItem button >
               <AudioButton
                 color={image.colors[0]}
                 audioState={audioState}
@@ -130,7 +138,7 @@ export default function EpisodeList(props: {
                 episode={episode}
                 podcastURL={podcast.url}
               />
-              <EpisodeListDescription
+              <EpisodeListDescription onClick={()=>setClickedEpisode(episode)} 
                 listened={listened[episode.guid]}
                 episode={episode}
               />
@@ -154,6 +162,10 @@ export default function EpisodeList(props: {
           Load More Episodes{" "}
         </Button>
       )}
+      <EpisodeDisplay 
+        episode={clickedEpisode}
+        handleClose={() => setClickedEpisode(undefined)} 
+        open={!!clickedEpisode} />
     </div>
   );
 }

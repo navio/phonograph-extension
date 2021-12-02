@@ -44,7 +44,6 @@ const Title = styled.div`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 65vw;
 `;
 
 const TimeDisplay = styled.div`
