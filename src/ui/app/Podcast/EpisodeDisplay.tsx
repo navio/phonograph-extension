@@ -42,8 +42,7 @@ export default ({ handleClose, open = false, episode }: EpisodeProps) => (
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        {/* <Button onClick={handleClose}>Cancel</Button> */}
-        <Button onClick={handleClose}>Ok</Button>
+        <Button onClick={handleClose}>Close</Button>
       </DialogActions>
     </Dialog>
   </div>

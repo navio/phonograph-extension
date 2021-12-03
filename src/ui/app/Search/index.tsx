@@ -5,12 +5,17 @@ import { Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
 const Container = styled.div`
+
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-  margin: 10px auto;
+  margin: 0 auto;
+  width: 90vw;
+  & > * {
+    margin: .5rem;
+  }
 `;
+//   justify-content: space-evenly;
 
 const Title = styled(Typography)`
   padding-left: 2rem;
@@ -48,11 +53,11 @@ export default () => {
   const term = useQuery().get('q') || 'NPR';
   
   useEffect(() => {
-    fetch(`https://itunes.apple.com/search?media=podcast&limit=20&term=${term}`)
+    fetch(`https://itunes.apple.com/search?media=podcast&limit=30&term=${term}`)
       .then((response) => response.json())
       .then((response) => searchTransformer(response))
       .then(setData);
-  }, []);
+  }, [term]);
   const podcastRSS = (id:string) => btoa(`${id}`);
 
   return (

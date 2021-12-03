@@ -7,15 +7,19 @@ import Player from "./Player";
 
 import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { IEpisode } from "podcastsuite/dist/Format";
-import { AudioState } from "src/Audio";
+import { AudioState } from "lib/Audio";
 import Discovery from "./Discovery";
 import Search from "./Search";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+const osColor =
+  window.matchMedia &&
+  window.matchMedia("(prefers-color-scheme: dark)").matches;
+  
 const theme = createTheme({
   palette: {
-    // mode: 'dark',
+    mode: osColor ? 'dark' : 'light',
   },
 });
 

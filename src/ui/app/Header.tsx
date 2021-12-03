@@ -13,8 +13,8 @@ import { PodcastImage } from "ui/utils/imageSaver";
 import { COLORS, contrastColor, getRGBA } from "ui/utils/color";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
 import LeftNav from "./LeftNav";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({

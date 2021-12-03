@@ -128,7 +128,7 @@ export default () => {
     messagePlayerAction(Triggers.seek(currentTime), (response) => {});
   };
 
-  const masterColor = getRGBA(media?.colors[0] || [0, 0, 0]);
+  const masterColor =  getRGBA(media?.colors[0] || [0, 0, 0]);
 
   return (
     <>

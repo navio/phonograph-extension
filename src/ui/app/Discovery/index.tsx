@@ -9,6 +9,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-evenly;
   margin: 10px auto;
+  padding-top: 1rem;
 `;
 
 const Title = styled(Typography)`
@@ -27,8 +28,8 @@ export default () => {
   const podcastRSS = (id:string) => btoa(`https://www.listennotes.com/c/r/${id}`);
   return (
     <>
-      <Title gutterBottom variant="h3" component="h1">
-        Trending
+      <Title gutterBottom variant="h4" component="h1">
+        Discover
       </Title>
       <Container>
         {data &&
