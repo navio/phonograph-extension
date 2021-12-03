@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Card } from "@mui/material";
+import { Card, useTheme } from "@mui/material";
 import styled from "styled-components";
 import { AppContext, IPodcast, IAppContext } from "./index";
 import Typography from "@mui/material/Typography";
@@ -7,7 +7,11 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { Slider } from "@mui/material";
 import AudioButton from "../common/AudioButton";
 import { percentPlayed, AudioState, timeByPercentage } from "lib/Audio";
-import { messageBackgroundAction, initializePopUp, getPlayerState } from "background/actions";
+import {
+  messageBackgroundAction,
+  initializePopUp,
+  getPlayerState,
+} from "background/actions";
 import {
   messagePlayerAction,
   progressEmissionListener,
@@ -81,8 +85,9 @@ const ContentExtender = styled.div`
 `;
 
 const LinearProgressStyled = styled(LinearProgress)`
-  & .MuiLinearProgress-colorPrimary, & .MuiLinearProgress-barColorPrimary{
-    background-color: ${props => props.color};
+  & .MuiLinearProgress-colorPrimary,
+  & .MuiLinearProgress-barColorPrimary {
+    background-color: ${(props) => props.color};
   }
 `;
 
@@ -93,6 +98,8 @@ export default () => {
 
   const [podcast, setPodcast] = useState<ISimplePodcast>();
   const [media, setMedia] = useState<PodcastImage>();
+
+  const theme = useTheme();
 
   useEffect(() => {
     progressEmissionListener(({ payload }) => {
@@ -106,8 +113,8 @@ export default () => {
 
   useEffect(() => {
     messageBackgroundAction(
-      getPlayerState (),
-      (response: GetPlayerStatusResponse ) => {
+      getPlayerState(),
+      (response: GetPlayerStatusResponse) => {
         const { podcast, podcastImage, state } = response.payload;
         setPodcast(podcast);
         setMedia(podcastImage);
@@ -116,7 +123,7 @@ export default () => {
     );
   }, [episode]);
 
-  useEffect(() => {;
+  useEffect(() => {
     setAudioStateInternal(audioState);
   }, [audioState]);
 
@@ -128,7 +135,10 @@ export default () => {
     messagePlayerAction(Triggers.seek(currentTime), (response) => {});
   };
 
-  const masterColor =  getRGBA(media?.colors[0] || [0, 0, 0]);
+  const masterColor =
+    theme.palette.mode === "dark"
+      ? theme.palette.primary.main
+      : getRGBA(media?.colors[0] || [0, 0, 0]);
 
   return (
     <>
@@ -149,9 +159,7 @@ export default () => {
                   {displayTime(audioStateInternal.currentTime)}
                 </TimeDisplay>
                 <ProgressContainer>
-                  <Title align="center">
-                    {episode.title}
-                    </Title>
+                  <Title align="center">{episode.title}</Title>
                   {/* <LinearProgressStyled
                     color={masterColor}
                     variant="buffer"
