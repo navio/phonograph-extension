@@ -13,6 +13,7 @@ import { PodcastImage } from "ui/utils/imageSaver";
 import { COLORS, contrastColor, getRGBA } from "ui/utils/color";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useHistory } from "react-router-dom";
+import LeftNav from "./LeftNav";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => {
         backgroundColor: alpha(theme.palette.common.white, 0.25),
       },
       marginRight: theme.spacing(2),
-      marginLeft: 0,
+      marginLeft: 'auto !important',
       width: "100%",
       [theme.breakpoints.up("sm")]: {
         marginLeft: theme.spacing(3),
@@ -85,6 +86,7 @@ export default function SearchAppBar(props: {
   back?: boolean;
   title?: string;
 }) {
+  const [leftNav, setLeftNav] = useState<boolean>(false)
   const [query, setQuery] = useState<string>("");
   const classes = useStyles();
   const { media, back = false, title = "Phonograph" } = props;
@@ -102,7 +104,9 @@ export default function SearchAppBar(props: {
       history.push(`/search?q=${query}`);
     }
   };
+
   return (
+    <>
     <div className={classes.root}>
       <AppBar position="static" style={overwrite}>
         <Toolbar>
@@ -114,19 +118,21 @@ export default function SearchAppBar(props: {
             onClick={() => {
               if (back) {
                 history.push("/");
+              }else{
+                setLeftNav(true);
               }
             }}
             size="large"
           >
             {back ? <ArrowBackIcon /> : <HeadsetIcon />}
           </IconButton>
-          <Link
+          {/* <Link
             style={{ color: overwrite.color }}
             to={"/discovery"}
             className={classes.title}
           >
             Discover
-          </Link>
+          </Link> */}
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -155,5 +161,7 @@ export default function SearchAppBar(props: {
         </Toolbar>
       </AppBar>
     </div>
+    <LeftNav open={leftNav} onClose={setLeftNav} />
+    </>
   );
 }
