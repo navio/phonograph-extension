@@ -10,18 +10,10 @@ import { IEpisode } from "podcastsuite/dist/Format";
 import { AudioState } from "lib/Audio";
 import Discovery from "./Discovery";
 import Search from "./Search";
-
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-const osColor =
-  window.matchMedia &&
-  window.matchMedia("(prefers-color-scheme: dark)").matches;
+import { ThemeProvider } from "@mui/material/styles";
+import { themeCreator } from "ui/utils/theme";
   
-const theme = createTheme({
-  palette: {
-    mode: osColor ? 'dark' : 'light',
-  },
-});
+const theme = themeCreator()
 
 export type IPodcast = IPodcastSuitePodcast;
 
