@@ -27,7 +27,7 @@ export class Queue {
   }
 
   public queueEpisode(episode: IEpisodeState, first = false): boolean {
-    if (!this.map.get(episode.guid)) return false;
+    if (this.map.get(episode.guid)) return false;
     this.map.set(episode.guid, episode);
     if (first) {
       this.playlist.unshift(episode);

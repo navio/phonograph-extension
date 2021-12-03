@@ -26,6 +26,7 @@ import { AppContext } from "../index";
 import AudioButton from "ui/common/AudioButton";
 import { IMemoryEpisodes, IMemoryPodcast, IMemoryState } from "lib/Memory";
 import { AudioState } from "player/types";
+import ActionMenu from "./ActionMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -143,7 +144,9 @@ export default function EpisodeList(props: {
                 episode={episode}
               />
               <ListItemSecondaryAction>
-                <MoreVertIcon />
+                <ActionMenu episode={episode}>
+                  <MoreVertIcon />
+                </ActionMenu> 
               </ListItemSecondaryAction>
             </ListItem>
             <Divider />

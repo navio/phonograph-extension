@@ -22,7 +22,7 @@ import {
   PlayableMedia,
 } from "./types";
 
-import { ReducerRensposeFn } from "../types";
+import { ReducerResponseFn } from "../types";
 import { IEpisode } from "podcastsuite/dist/Format";
 
 export const loaded = (): AudioLoaded => ({
@@ -119,12 +119,12 @@ export const Triggers = {
 
 export const messagePlayerAction = (
   action: AudioRequestEvents,
-  callback: ReducerRensposeFn
+  callback: ReducerResponseFn
 ) => chrome.runtime.sendMessage(action, callback);
 
 export const messagePlayerEmission = (
   action: AudioEmissionEvents,
-  callback?: ReducerRensposeFn
+  callback?: ReducerResponseFn
 ) => chrome.runtime.sendMessage(action, callback);
 
 export const playingEmissionListener = (

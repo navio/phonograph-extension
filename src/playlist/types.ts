@@ -1,5 +1,5 @@
 import { IEpisodeState } from "lib/State";
-import { MessageResponse, ReducerRensposeFn } from "../types";
+import { MessageResponse, ReducerResponseFn } from "../types";
 
 export enum PLAYLIST_EVENTS {
   GET_EPISODES = "PLAYLIST_GET_EPISODES",
@@ -30,6 +30,7 @@ export interface AddEpisode {
   action: typeof PLAYLIST_EVENTS.ADD_EPISODE;
   payload: {
     episode: IEpisodeState;
+    next: boolean
   };
 }
 
@@ -59,7 +60,7 @@ export interface ClearEpisodes {
     action: typeof PLAYLIST_EVENTS.CLEAR_EPISODES;
 }
 
-export type PlaylistRequestEvents =
+export type PlaylistRequestActions =
   | GetNext
   | GetEpisodes
   | RemoveEpisode
@@ -92,7 +93,7 @@ export interface PlayListResponse extends MessageResponse {
 }
 
 export type PlaylistEventReducer = (
-    message: PlaylistRequestEvents,
+    message: PlaylistRequestActions,
     sender: chrome.runtime.MessageSender,
-    sendResponse: ReducerRensposeFn
+    sendResponse: ReducerResponseFn
   ) => void;

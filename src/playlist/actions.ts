@@ -1,5 +1,6 @@
 import exp = require("constants");
 import { IEpisodeState } from "lib/State";
+import { ReducerResponseFn } from "types";
 import * as T from "./types";
 
 export const getNext = (): T.GetNext => ({
@@ -10,10 +11,11 @@ export const getEpisodes = (): T.GetEpisodes => ({
     action: T.PLAYLIST_EVENTS.GET_EPISODES,
   });
 
-  export const addEpisode = (episode: IEpisodeState): T.AddEpisode => ({
+  export const addEpisode = (episode: IEpisodeState, next: boolean = false): T.AddEpisode => ({
     action: T.PLAYLIST_EVENTS.ADD_EPISODE,
     payload: {
-        episode
+        episode,
+        next
     }
   });
 
@@ -59,3 +61,8 @@ export const playListEventResponse = (status: boolean) => ({
         status
     }
 })
+
+export const messagePlaylistAction = (
+    action: T.PlaylistRequestActions,
+    callback: ReducerResponseFn
+  ) => chrome.runtime.sendMessage(action, callback);
