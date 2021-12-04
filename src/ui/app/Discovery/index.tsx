@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import styled from "styled-components";
-import { Typography } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 
 const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  margin: 10px auto;
+  margin: 0 auto;
   padding-top: 1rem;
 `;
 
@@ -19,6 +19,10 @@ const Title = styled(Typography)`
 
 export default () => {
   const [data, setData] = useState(null);
+  const theme = useTheme();
+  const Wrapper = styled.div`
+    background-color: ${theme.palette.background.paper}
+  `;
   useEffect(() => {
     fetch("https://odd-lake-0e8b.navio.workers.dev")
       .then((response) => response.json())
@@ -27,8 +31,8 @@ export default () => {
   }, []);
   const podcastRSS = (id:string) => btoa(`https://www.listennotes.com/c/r/${id}`);
   return (
-    <>
-      <Title gutterBottom variant="h4" component="h1">
+    <Wrapper>
+      <Title color={'primary'} gutterBottom variant="h4" component="h1">
         Discover
       </Title>
       <Container>
@@ -42,6 +46,6 @@ export default () => {
             />
           ))}
       </Container>
-    </>
+    </Wrapper>
   );
 };
