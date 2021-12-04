@@ -65,7 +65,7 @@ const HorizontalContainer = styled.div`
 const ProgressContainer = styled.div`
   position: relative;
   display: block;
-  width: 100%;
+  width: 100vw;
 
   & > div.MuiLinearProgress-root,
   span.MuiSlider-root {
