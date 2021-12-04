@@ -7,6 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { IEpisode } from "podcastsuite/dist/Format";
 import Styled from "styled-components";
+import { useTheme } from '@mui/material/styles';
 
 const EpisodeImage = Styled.img`
   height: 50vh;
@@ -15,13 +16,22 @@ const EpisodeImage = Styled.img`
   display: block;
 `;
 
+
+
 interface EpisodeProps {
   open: boolean;
   handleClose: () => void;
   episode: IEpisode;
 }
 
-export default ({ handleClose, open = false, episode }: EpisodeProps) => (
+export default ({ handleClose, open = false, episode }: EpisodeProps) => {
+  const theme = useTheme();
+  const Content = Styled.div`
+    a {
+      color: ${theme.palette.primary.main}
+    }
+`;
+  return (
   <div>
     <Dialog
       open={open}
@@ -38,7 +48,7 @@ export default ({ handleClose, open = false, episode }: EpisodeProps) => (
       <DialogContent>
         {episode?.image && <EpisodeImage src={episode.image} />}
         <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
-          <div dangerouslySetInnerHTML={{ __html: episode?.description }} />
+          <Content dangerouslySetInnerHTML={{ __html: episode?.description }} />
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -46,4 +56,4 @@ export default ({ handleClose, open = false, episode }: EpisodeProps) => (
       </DialogActions>
     </Dialog>
   </div>
-);
+)};
