@@ -1,6 +1,6 @@
 import { IEpisodeState } from "./State";
 
-export class Queue {
+export default class Queue {
   private playlist: IEpisodeState[] = [];
   private map = new Map<string, IEpisodeState>();
 

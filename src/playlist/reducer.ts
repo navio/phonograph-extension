@@ -3,13 +3,14 @@ import ApplicationState from "lib/State";
 import AudioElement from "lib/Audio";
 import * as T from "./types";
 import { getNextResponse, playListEventResponse } from "./actions";
-import { Queue } from "lib/Queue";
+import Queue from "lib/Queue";
 
-const playlist = new Queue();
+
 export default (
   engine: Engine,
   state: ApplicationState,
-  player: AudioElement
+  player: AudioElement,
+  playlist: Queue
 ) => {
   const reducer: T.PlaylistEventReducer = (message, sender, sendResponse) => {
     switch (message.action) {
