@@ -8,6 +8,7 @@ import PlaylistAddCheckCircleIcon from "@mui/icons-material/PlaylistAddCheckCirc
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { addEpisode, messagePlaylistAction } from "playlist/actions";
 import { IEpisodeState } from "lib/State";
+import { messagePlayerAction, Triggers } from "player/actions";
 
 interface ActionMenuProps {
   children: React.ReactElement<any, any>;
@@ -29,6 +30,10 @@ export default function ActionMenu({
 
   const addEpisodeHandler = (episode: IEpisodeState, next: boolean = false) =>
     messagePlaylistAction(addEpisode(episode, next), console.log);
+
+  const markAsPlayedHandler = (episode: IEpisodeState) => {
+    messagePlayerAction(Triggers.markAsPlayed(episode), () => {});
+  };
 
   return (
     <div>
@@ -72,10 +77,12 @@ export default function ActionMenu({
           </ListItemIcon>
           Add Next
         </MenuItem>
-        <MenuItem onClick={() => {
+        <MenuItem
+          onClick={() => {
             handleClose();
-            
-        }}>
+            markAsPlayedHandler(episode);
+          }}
+        >
           <ListItemIcon>
             <CheckCircleIcon />
           </ListItemIcon>

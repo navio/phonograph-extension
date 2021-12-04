@@ -17,7 +17,16 @@ export enum PLAYLIST_EVENT_RESPONSES {
   PLAYLIST_EVENT = "PLAYLIST_EVENT_RESPONSE",
 }
 
+export enum PLAYLIST_EMITTERS {
+  PLAYLIST_EMIT_ADD_EPISODE = "PLAYLIST_EMIT_ADD_EPISODE",
+  PLAYLIST_EMIT_CLEAR_PLAYLIST = "PLAYLIST_EMIT_CLEAR_PLAYLIST",
+
+}
+
+
+
 // Requests
+
 export interface GetEpisodes {
   action: typeof PLAYLIST_EVENTS.GET_EPISODES;
 }
@@ -29,7 +38,7 @@ export interface GetNext {
 export interface AddEpisode {
   action: typeof PLAYLIST_EVENTS.ADD_EPISODE;
   payload: {
-    episode: IEpisodeState;
+    episode: AudioState;
     next: boolean
   };
 }
@@ -37,7 +46,7 @@ export interface AddEpisode {
 export interface RemoveEpisode {
   action: typeof PLAYLIST_EVENTS.REMOVE_EPISODE;
   payload: {
-    episode: IEpisodeState | string;
+    episode: AudioState | string;
   };
 }
 
@@ -74,14 +83,14 @@ export type PlaylistRequestActions =
 export interface GetEpisodesResponse extends MessageResponse {
   action: PLAYLIST_EVENT_RESPONSES.GET_EPISODES;
   payload: {
-    episodes: IEpisodeState[];
+    episodes: AudioState[];
   };
 }
 
 export interface GetNextEpisodeResponse extends MessageResponse {
   action: PLAYLIST_EVENT_RESPONSES.GET_NEXT_EPISODE;
   payload: {
-    episode: IEpisodeState;
+    episode: AudioState;
   };
 }
 
@@ -97,3 +106,20 @@ export type PlaylistEventReducer = (
     sender: chrome.runtime.MessageSender,
     sendResponse: ReducerResponseFn
   ) => void;
+
+  // Emitters
+
+export interface EmitAddEpisode {
+  action: PLAYLIST_EMITTERS.PLAYLIST_EMIT_ADD_EPISODE;
+  payload: {
+    episode: AudioState
+  }
+}
+
+export interface EmitClearPlaylist {
+  action: PLAYLIST_EMITTERS.PLAYLIST_EMIT_CLEAR_PLAYLIST;
+}
+
+export type EmitionsEvents = EmitAddEpisode | EmitClearPlaylist
+
+export type AudioState = IEpisodeState;

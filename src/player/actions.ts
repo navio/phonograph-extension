@@ -20,10 +20,12 @@ import {
   AudioEmissionEvents,
   AudioEnded,
   PlayableMedia,
+  MarkAsPlayed,
 } from "./types";
 
 import { ReducerResponseFn } from "../types";
 import { IEpisode } from "podcastsuite/dist/Format";
+import { IEpisodeState } from "lib/State";
 
 export const loaded = (): AudioLoaded => ({
   action: PLAYER_EMITIONS.loadeddata,
@@ -105,6 +107,11 @@ export const queuenext = (url: string): QueueNextAudio => ({
   payload: { url },
 });
 
+export const markAsPlayed = (episode: IEpisodeState): MarkAsPlayed => ({
+  action: PLAYER_EVENTS.PLAYED,
+  payload: { episode },
+});
+
 export const Triggers = {
   load,
   play,
@@ -114,7 +121,8 @@ export const Triggers = {
   rewind,
   queue,
   queuenext,
-  seek
+  seek,
+  markAsPlayed,
 };
 
 export const messagePlayerAction = (

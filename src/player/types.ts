@@ -1,4 +1,5 @@
 import { ReducerRensposeFn } from "background/types";
+import { IEpisodeState } from "lib/State";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { MessageResponse } from "../types";
 
@@ -21,8 +22,9 @@ export enum PLAYER_EVENTS {
   REWIND = "REWIND_AUDIO",
   QUEUE = "QUEUE_AUDIO",
   QUEUE_NEXT = "QUEUE_AUDIO_NEXT",
-  STATE = "STATEOF_AUDIO",
-  SEEK = "SEEK_AUDIO"
+  STATE = "STATE_OF_AUDIO",
+  SEEK = "SEEK_AUDIO",
+  PLAYED = "MARK_AS_PLAYER"
 }
 
 export enum PLAYER_EMITIONS {
@@ -148,6 +150,13 @@ export interface StateOfAudio {
   action: typeof PLAYER_EVENTS.STATE;
 }
 
+export interface MarkAsPlayed {
+  action: typeof PLAYER_EVENTS.PLAYED;
+  payload: {
+    episode: IEpisodeState
+  }
+}
+
 export type AudioRequestEvents =
   | LoadAudio
   | PlayAudio
@@ -158,7 +167,8 @@ export type AudioRequestEvents =
   | QueueAudio
   | QueueNextAudio
   | SeekAudio
-  | StateOfAudio;
+  | StateOfAudio
+  | MarkAsPlayed;
 
 export type AudioEventsReducer = (
   message: AudioRequestEvents,

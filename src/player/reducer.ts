@@ -86,6 +86,12 @@ export default (
         .then(() => memory.addEpisode(newEpisode, {hard}));
         return true;
       }
+      case PLAYER_EVENTS.PLAYED: {
+        const {episode} = message.payload;
+        memory.markEpisodeComplete(episode);
+        sendResponse(true);
+        return true;
+      }
       case PLAYER_EVENTS.PLAY: {
         audioElement.play().then(() => {
           sendResponse(Emitters.playing(player.state, state.getEpisode()));
