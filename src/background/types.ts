@@ -15,6 +15,7 @@ export enum BACKGROUND_EVENTS {
 export enum PODCAST_EVENTS {
   ADD_PODCAST = "BACKGROUND_PODCAST_ADD",
   GET_PODCAST = "BACKGROUND_PODCAST_GET",
+  GET_PODCAST_METADATA = "GET_PODCAST_METADATA",
   GET_PODCASTS = "BACKGROUND_PODCAST_ALL",
   DELETE_PODCAST = "BACKGROUND_PODCAST_DELETE",
   SET_EPISODE = "SET_EPISODE",
@@ -28,6 +29,7 @@ export enum PODCAST_EMITTER {
 
 export enum PODCAST_RESPONSES {
   PODCAST = "BACKGROUND_PODCAST_RESPONSE",
+  METADATA = "BACKGROUND_METADATA_RESPONSE",
   PODCASTS = "BACKGROUND_PODCASTS_RESPONSES",
   EPISODE = "BACKGROUND_EPISODE_RESPONSE"
 }
@@ -57,6 +59,13 @@ export interface GetPodcastResponse extends MessageResponse {
   action: PODCAST_RESPONSES.PODCAST,
   payload: {
     podcast: IPodcast;
+    listened: IMemoryPodcast;
+  };
+}
+
+export interface GetPodcastMetadataResponse extends MessageResponse {
+  action: PODCAST_RESPONSES.METADATA,
+  payload: {
     listened: IMemoryPodcast;
   };
 }
@@ -106,6 +115,13 @@ export interface GetPodcasts {
   action: typeof PODCAST_EVENTS.GET_PODCASTS;
 }
 
+export interface GetPodcastMetadata {
+  action: typeof PODCAST_EVENTS.GET_PODCAST_METADATA;
+  payload: {
+    url: string;
+  }
+}
+
 export interface SetEpisode {
   action: typeof PODCAST_EVENTS.SET_EPISODE;
   payload: {
@@ -149,4 +165,5 @@ export type BackgroundActions =
   | GetEpisode
   | GetPodcast
   | GetPodcasts
+  | GetPodcastMetadata
   | DeletePodcast;

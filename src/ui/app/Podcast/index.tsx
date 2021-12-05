@@ -11,6 +11,7 @@ import {
   deletePodcast,
   getPodcast,
   messageBackgroundAction,
+  podcastMetadataEmissionListener,
 } from "background/actions";
 import { GetPodcastResponse } from "background/types";
 import { podcasts } from "background/config";
@@ -55,6 +56,13 @@ export default () => {
       });
     }
   }, [podcast]);
+
+  useEffect(() => {
+    podcastMetadataEmissionListener((listenUpdate) => {
+      const {episodes} = listenUpdate
+      setListened(episodes);
+    })
+  },[]);
 
   const subscribePodcast = (url: string) => {
     messageBackgroundAction(

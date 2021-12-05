@@ -24,6 +24,8 @@ import {
   LibraryUpdate,
   OpenOptionsEvent,
   GetPlayerState,
+  GetPodcastMetadata,
+  GetPodcastMetadataResponse,
 } from "./types";
 
 export const messageBackgroundAction = (
@@ -66,6 +68,11 @@ export const getPodcastsResponse = (
   payload: { library },
 });
 
+export const getPodcastMetadataResponse = (listened: IMemoryPodcast): GetPodcastMetadataResponse => ({
+  action: PODCAST_RESPONSES.METADATA,
+  payload: { listened },
+});
+
 export const getPodcastResponse = (podcast: IPodcast, listened: IMemoryPodcast): GetPodcastResponse => ({
   action: PODCAST_RESPONSES.PODCAST,
   payload: { podcast, listened },
@@ -78,6 +85,13 @@ export const getPodcast = (url: string, save: boolean = false): GetPodcast => ({
   payload: {
     url,
     save,
+  },
+});
+
+export const getPodcastMetadata = (url: string): GetPodcastMetadata => ({
+  action: PODCAST_EVENTS.GET_PODCAST_METADATA,
+  payload: {
+    url,
   },
 });
 
@@ -136,3 +150,19 @@ export const messagePodcastEmission = (
   message: LibraryUpdate,
   callback?: ReducerResponseFn
 ) => chrome.runtime.sendMessage(message, callback);
+
+export const messagePodcastMetadataEmission = (
+  message: GetPodcastMetadataResponse,
+  callback?: ReducerResponseFn
+) => chrome.runtime.sendMessage(message, callback);
+
+export const podcastMetadataEmissionListener = (
+  callback: (message: IMemoryPodcast) => void
+) => {
+  chrome.runtime.onMessage.addListener((message: GetPodcastMetadataResponse) => {
+    if (message.action === PODCAST_RESPONSES.METADATA) {
+      const {listened} = message.payload
+      callback(listened);
+    }
+  });
+};

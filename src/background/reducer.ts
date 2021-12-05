@@ -14,6 +14,7 @@ import {
   getEpisodeResponse,
   emitLibraryUpdate,
   messagePodcastEmission,
+  getPodcastMetadataResponse,
 } from "./actions";
 import { IEpisodeState } from "../lib/State";
 import AudioElement from "../lib/Audio";
@@ -46,6 +47,13 @@ const background = (
         const episode = state.getEpisode();
         const time = episode ? episode.time : 0;
         sendResponse(getEpisodeResponse(episode, time));
+        return true;
+      }
+
+      case PODCAST_EVENTS.GET_PODCAST_METADATA: {
+        const { url } = message.payload;
+        const podcastMemory: IMemoryPodcast = memory.getPodcast(url);
+        sendResponse(getPodcastMetadataResponse(podcastMemory))
         return true;
       }
 

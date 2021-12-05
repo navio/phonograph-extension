@@ -6,6 +6,7 @@ import Podcast from "../lib/Podcast";
 import Memory from "lib/Memory";
 import Queue from "lib/Queue";
 import { IEpisode } from "podcastsuite/dist/Format";
+import { getPodcastMetadataResponse, messagePodcastMetadataEmission } from "background/actions";
 
 export default (
   engine: Podcast,
@@ -108,6 +109,8 @@ export default (
       case PLAYER_EVENTS.PLAYED: {
         const {episode} = message.payload;
         memory.markEpisodeComplete(episode);
+        const podcastMemory = memory.getPodcast(episode.podcast);
+        messagePodcastMetadataEmission(getPodcastMetadataResponse(podcastMemory));
         sendResponse(true);
         return true;
       }
