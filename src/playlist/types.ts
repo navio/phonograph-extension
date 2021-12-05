@@ -20,9 +20,8 @@ export enum PLAYLIST_EVENT_RESPONSES {
 export enum PLAYLIST_EMITTERS {
   PLAYLIST_EMIT_ADD_EPISODE = "PLAYLIST_EMIT_ADD_EPISODE",
   PLAYLIST_EMIT_CLEAR_PLAYLIST = "PLAYLIST_EMIT_CLEAR_PLAYLIST",
-
+  PLAYLIST_EMIT_STATUS = "PLAYLIST_EMIT_STATUS",
 }
-
 
 
 // Requests
@@ -109,10 +108,18 @@ export type PlaylistEventReducer = (
 
   // Emitters
 
-export interface EmitAddEpisode {
+export interface EmitUpdatePlaylist {
   action: PLAYLIST_EMITTERS.PLAYLIST_EMIT_ADD_EPISODE;
   payload: {
-    episode: AudioState
+    episode: AudioState;
+    playlist: IEpisodeState[];
+  }
+}
+
+export interface EmitPlaylistStatus {
+  action: PLAYLIST_EMITTERS.PLAYLIST_EMIT_STATUS;
+  payload: {
+    playlist: IEpisodeState[];
   }
 }
 
@@ -120,6 +127,6 @@ export interface EmitClearPlaylist {
   action: PLAYLIST_EMITTERS.PLAYLIST_EMIT_CLEAR_PLAYLIST;
 }
 
-export type EmitionsEvents = EmitAddEpisode | EmitClearPlaylist
+export type EmitionsEvents = EmitUpdatePlaylist | EmitClearPlaylist | EmitPlaylistStatus;
 
 export type AudioState = IEpisodeState;

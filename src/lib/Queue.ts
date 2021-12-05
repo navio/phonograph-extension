@@ -42,17 +42,22 @@ export default class Queue {
 
   public dequeueEpisode(episode: IEpisodeState | string) {
     const key = typeof episode === "string" ? episode : episode.guid;
-    if (this.map.get(key)) {
+    const episodeToErase = this.map.get(key);
+    if (episodeToErase) {
       const index = this.findEpisodeIndex(key);
       this.map.delete(key);
       this.playlist.splice(index, 1);
-      return true;
+      return episodeToErase;
     }
     return false;
   }
 
-  public getPlaylist(episodes = true): IEpisodeState[] | string[] {
-    return episodes ? this.playlist : this.playlist.map((el) => el.guid);
+  public getPlaylist(): IEpisodeState[]{
+    return this.playlist;
+  }
+
+  public getPlayListSize(): number {
+    return this.map.size;
   }
 
   public swapEpisode(origin: number, destination: number) {

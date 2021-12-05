@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
+import ListIcon from "@mui/icons-material/List";
 import InputBase from "@mui/material/InputBase";
 import { alpha, Theme } from "@mui/material/styles";
 import createStyles from "@mui/styles/createStyles";
@@ -14,7 +14,14 @@ import { COLORS, contrastColor, getRGBA } from "ui/utils/color";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useHistory } from "react-router-dom";
 import LeftNav from "./LeftNav";
-import { Link } from "react-router-dom";
+import Badge from "@mui/material/Badge";
+import {
+  getEpisodes,
+  listenPlayListBroadcast,
+  messagePlaylistAction,
+} from "playlist/actions";
+import { IEpisodeState } from "lib/State";
+import Playlist from "./Playlist";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -46,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) => {
         backgroundColor: alpha(theme.palette.common.white, 0.25),
       },
       marginRight: theme.spacing(2),
-      marginLeft: 'auto !important',
+      marginLeft: "auto !important",
       width: "100%",
       [theme.breakpoints.up("sm")]: {
         marginLeft: theme.spacing(3),
@@ -86,8 +93,10 @@ export default function SearchAppBar(props: {
   back?: boolean;
   title?: string;
 }) {
-  const [leftNav, setLeftNav] = useState<boolean>(false)
+  const [leftNav, setLeftNav] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
+  const [playlist, setPlaylist] = useState<IEpisodeState[]>([]);
+  const [openPlaylist, setOpenPlaylist] = useState<boolean>(false);
   const classes = useStyles();
   const { media, back = false, title = "Phonograph" } = props;
   let history = useHistory();
@@ -98,6 +107,25 @@ export default function SearchAppBar(props: {
       }
     : {};
 
+  useEffect(() => {
+    listenPlayListBroadcast((message) => {
+      const { payload } = message;
+      const { playlist } = payload;
+      if (playlist) {
+        setPlaylist(playlist);
+      }
+      return true;
+    });
+  }, []);
+
+  useEffect(() => {
+    messagePlaylistAction(getEpisodes(), (message) => {
+      const { episodes } = message.payload;
+      console.log("recieved", episodes);
+      setPlaylist(episodes);
+    });
+  }, history);
+
   const searchHandler = (event) => {
     var enterKey = 13;
     if (event.which == enterKey) {
@@ -107,61 +135,60 @@ export default function SearchAppBar(props: {
 
   return (
     <>
-    <div className={classes.root}>
-      <AppBar position="static" style={overwrite}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() => {
-              if (back) {
-                history.push("/");
-              }else{
-                setLeftNav(true);
-              }
-            }}
-            size="large"
-          >
-            {back ? <ArrowBackIcon /> : <HeadsetIcon />}
-          </IconButton>
-          {/* <Link
-            style={{ color: overwrite.color }}
-            to={"/discovery"}
-            className={classes.title}
-          >
-            Discover
-          </Link> */}
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search podcasts"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
+      <div className={classes.root}>
+        <AppBar position="static" style={overwrite}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() => {
+                if (back) {
+                  history.push("/");
+                } else {
+                  setLeftNav(true);
+                }
               }}
-              style={
-                overwrite.color === COLORS.black
-                  ? { border: `1px solid darkgray`, borderRadius: "inherit" }
-                  : {
-                      // border: `1px solid lightgray`,
-                      borderRadius: "inherit",
-                      fontWeight: "bold",
-                      color: 'white'
-                    }
-              }
-              onKeyUp={searchHandler}
-              onChange={(ev) => setQuery(ev.currentTarget.value)}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
-        </Toolbar>
-      </AppBar>
-    </div>
-    <LeftNav open={leftNav} onClose={setLeftNav} />
+              size="large"
+            >
+              {back ? <ArrowBackIcon /> : <HeadsetIcon />}
+            </IconButton>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search podcasts"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                style={
+                  overwrite.color === COLORS.black
+                    ? { border: `1px solid darkgray`, borderRadius: "inherit" }
+                    : {
+                        // border: `1px solid lightgray`,
+                        borderRadius: "inherit",
+                        fontWeight: "bold",
+                        color: "white",
+                      }
+                }
+                onKeyUp={searchHandler}
+                onChange={(ev) => setQuery(ev.currentTarget.value)}
+                inputProps={{ "aria-label": "search" }}
+              />
+            </div>
+            <IconButton onClick={() => setOpenPlaylist(true)} title="playlist" disabled={playlist.length === 0}>
+              <Badge badgeContent={playlist.length} color="primary">
+                <ListIcon color={playlist.length === 0 ? "disabled" :"action"} />
+              </Badge>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      </div>
+      <LeftNav open={leftNav} onClose={setLeftNav} />
+      <Playlist open={openPlaylist} onClose={setOpenPlaylist} episodes={playlist} />
     </>
   );
 }

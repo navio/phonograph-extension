@@ -13,6 +13,7 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import HeadsetIcon from "@mui/icons-material/Headset";
+import CheckIcon from '@mui/icons-material/Check';
 import EpisodeDisplay from './EpisodeDisplay';
 
 import Button from "@mui/material/Button";
@@ -91,9 +92,10 @@ const EpisodeListDescription = (props: {
           
           {listened ? (
             <Chip
+              color={listened.completed ? "default" : 'info'}
               style={{ marginLeft: "5px" }}
               size="small"
-              icon={<HeadsetIcon />}
+              icon={ listened.completed ? <CheckIcon />: <HeadsetIcon />}
               label={ listened.completed ? 'Completed' :`${displayTime(listened.lastPosition)}`}
             />
           ) : (
@@ -144,7 +146,7 @@ export default function EpisodeList(props: {
                 episode={episode}
               />
               <ListItemSecondaryAction>
-                <ActionMenu episode={episode}>
+                <ActionMenu episode={{...episode, time: 0}}>
                   <MoreVertIcon />
                 </ActionMenu> 
               </ListItemSecondaryAction>

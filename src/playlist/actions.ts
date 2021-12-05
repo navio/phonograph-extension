@@ -74,16 +74,21 @@ export const playListEventResponse = (status: boolean) => ({
   },
 });
 
-export const emitAddEpisode = (episode: T.AudioState): T.EmitAddEpisode => ({
+export const emitUpdatePlaylist = (episode: T.AudioState, playlist: IEpisodeState[]): T.EmitUpdatePlaylist => ({
   action: T.PLAYLIST_EMITTERS.PLAYLIST_EMIT_ADD_EPISODE,
-  payload: { episode },
+  payload: { episode, playlist },
+});
+
+export const emitStatusPlaylist = (playlist: IEpisodeState[]): T.EmitPlaylistStatus => ({
+  action: T.PLAYLIST_EMITTERS.PLAYLIST_EMIT_STATUS,
+  payload: { playlist },
 });
 
 export const emitClearPlaylist = (): T.EmitClearPlaylist => ({
   action: T.PLAYLIST_EMITTERS.PLAYLIST_EMIT_CLEAR_PLAYLIST,
 });
 
-export type PlayListEmittions = T.EmitClearPlaylist | T.EmitAddEpisode;
+export type PlayListEmittions = T.EmitClearPlaylist | T.EmitUpdatePlaylist;
 
 export const messagePlaylistAction = (
   action: T.PlaylistRequestActions,
@@ -95,13 +100,13 @@ export const messagePlaylistEvents = (
   callback: ReducerResponseFn
 ) => chrome.runtime.sendMessage(action, callback);
 
-export const messagePlaylistEmition = (
-    action: T.PLAYLIST_EMITTERS,
+export const broadcastMessagePlaylist = (
+    action: T.EmitionsEvents,
     callback: ReducerResponseFn
   ) => chrome.runtime.sendMessage(action, callback);
 
-export const listenPlayListEmition = (
-    callback: (message: PlayListEmittions) => void
+export const listenPlayListBroadcast = (
+    callback: (message) => void
   ) => {
     chrome.runtime.onMessage.addListener((message: T.EmitionsEvents) => {
       if (Object.keys(T.PLAYLIST_EMITTERS).includes(message.action)) {

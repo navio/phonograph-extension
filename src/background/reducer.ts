@@ -18,15 +18,17 @@ import {
 } from "./actions";
 import { IEpisodeState } from "../lib/State";
 import AudioElement from "../lib/Audio";
-import { podcasts } from "./config";
-import FetchImage, { PodcastImage } from "ui/utils/imageSaver";
-import Memory, { IMemory, IMemoryPodcast } from "lib/Memory";
+import FetchImage from "ui/utils/imageSaver";
+import Memory, {IMemoryPodcast } from "lib/Memory";
+import { broadcastMessagePlaylist, emitStatusPlaylist, emitUpdatePlaylist } from "playlist/actions";
+import Queue from "lib/Queue";
 
 const background = (
   engine: Engine,
   state: ApplicationState,
   player: AudioElement,
-  memory: Memory
+  memory: Memory,
+  playlist: Queue,
 ) => {
   const reducer: BackgroundEventReducer = (message, sender, sendResponse) => {
     switch (message.action) {
@@ -123,9 +125,12 @@ const background = (
 
       case BACKGROUND_EVENTS.GET_PLAYER_STATE: {
         const audioState = player.state;
+        
+        // BroadCast Playlist
+        const currentPlaylist = playlist.getPlaylist();
+        broadcastMessagePlaylist(emitStatusPlaylist(currentPlaylist), () => {});
 
         const episode: IEpisodeState = state.getEpisode();
-   
         
         if(!episode || !episode.url) return;
 

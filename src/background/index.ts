@@ -21,6 +21,6 @@ const player = new AudioElement();
 const queue = new Queue();
 
 // Initialize Reducer
-browser.instance.runtime.onMessage.addListener(reducer(engine, state, player, memory));
+browser.instance.runtime.onMessage.addListener(reducer(engine, state, player, memory, queue));
 browser.instance.runtime.onMessage.addListener(initPlayer(engine, state, player, memory, queue));
 browser.instance.runtime.onMessage.addListener(playlist(engine, state, player, queue));
