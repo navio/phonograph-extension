@@ -3,9 +3,11 @@ import { AppContext, IPodcast } from "./index";
 import imageFetcher from "ui/utils/imageSaver";
 import Typography from "@mui/material/Typography";
 import { Theme } from "@mui/material/styles";
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
+import createStyles from "@mui/styles/createStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import { Link } from "react-router-dom";
+import Styled from "styled-components";
+import { TextField } from "@mui/material";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,15 +38,33 @@ const PodcatImage = (props: { podcast: IPodcast }) => {
 
   React.useEffect(() => {
     imageFetcher(podcast.image).then((media) => {
-     setImage(media.src);
+      setImage(media.src);
     });
   }, []);
   return (
     <Link to={`/podcast/${btoa(podcast.url)}`} className={classes.gridElement}>
-      {image && <img src={image} title={podcast.title} className={classes.images} />}
+      {image && (
+        <img src={image} title={podcast.title} className={classes.images} />
+      )}
     </Link>
   );
 };
+
+const CenterContent = Styled.div`
+  margin: 0px auto;
+  margin-top: 30vh;
+  text-align: center;
+`;
+
+const NoPodcasts = () => (
+  <CenterContent>
+    <Typography gutterBottom variant="h4">
+      {" "}
+      Get your favorite podcasts or find new ones.
+    </Typography>
+    {/* <TextField style={{width: '30vw'}} id="outlined-basic" label="Find your next Podcast" variant="outlined" /> */}
+  </CenterContent>
+);
 
 export default () => {
   const { collection } = useContext(AppContext);
@@ -54,6 +74,7 @@ export default () => {
       {collection.map((podcast) => (
         <PodcatImage podcast={podcast} />
       ))}
+      {/* {collection.length === 0 && <NoPodcasts />} */}
     </div>
   );
 };
