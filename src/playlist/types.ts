@@ -1,4 +1,5 @@
 import { IEpisodeState } from "lib/State";
+import { IEpisode } from "podcastsuite/dist/Format";
 import { MessageResponse, ReducerResponseFn } from "../types";
 
 export enum PLAYLIST_EVENTS {
@@ -37,7 +38,7 @@ export interface GetNext {
 export interface AddEpisode {
   action: typeof PLAYLIST_EVENTS.ADD_EPISODE;
   payload: {
-    episode: AudioState;
+    episode: IEpisodeState;
     next: boolean
   };
 }
@@ -45,7 +46,7 @@ export interface AddEpisode {
 export interface RemoveEpisode {
   action: typeof PLAYLIST_EVENTS.REMOVE_EPISODE;
   payload: {
-    episode: AudioState | string;
+    episode: IEpisode | string;
   };
 }
 

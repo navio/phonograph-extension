@@ -1,5 +1,6 @@
 import exp = require("constants");
 import { IEpisodeState } from "lib/State";
+import { IEpisode } from "podcastsuite/dist/Format";
 import { ReducerResponseFn } from "types";
 import * as T from "./types";
 
@@ -23,7 +24,7 @@ export const addEpisode = (
 });
 
 export const removeEpisode = (
-  episode: IEpisodeState | string
+  episode: IEpisode | string
 ): T.RemoveEpisode => ({
   action: T.PLAYLIST_EVENTS.REMOVE_EPISODE,
   payload: {
