@@ -99,6 +99,12 @@ export default (
     return true;
   }
 
+  // metadata updater
+  const emitPodcastMetadata = (episode: IEpisode) => {
+    const podcastMemory = memory.getPodcast(episode.podcast);
+    messagePodcastMetadataEmission(getPodcastMetadataResponse(podcastMemory));
+  } 
+
   // reducer
   const reducer: AudioEventsReducer = (message, sender, sendResponse) => {
     switch (message.action) {
@@ -109,29 +115,31 @@ export default (
       case PLAYER_EVENTS.PLAYED: {
         const {episode} = message.payload;
         memory.markEpisodeComplete(episode);
-        const podcastMemory = memory.getPodcast(episode.podcast);
-        messagePodcastMetadataEmission(getPodcastMetadataResponse(podcastMemory));
+        emitPodcastMetadata(episode);
         sendResponse(true);
         return true;
       }
       case PLAYER_EVENTS.PLAY: {
+        const currentEpisode = state.getEpisode();
         audioElement.play().then(() => {
-          sendResponse(Emitters.playing(player.state, state.getEpisode()));
+          sendResponse(Emitters.playing(player.state, currentEpisode));
         })
-        .then(() => memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime, duration: audioElement.duration}, {hard}));
+        .then(() => memory.addEpisode({...currentEpisode, time: audioElement.currentTime, duration: audioElement.duration}, {hard}));
         return true;
       }
       case PLAYER_EVENTS.STOP:
+        const currentEpisode = state.getEpisode();
         audioElement.pause();
         sendResponse(
           Emitters.paused(
             {
               ...player.state,
             },
-            state.getEpisode()
+            currentEpisode
           )
         );
-        memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime, duration: audioElement.duration},{hard});
+        memory.addEpisode({...currentEpisode, time: audioElement.currentTime, duration: audioElement.duration},{hard});
+        emitPodcastMetadata(currentEpisode);
         return true;
       case PLAYER_EVENTS.FORWARD:
         audioElement.currentTime += message.payload.time;

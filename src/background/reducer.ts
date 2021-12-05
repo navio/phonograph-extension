@@ -125,9 +125,9 @@ const background = (
         const audioState = player.state;
 
         const episode: IEpisodeState = state.getEpisode();
-        const { url } = episode;
+   
         
-        if(!url) return;
+        if(!episode || !episode.url) return;
 
         const getCurrentEpisode = async (url: string) => {
           const {items, ...podcastInfo} = await engine.getPodcast(url);
@@ -135,7 +135,7 @@ const background = (
           return {podcastInfo, podcastImage}
         }
 
-        getCurrentEpisode(url).then(({podcastImage, podcastInfo}) => {
+        getCurrentEpisode(episode.url).then(({podcastImage, podcastInfo}) => {
           sendResponse(getPlayerStatusResponse(episode, audioState, podcastInfo, podcastImage));
         });
         return true;
