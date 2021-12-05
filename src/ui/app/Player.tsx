@@ -180,7 +180,7 @@ export default () => {
           </Card>
         )}
       </MediaControlsWrapper>
-      {!!audioStateInternal?.loaded && <ContentExtender />}
+      {!!audioStateInternal?.loaded && episode && <ContentExtender />}
     </>
   );
 };
