@@ -21,7 +21,7 @@ const EpisodeImage = styled.img`
 `;
 
 export default ({ onClose, open, episodes }: PlayList) => {
-    const { audioState, episode } = React.useContext(AppContext);
+    const { audioState, episode: currentEpisode } = React.useContext(AppContext);
   return (
     <div>
       <React.Fragment>
@@ -37,7 +37,7 @@ export default ({ onClose, open, episodes }: PlayList) => {
                 >
                   <ListItemIcon>
                     {/* <EpisodeImage src={episode.image} /> */}
-                    <AudioButton audioState={audioState} episode={episode} currentEpisode={episode} />
+                    <AudioButton audioState={audioState} episode={episode} currentEpisode={currentEpisode} />
                   </ListItemIcon>
                   <ListItemText primary={episode.title} />
                 </ListItem>

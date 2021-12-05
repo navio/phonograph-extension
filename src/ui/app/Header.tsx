@@ -121,7 +121,6 @@ export default function SearchAppBar(props: {
   useEffect(() => {
     messagePlaylistAction(getEpisodes(), (message) => {
       const { episodes } = message.payload;
-      console.log("recieved", episodes);
       setPlaylist(episodes);
     });
   }, history);

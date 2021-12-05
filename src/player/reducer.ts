@@ -7,6 +7,7 @@ import Memory from "lib/Memory";
 import Queue from "lib/Queue";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { getPodcastMetadataResponse, messagePodcastMetadataEmission } from "background/actions";
+import { broadcastMessagePlaylist, emitStatusPlaylist } from "playlist/actions";
 
 export default (
   engine: Podcast,
@@ -90,6 +91,11 @@ export default (
     
     audioElement.src = url;
     audioElement.currentTime = initialTime;
+
+    if(playlist.dequeueEpisode(episode)){
+      broadcastMessagePlaylist(emitStatusPlaylist(playlist.getPlaylist()), () => {});
+    }
+
 
     audioElement.play()
     .then(() => Emitters.playing(player.state, episode))

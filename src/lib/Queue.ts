@@ -1,3 +1,4 @@
+import { IEpisode } from "podcastsuite/dist/Format";
 import { IEpisodeState } from "./State";
 
 export default class Queue {
@@ -40,7 +41,7 @@ export default class Queue {
     return true;
   }
 
-  public dequeueEpisode(episode: IEpisodeState | string) {
+  public dequeueEpisode(episode: IEpisode | string) {
     const key = typeof episode === "string" ? episode : episode.guid;
     const episodeToErase = this.map.get(key);
     if (episodeToErase) {

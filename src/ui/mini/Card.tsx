@@ -70,7 +70,6 @@ const rewindsButtonHandler = () => messagePlayerAction(Triggers.rewind(10), (res
 
 export default ({title, name, image, PlayerButton, imageClick, background } : PlayerCardProps) => {
   const classes = useStyles();
-  console.log(background);
   return (
     <div className={classes.root} style={{backgroundColor: background ? getRGBA(background.colors[0]) : 'white' }} >
       <div className={classes.details}>
