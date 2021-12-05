@@ -22,8 +22,11 @@ export default class Queue {
 
   public getNext(){
       const episode = this.playlist.pop();
-      this.map.delete(episode.guid);
-      return episode;
+      if(episode){
+        this.map.delete(episode.guid);
+        return episode;
+      }
+      return;
   }
 
   public queueEpisode(episode: IEpisodeState, first = false): boolean {

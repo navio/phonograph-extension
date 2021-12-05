@@ -96,7 +96,6 @@ export default () => {
   const [audioStateInternal, setAudioStateInternal] =
     useState<AudioState>(audioState);
 
-  const [podcast, setPodcast] = useState<ISimplePodcast>();
   const [media, setMedia] = useState<PodcastImage>();
 
   const theme = useTheme();
@@ -115,8 +114,7 @@ export default () => {
     messageBackgroundAction(
       getPlayerState(),
       (response: GetPlayerStatusResponse) => {
-        const { podcast, podcastImage, state } = response.payload;
-        setPodcast(podcast);
+        const { podcastImage, state } = response.payload;
         setMedia(podcastImage);
         setAudioStateInternal(state);
       }
@@ -182,7 +180,7 @@ export default () => {
           </Card>
         )}
       </MediaControlsWrapper>
-      <ContentExtender />
+      {!!audioStateInternal?.loaded && <ContentExtender />}
     </>
   );
 };

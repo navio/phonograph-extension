@@ -38,13 +38,17 @@ export default (
   );
   audioElement.addEventListener("ended", () =>
     {
-      messagePlayerEmission(Emitters.ended(player.state));
+      messagePlayerEmission(Emitters.ended({...player.state, loaded: undefined, ended: true }));
       const currentEpisode = state.getEpisode();
       memory.addEpisode({ ...currentEpisode, time: audioElement.currentTime, duration: audioElement.duration}, {hard});
-      // Load Next?
+      // Check if next, and load the next episode queued.
       const episode = playlist.getNext();
-      loadHandler(episode, episode.podcast);
-
+      if(episode){
+        loadHandler(episode, episode.podcast);
+      }else{
+        audioElement.src = '';
+        state.clearEpisode();
+      }
     }
   );
   audioElement.addEventListener("timeupdate", () => {
@@ -56,13 +60,14 @@ export default (
   // handlers
   const loadHandler = (episode: IEpisode, podcastURL: string, sendResponse? ) => {
     const currentEpisode = state.getEpisode();
+
     // If same episode receive play
     if (currentEpisode && episode.guid === currentEpisode.guid) {
       audioElement
         .play()
-        .then(() => sendResponse(Emitters.playing(player.state, episode)))
-        .then(() => memory.addEpisode({ ...currentEpisode, time: audioElement.currentTime, duration: audioElement.duration}, {hard}));
-      return true;
+        .then(() => memory.addEpisode({ ...currentEpisode, time: audioElement.currentTime, duration: audioElement.duration}, {hard}))
+        .then(() => sendResponse && sendResponse(Emitters.playing(player.state, episode)));
+        return true;
     }
     // If a different episode was selected.
     // save the position of the previous.
@@ -71,8 +76,8 @@ export default (
     // saving playlist
     memory.addEpisode(episodeToSave, {hard});
 
-    // moving it to playlist if called by user request.
-    sendResponse && playlist.queueEpisode(episodeToSave, true);
+    // moving episode to playlist only if called by user request.
+    sendResponse && player.state.playing &&  playlist.queueEpisode(episodeToSave, true);
 
     // Create the new episode information. 
     // Initializing time from memory.∫

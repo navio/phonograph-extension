@@ -53,7 +53,7 @@ export default class ApplicationState {
   }
 
   clearEpisode() {
-    localStorage.deleteItem(CURRENT_EPISODE);
+    localStorage.removeItem(CURRENT_EPISODE);
     return true;
   }
 

@@ -115,9 +115,11 @@ const background = (
 
       case BACKGROUND_EVENTS.GET_PLAYER_STATE: {
         const audioState = player.state;
-        const episode: IEpisodeState = state.getEpisode();
 
+        const episode: IEpisodeState = state.getEpisode();
         const { url } = episode;
+        
+        if(!url) return;
 
         const getCurrentEpisode = async (url: string) => {
           const {items, ...podcastInfo} = await engine.getPodcast(url);
