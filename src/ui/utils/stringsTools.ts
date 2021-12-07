@@ -19,7 +19,6 @@ export const displayTime = (time): string => {
   let seconds, minutes, hours;
   seconds = minutes = hours = 0;
 
-
   seconds = allSeconds % 60;
   const remainingSeconds = Math.floor(allSeconds / 60);
 
@@ -41,3 +40,15 @@ export const displayTime = (time): string => {
 
   return `${hoursDisplay}${minutesDisplay}:${secondsDisplay}`;
 };
+
+export const durationDisplay = (content: string) => {
+  if (content.includes(":")) {
+    return ` ${content.replace("00:", "")}`;
+  }
+  return displayTime(content);
+};
+
+export const displayEpisode = (number: string ) => {
+  const episode =  Number.parseInt(number);
+  return episode < 9 ? `E0${episode}: ` : `E${episode}: `;
+} 

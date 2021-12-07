@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Theme } from "@mui/material/styles";
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
+import createStyles from "@mui/styles/createStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import { IPodcast } from "../index";
 import { PodcastImage } from "ui/utils/imageSaver";
 import { clearText, dateFrom } from "ui/utils/stringsTools";
 import { getRGBA, getRGB, contrastColor } from "ui/utils/color";
 import MicIcon from "@mui/icons-material/MicNoneOutlined";
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { Button } from "@mui/material";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { Button, Chip } from "@mui/material";
+import { margin } from "@mui/system";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -76,19 +77,18 @@ export default (props: {
           </span>
           {inLibrary ? (
             <Button
-            style={{
-              width: "200px",
-              margin: "1rem 0",
-              color: getRGB(image.colors[1]),
-              borderColor: getRGB(image.colors[1]),
-            }}
-            onClick={() => unsubscribe(podcast.url)}
-            variant="outlined"
-          >
-            Unsubscribe
-          </Button>
-          ):
-          (
+              style={{
+                width: "200px",
+                margin: "1rem 0",
+                color: getRGB(image.colors[1]),
+                borderColor: getRGB(image.colors[1]),
+              }}
+              onClick={() => unsubscribe(podcast.url)}
+              variant="outlined"
+            >
+              Unsubscribe
+            </Button>
+          ) : (
             <Button
               style={{
                 width: "200px",
@@ -102,6 +102,51 @@ export default (props: {
               <BookmarkIcon /> Subscribe
             </Button>
           )}
+          <div>
+            {podcast?.author && (
+              <Chip
+                style={{
+                  textTransform: "capitalize",
+                  marginBottom: "1rem",
+                }}
+                // variant="outlined"
+                label={"Author: " + podcast.author}
+                color="primary"
+              />
+            )}
+            {podcast?.copyright && (
+              <Chip
+                style={{
+                  textTransform: "capitalize",
+                  marginLeft: "1rem",
+                  marginBottom: "1rem",
+                }}
+                variant="outlined"
+                label={"Copyright: " + podcast.copyright}
+                color="primary"
+              />
+            )}
+            {podcast?.explicit && (
+              <Chip
+                style={{ marginLeft: "1rem", marginBottom: "1rem" }}
+                variant="outlined"
+                label={"Explicit: " + podcast?.explicit}
+                color="primary"
+              />
+            )}
+            {podcast?.language && (
+              <Chip
+                style={{
+                  textTransform: "capitalize",
+                  marginBottom: "1rem",
+                  marginLeft: "1rem",
+                }}
+                variant="outlined"
+                label={"Language: " + podcast.language}
+                color="primary"
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

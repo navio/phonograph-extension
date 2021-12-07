@@ -7,7 +7,12 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { IEpisode } from "podcastsuite/dist/Format";
 import Styled from "styled-components";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
+import { Chip, Typography } from "@mui/material";
+import { displayTime, durationDisplay } from "ui/utils/stringsTools";
+
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 
 const EpisodeImage = Styled.img`
   height: 50vh;
@@ -15,8 +20,6 @@ const EpisodeImage = Styled.img`
   margin: 0 auto;
   display: block;
 `;
-
-
 
 interface EpisodeProps {
   open: boolean;
@@ -32,28 +35,67 @@ export default ({ handleClose, open = false, episode }: EpisodeProps) => {
     }
 `;
   return (
-  <div>
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      scroll={"paper"}
-      fullWidth={true}
-      maxWidth={"md"}
-      aria-labelledby="scroll-dialog-title"
-      aria-describedby="scroll-dialog-description"
-    >
-      {episode?.title && (
-        <DialogTitle id="scroll-dialog-title">{episode.title}</DialogTitle>
-      )}
-      <DialogContent>
-        {episode?.image && <EpisodeImage src={episode.image} />}
-        <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
-          <Content dangerouslySetInnerHTML={{ __html: episode?.description }} />
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Close</Button>
-      </DialogActions>
-    </Dialog>
-  </div>
-)};
+    <div>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        scroll={"paper"}
+        fullWidth={true}
+        maxWidth={"md"}
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+      >
+        {episode?.title && (
+          <DialogTitle id="scroll-dialog-title">{episode.title}</DialogTitle>
+        )}
+        <DialogContent>
+          {episode?.image && <EpisodeImage src={episode.image} />}
+          <Typography gutterBottom>
+            {episode?.duration && (
+              <Chip
+                style={{ marginLeft: "10px", textTransform: "capitalize" }}
+                size="medium"
+                icon={<AccessTimeIcon />}
+                label={durationDisplay(episode.duration+"")}
+                color="primary"
+              />
+            )}
+            {episode?.episodeType && (
+              <Chip
+                style={{ marginLeft: "10px", textTransform: "capitalize" }}
+                size="medium"
+                label={episode.episodeType}
+                color="primary"
+              />
+            )}
+            {episode?.season && (
+              <Chip
+                style={{ marginLeft: "10px", textTransform: "capitalize" }}
+                size="medium"
+                label={'Season '+episode.season}
+                color="primary"
+              />
+            )}
+            {episode?.episode! && (
+              <Chip
+                style={{ marginLeft: "10px", textTransform: "capitalize" }}
+                size="medium"
+                label={'Episode '+episode.episode}
+                color="primary"
+              />
+            )}
+
+          </Typography>
+          <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
+            <Content
+              dangerouslySetInnerHTML={{ __html: episode?.description }}
+            />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};

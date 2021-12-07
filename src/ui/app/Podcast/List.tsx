@@ -1,25 +1,26 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Theme } from "@mui/material/styles";
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
+import createStyles from "@mui/styles/createStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { IPodcast } from "..";
 
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import HeadsetIcon from "@mui/icons-material/Headset";
-import CheckIcon from '@mui/icons-material/Check';
-import EpisodeDisplay from './EpisodeDisplay';
+import CheckIcon from "@mui/icons-material/Check";
+import EpisodeDisplay from "./EpisodeDisplay";
 
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 
-import { clearText, dateFrom, displayTime } from "ui/utils/stringsTools";
+import { clearText, dateFrom, displayEpisode, displayTime, durationDisplay } from "ui/utils/stringsTools";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { PodcastImage } from "ui/utils/imageSaver";
 
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: "column",
       backgroundColor: theme.palette.background.paper,
       justifyContent: "center",
-      color: theme.palette.text.primary
+      color: theme.palette.text.primary,
     },
     list: {
       margin: "0 4rem",
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const EpisodeListDescription = (props: {
   episode: IEpisode;
   listened: IMemoryState;
-  onClick: React.MouseEventHandler<HTMLDivElement>
+  onClick: React.MouseEventHandler<HTMLDivElement>;
 }) => {
   const { episode, listened } = props;
   return (
@@ -67,35 +68,47 @@ const EpisodeListDescription = (props: {
       primary={
         <>
           {episode.season && (
-            <Typography color={"secondary"}>Season {episode.season}</Typography>
+            <Typography component={"span"} color={"secondary"}>
+              S{episode.season}
+            </Typography>
           )}
-          <Typography variant="overline" component="div">
-            {episode.episodeType && episode.episodeType !== "full" && (
-              <Chip
-                style={{ marginLeft: "10px" }}
-                variant="outlined"
-                size="small"
-                label={episode.episodeType}
-                color="secondary"
-              />
-            )}
-          </Typography>
-          <Typography component="p" variant="subtitle1" noWrap>
+          {episode.episode && (
+            <Typography component={"span"} color={"secondary"}>
+              { displayEpisode(episode.episode)}
+            </Typography>
+          )}
+          <Typography component="span" variant="subtitle1" noWrap>
             {clearText(episode.title)}
           </Typography>
+          {episode?.duration && <Typography color={"primary"} component={"span"} variant="subtitle2" >
+            {" "}{durationDisplay(''+episode.duration)}
+          </Typography>}
         </>
       }
       secondary={
         <>
           {dateFrom(episode.created)}{" "}
-          
+          {episode.episodeType && episode.episodeType !== "full" && (
+            <Chip
+              style={{ marginLeft: "10px", textTransform: "capitalize" }}
+              variant="outlined"
+              size="small"
+              label={episode.episodeType}
+              color="secondary"
+            />
+          )}
           {listened ? (
             <Chip
-              color={listened.completed ? "default" : 'info'}
+              color={listened.completed ? "default" : "info"}
               style={{ marginLeft: "5px" }}
               size="small"
-              icon={ listened.completed ? <CheckIcon />: <HeadsetIcon />}
-              label={ listened.completed ? 'Completed' :`${displayTime(listened.lastPosition)}`}
+              variant="outlined"
+              icon={listened.completed ? <CheckIcon /> : <HeadsetIcon />}
+              label={
+                listened.completed
+                  ? "Completed"
+                  : `${displayTime(listened.lastPosition)}`
+              }
             />
           ) : (
             ""
@@ -105,8 +118,6 @@ const EpisodeListDescription = (props: {
     />
   );
 };
-
-
 
 export default function EpisodeList(props: {
   podcast: IPodcast;
@@ -132,7 +143,7 @@ export default function EpisodeList(props: {
         <Divider />
         {episodeList.map((episode) => (
           <>
-            <ListItem button >
+            <ListItem button>
               <AudioButton
                 color={image.colors[0]}
                 audioState={audioState}
@@ -140,14 +151,15 @@ export default function EpisodeList(props: {
                 episode={episode}
                 podcastURL={podcast.url}
               />
-              <EpisodeListDescription onClick={()=>setClickedEpisode(episode)} 
+              <EpisodeListDescription
+                onClick={() => setClickedEpisode(episode)}
                 listened={listened[episode.guid]}
                 episode={episode}
               />
               <ListItemSecondaryAction>
-                <ActionMenu episode={{...episode, time: 0}}>
+                <ActionMenu episode={{ ...episode, time: 0 }}>
                   <MoreVertIcon />
-                </ActionMenu> 
+                </ActionMenu>
               </ListItemSecondaryAction>
             </ListItem>
             <Divider />
@@ -166,10 +178,11 @@ export default function EpisodeList(props: {
           Load More Episodes{" "}
         </Button>
       )}
-      <EpisodeDisplay 
+      <EpisodeDisplay
         episode={clickedEpisode}
-        handleClose={() => setClickedEpisode(undefined)} 
-        open={!!clickedEpisode} />
+        handleClose={() => setClickedEpisode(undefined)}
+        open={!!clickedEpisode}
+      />
     </div>
   );
 }
