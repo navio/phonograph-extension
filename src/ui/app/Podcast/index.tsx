@@ -24,7 +24,6 @@ export default () => {
   const [inLibrary, setInLibrary] = useState<boolean>(true);
   const { collection } = useContext(AppContext);
   const { podcast: PodcastURL } = useRouteMatch("/podcast/:podcast").params;
-
   let url: string;
   useEffect(() => {
     try {

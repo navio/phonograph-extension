@@ -89,7 +89,7 @@ const background = (
         const audioState = player.state;
         const podcastImage = state.getPodcastImage();
         const podcastInfo = state.getSimplePodcast();
-        if(!audioState.loaded){
+        if(!audioState.loaded || !podcastInfo){
           // if no audio is loaded redirect to library.
           chrome.tabs.create({ 'url': `chrome-extension://${chrome.runtime.id}/options.html#` });
         }
