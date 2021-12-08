@@ -7,7 +7,7 @@ export const osColor =
   
 export const themeCreator = () => createTheme({
   palette: {
-    mode: osColor ? 'dark' : 'light',
+    // mode: osColor ? 'dark' : 'light',
     primary: blue,
     secondary: {
       main: '#ffa726',

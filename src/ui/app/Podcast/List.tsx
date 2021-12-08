@@ -7,7 +7,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { IPodcast } from "..";
 
 import Divider from "@mui/material/Divider";
@@ -20,7 +20,13 @@ import EpisodeDisplay from "./EpisodeDisplay";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 
-import { clearText, dateFrom, displayEpisode, displayTime, durationDisplay } from "ui/utils/stringsTools";
+import {
+  clearText,
+  dateFrom,
+  displayEpisode,
+  displayTime,
+  durationDisplay,
+} from "ui/utils/stringsTools";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { PodcastImage } from "ui/utils/imageSaver";
 
@@ -28,6 +34,7 @@ import { AppContext } from "../index";
 import AudioButton from "ui/common/AudioButton";
 import { IMemoryEpisodes, IMemoryPodcast, IMemoryState } from "lib/Memory";
 import ActionMenu from "./ActionMenu";
+import { getRGB, getRGBA, IColor } from "ui/utils/color";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -60,29 +67,51 @@ const EpisodeListDescription = (props: {
   episode: IEpisode;
   listened: IMemoryState;
   onClick: React.MouseEventHandler<HTMLDivElement>;
+  image: PodcastImage;
 }) => {
-  const { episode, listened } = props;
+  const { episode, listened, image } = props;
+  const mainColor = getRGBA(image?.colors[1], 7);
+  const mainColorTwo = getRGBA(image?.colors[0], 7);
   return (
     <ListItemText
       onClick={props.onClick}
       primary={
         <>
           {episode.season && (
-            <Typography component={"span"} color={"secondary"}>
+            <Typography component={"span"} color={mainColor}>
               S{episode.season}
             </Typography>
           )}
           {episode.episode && (
-            <Typography component={"span"} color={"secondary"}>
-              { displayEpisode(episode.episode)}
+            <Typography component={"span"} color={mainColor}>
+              {displayEpisode(episode.episode)}
             </Typography>
           )}
-          <Typography component="span" variant="subtitle1" noWrap>
+          <Typography component={"div"} variant="subtitle1" noWrap>
             {clearText(episode.title)}
+            {episode?.duration && (
+            <Typography
+              color={mainColor}
+              component={"span"}
+              variant="subtitle2"
+            >
+              {episode?.duration && (
+                <Typography
+                  color={mainColor}
+                  component={"span"}
+                  variant="subtitle2"
+                >
+                  <Chip
+                    style={{ color: mainColorTwo, marginLeft: ".3rem" }}
+                    size="small"
+                    variant="outlined"
+                    label={durationDisplay("" + episode.duration)}
+                  />
+                </Typography>
+              )}
+            </Typography>
+          )}
           </Typography>
-          {episode?.duration && <Typography color={"primary"} component={"span"} variant="subtitle2" >
-            {" "}{durationDisplay(''+episode.duration)}
-          </Typography>}
         </>
       }
       secondary={
@@ -152,6 +181,7 @@ export default function EpisodeList(props: {
                 podcastURL={podcast.url}
               />
               <EpisodeListDescription
+                image={image}
                 onClick={() => setClickedEpisode(episode)}
                 listened={listened[episode.guid]}
                 episode={episode}

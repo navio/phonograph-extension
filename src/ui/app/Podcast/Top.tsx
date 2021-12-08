@@ -8,8 +8,9 @@ import { clearText, dateFrom } from "ui/utils/stringsTools";
 import { getRGBA, getRGB, contrastColor } from "ui/utils/color";
 import MicIcon from "@mui/icons-material/MicNoneOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, Typography } from "@mui/material";
 import { margin } from "@mui/system";
+import Styled from "styled-components";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,6 +34,11 @@ const useStyles = makeStyles((theme: Theme) =>
     text: theme.typography.body2,
   })
 );
+
+const LineRow = Styled(Typography)`
+  display: flex;
+  align-items: baseline;
+`;
 
 export default (props: {
   podcast: IPodcast;
@@ -104,47 +110,38 @@ export default (props: {
           )}
           <div>
             {podcast?.author && (
-              <Chip
-                style={{
-                  textTransform: "capitalize",
-                  marginBottom: "1rem",
-                }}
-                // variant="outlined"
-                label={"Author: " + podcast.author}
-                color="primary"
-              />
-            )}
-            {podcast?.copyright && (
-              <Chip
-                style={{
-                  textTransform: "capitalize",
-                  marginLeft: "1rem",
-                  marginBottom: "1rem",
-                }}
-                variant="outlined"
-                label={"Copyright: " + podcast.copyright}
-                color="primary"
-              />
+              <LineRow component={"div"} variant="body1">
+                Author:
+                <Typography style={{paddingLeft:".5rem"}} variant="body2">{podcast.author}</Typography>
+              </LineRow>
             )}
             {podcast?.explicit && (
-              <Chip
-                style={{ marginLeft: "1rem", marginBottom: "1rem" }}
-                variant="outlined"
-                label={"Explicit: " + podcast?.explicit}
-                color="primary"
-              />
+              <LineRow component={"div"} variant="body1">
+                Explicit:
+                <Chip
+                  style={{ margin: ".2rem", marginTop: "0", color: getRGB(image.colors[1]) }}
+                  size="small"
+                  label={podcast?.explicit}
+                />
+                {podcast?.language && (
+                  <>
+                    Language:
+                    <Chip
+                      style={{
+                        textTransform: "capitalize",
+                        margin: ".5rem",
+                        marginTop: "0",
+                        color: getRGB(image.colors[1])
+                      }}
+                      size="small"
+                      label={podcast.language}
+                    />
+                  </>
+                )}
+              </LineRow>
             )}
-            {podcast?.language && (
-              <Chip
-                style={{
-                  textTransform: "capitalize",
-                  marginBottom: "1rem",
-                  marginLeft: "1rem",
-                }}
-                variant="outlined"
-                label={"Language: " + podcast.language}
-                color="primary"
-              />
+            {podcast?.copyright && (
+              <Typography variant="caption">{podcast.copyright}</Typography>
             )}
           </div>
         </div>
