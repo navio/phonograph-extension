@@ -77,40 +77,40 @@ const EpisodeListDescription = (props: {
       onClick={props.onClick}
       primary={
         <>
-          {episode.season && (
-            <Typography component={"span"} color={mainColor}>
-              S{episode.season}
-            </Typography>
-          )}
-          {episode.episode && (
-            <Typography component={"span"} color={mainColor}>
-              {displayEpisode(episode.episode)}
-            </Typography>
-          )}
           <Typography component={"div"} variant="subtitle1" noWrap>
+            {episode.season && (
+              <Typography component={"span"} color={mainColor}>
+                S{episode.season}
+              </Typography>
+            )}
+            {episode.episode && (
+              <Typography component={"span"} color={mainColor}>
+                {displayEpisode(episode.episode)}
+              </Typography>
+            )}
             {clearText(episode.title)}
             {episode?.duration && (
-            <Typography
-              color={mainColor}
-              component={"span"}
-              variant="subtitle2"
-            >
-              {episode?.duration && (
-                <Typography
-                  color={mainColor}
-                  component={"span"}
-                  variant="subtitle2"
-                >
-                  <Chip
-                    style={{ color: mainColorTwo, marginLeft: ".3rem" }}
-                    size="small"
-                    variant="outlined"
-                    label={durationDisplay("" + episode.duration)}
-                  />
-                </Typography>
-              )}
-            </Typography>
-          )}
+              <Typography
+                color={mainColor}
+                component={"span"}
+                variant="subtitle2"
+              >
+                {episode?.duration && (
+                  <Typography
+                    color={mainColor}
+                    component={"span"}
+                    variant="subtitle2"
+                  >
+                    <Chip
+                      style={{ color: mainColorTwo, marginLeft: ".3rem" }}
+                      size="small"
+                      variant="outlined"
+                      label={durationDisplay("" + episode.duration)}
+                    />
+                  </Typography>
+                )}
+              </Typography>
+            )}
           </Typography>
         </>
       }
