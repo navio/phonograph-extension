@@ -8,7 +8,8 @@
   "scripts": {
     "build": "npx webpack --mode='production' --env min",
     "start": "npx webpack -w --progress",
-    "clean": "rm -rf ./dist"
+    "clean": "rm -rf ./dist",
+    "zip": "zip dist.zip -r dist/*"
   },
   "devDependencies": {
     "@mui/icons-material": "^5.2.0",

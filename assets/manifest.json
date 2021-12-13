@@ -17,15 +17,5 @@
   "options_page": "options.html",
   "icons": { 
    "128": "icon128.png" },
-  "content_scripts": [
-    {
-      "matches": [
-        "*://*/*"
-      ],
-      "js": [
-        "content.js"
-      ]
-    }
-  ],
   "manifest_version": 2
 }
