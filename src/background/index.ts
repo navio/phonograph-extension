@@ -3,7 +3,6 @@ import initPlayer from "player/reducer";
 import playlist from "playlist/reducer";
 import Engine from "lib/Podcast";
 import ApplicationState from "lib/State";
-import { podcasts } from "./config";
 import AudioElement from "lib/Audio";
 import browser from "lib/Browser";
 import Memory from "lib/Memory";
@@ -15,7 +14,7 @@ browser.setClickToPopup();
 
 // Global Objects
 const memory = new Memory();
-const engine = new Engine({ podcasts: podcasts });
+const engine = new Engine({ podcasts: [] });
 const state = new ApplicationState();
 const player = new AudioElement();
 const queue = new Queue();
