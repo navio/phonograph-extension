@@ -89,7 +89,7 @@ const background = (
         const audioState = player.state;
         const podcastImage = state.getPodcastImage();
         const podcastInfo = state.getSimplePodcast();
-        if(!audioState.loaded || !podcastInfo){
+        if((audioState && !audioState.loaded) || !podcastInfo){
           // if no audio is loaded redirect to library.
           chrome.tabs.create({ 'url': `chrome-extension://${chrome.runtime.id}/options.html#` });
         }
@@ -114,6 +114,7 @@ const background = (
           url = 'podcast/'+ podcast;
         }
         chrome.tabs.create({ 'url': `chrome-extension://${chrome.runtime.id}/options.html#/${url}` });
+        return true;
       }
 
       case PODCAST_EVENTS.GET_PODCASTS: {
@@ -121,6 +122,7 @@ const background = (
           sendResponse(getPodcastsResponse(library));
           return true;
         });
+        return true;
       }
 
       case BACKGROUND_EVENTS.GET_PLAYER_STATE: {
