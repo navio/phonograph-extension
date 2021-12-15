@@ -21,6 +21,21 @@ export default (
   // player.audioElement.autoplay = true;
 
   // listeners
+
+  if ('mediaSession' in navigator) {
+    console.log('media')
+    navigator.mediaSession.setActionHandler("previoustrack", () => {
+      audioElement.currentTime -= 30
+      messagePlayerEmission(Emitters.canPlay(player.state))
+      memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime, duration: audioElement.duration});
+    });
+    navigator.mediaSession.setActionHandler("nexttrack", () => {
+      audioElement.currentTime += 15;
+      messagePlayerEmission(Emitters.canPlay(player.state))
+      memory.addEpisode({...state.getEpisode(), time: audioElement.currentTime, duration: audioElement.duration});
+    });
+  }
+
   audioElement.addEventListener("pause", () =>
     messagePlayerEmission(
       Emitters.paused(
