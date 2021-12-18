@@ -200,9 +200,8 @@ export default function EpisodeList(props: {
         <Button
           onClick={() => setAmount(amount + 1)}
           variant="outlined"
-          style={{ margin: "1rem auto", width: "80%" }}
+          style={{ margin: "1rem auto", width: "80%", color: getRGB(image.colors[0]), borderColor: getRGB(image.colors[0]) }}
           size="large"
-          color="primary"
         >
           {" "}
           Load More Episodes{" "}
