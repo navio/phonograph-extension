@@ -164,5 +164,6 @@ export const podcastMetadataEmissionListener = (
       const {listened} = message.payload
       callback(listened);
     }
+    return true;
   });
 };

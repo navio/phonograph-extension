@@ -29,6 +29,7 @@ const App = () => {
   endEmissionListener((message) => {
     const { state } = message.payload;
     setPlayerState(state);
+    return true
   })
 
   playingEmissionListener((message) => {
@@ -36,6 +37,7 @@ const App = () => {
     console.log(state);
     setPlayerState(state);
     setEpisode(media);
+    return true;
   });
 
   pauseEmissionListener((message) => {
@@ -43,6 +45,7 @@ const App = () => {
     console.log(state);
     setPlayerState(state);
     setEpisode(media);
+    return true;
   })
 
   return <PopUp episode={episode} audioState={playerState} podcast={podcast} media={media} /> ;

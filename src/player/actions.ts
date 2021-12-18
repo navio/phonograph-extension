@@ -142,6 +142,7 @@ export const playingEmissionListener = (
     if (message.action === PLAYER_EMITIONS.playing) {
       callback(message);
     }
+    return
   });
 };
 
@@ -152,6 +153,7 @@ export const pauseEmissionListener = (
     if (message.action === PLAYER_EMITIONS.paused) {
       callback(message);
     }
+    return
   });
 };
 
@@ -162,6 +164,7 @@ export const progressEmissionListener = (
     if (message.action === PLAYER_EMITIONS.progress) {
       callback(message);
     }
+    return
   });
 };
 
@@ -172,6 +175,7 @@ export const endEmissionListener = (
     if (message.action === PLAYER_EMITIONS.ended) {
       callback(message);
     }
+    return;
   });
 };
 

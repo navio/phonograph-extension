@@ -107,6 +107,7 @@ export default () => {
       setAudioStateInternal((state) => {
         return { ...state, currentTime, duration };
       });
+      return true;
     });
   }, [progressEmissionListener]);
 
@@ -130,7 +131,7 @@ export default () => {
     setAudioStateInternal((state) => {
       return { ...state, currentTime };
     });
-    messagePlayerAction(Triggers.seek(currentTime), (response) => {});
+    messagePlayerAction(Triggers.seek(currentTime), () => { return true });
   };
 
   const masterColor =
@@ -169,7 +170,7 @@ export default () => {
                     value={percentPlayed(audioStateInternal)}
                     aria-labelledby="audio"
                     valueLabelDisplay={"auto"}
-                    onChange={seekHandler}
+                    onChange={(a,b) => seekHandler(a,b)}
                   />
                 </ProgressContainer>
                 <TimeDisplay align="center">

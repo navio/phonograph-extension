@@ -60,6 +60,7 @@ export default () => {
     podcastMetadataEmissionListener((listenUpdate) => {
       const {episodes} = listenUpdate
       setListened(episodes);
+      return true;
     })
   },[]);
 

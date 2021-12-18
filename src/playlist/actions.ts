@@ -113,5 +113,6 @@ export const listenPlayListBroadcast = (
       if (Object.keys(T.PLAYLIST_EMITTERS).includes(message.action)) {
         callback(message);
       }
+      return true;
     });
   };

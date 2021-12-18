@@ -34,17 +34,20 @@ export default () => {
     endEmissionListener((message) => {
       const { state } = message.payload;
       setPlayerState(state);
+      return true;
     })
 
     playingEmissionListener((message) => {
       const { media, state } = message.payload;
       setPlayerState(state);
       setEpisode(media);
+      return true;
     });
 
     pauseEmissionListener((message) => {
       const { state } = message.payload;
       setPlayerState(state);
+      return true;
     })
   }, []);
 

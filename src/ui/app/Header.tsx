@@ -122,6 +122,7 @@ export default function SearchAppBar(props: {
     messagePlaylistAction(getEpisodes(), (message) => {
       const { episodes } = message.payload;
       setPlaylist(episodes);
+      return true;
     });
   }, history);
 

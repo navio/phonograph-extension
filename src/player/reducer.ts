@@ -80,7 +80,6 @@ export default (
 
     // moving episode to playlist only if called by user request.
     sendResponse && player.state.playing &&  playlist.queueEpisode(episodeToSave, true);
-
     // Create the new episode information. 
     // Initializing time from memory.∫
     const initialTime = memory.getEpisodeTime({...episode, url: podcastURL});
@@ -93,7 +92,7 @@ export default (
     audioElement.currentTime = initialTime;
 
     if(playlist.dequeueEpisode(episode)){
-      broadcastMessagePlaylist(emitStatusPlaylist(playlist.getPlaylist()), () => {});
+      broadcastMessagePlaylist(emitStatusPlaylist(playlist.getPlaylist()), () => true);
     }
 
 
@@ -108,7 +107,8 @@ export default (
   // metadata updater
   const emitPodcastMetadata = (episode: IEpisode) => {
     const podcastMemory = memory.getPodcast(episode.podcast);
-    messagePodcastMetadataEmission(getPodcastMetadataResponse(podcastMemory));
+    messagePodcastMetadataEmission(getPodcastMetadataResponse(podcastMemory), () => true);
+    return true;
   } 
 
   // reducer
