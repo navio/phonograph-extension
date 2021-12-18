@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext, IPodcast } from "./index";
 import imageFetcher from "ui/utils/imageSaver";
 import Typography from "@mui/material/Typography";
@@ -56,15 +56,25 @@ const CenterContent = Styled.div`
   text-align: center;
 `;
 
-const NoPodcasts = () => (
-  <CenterContent>
-    <Typography gutterBottom variant="h4">
-      {" "}
-      Get your favorite podcasts or find new ones.
-    </Typography>
-    {/* <TextField style={{width: '30vw'}} id="outlined-basic" label="Find your next Podcast" variant="outlined" /> */}
-  </CenterContent>
-);
+const NoPodcasts = () => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() =>{
+    setTimeout(() => setVisible(true), 1000);
+  },[]);
+
+  return visible && (
+    <CenterContent>
+      <img src="/phono.svg" style={{ width: "10rem" }} />
+      <Typography gutterBottom variant="h4">
+        {" "}
+        Get your favorite podcasts or{" "}
+        <Link to="/discovery">find new ones.</Link>
+      </Typography>
+      {/* <TextField style={{width: '30vw'}} id="outlined-basic" label="Find your next Podcast" variant="outlined" /> */}
+    </CenterContent>
+  );
+};
 
 export default () => {
   const { collection } = useContext(AppContext);
@@ -74,7 +84,7 @@ export default () => {
       {collection.map((podcast) => (
         <PodcatImage podcast={podcast} />
       ))}
-      {/* {collection.length === 0 && <NoPodcasts />} */}
+      {collection.length === 0 && <NoPodcasts />}
     </div>
   );
 };
