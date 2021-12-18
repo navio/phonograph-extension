@@ -7,7 +7,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { IPodcast } from "..";
 
 import Divider from "@mui/material/Divider";
@@ -35,6 +35,9 @@ import AudioButton from "ui/common/AudioButton";
 import { IMemoryEpisodes, IMemoryPodcast, IMemoryState } from "lib/Memory";
 import ActionMenu from "./ActionMenu";
 import { getRGB, getRGBA, IColor } from "ui/utils/color";
+import { Badge, BadgeProps } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import AccessTime from "@mui/icons-material/AccessTime";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,6 +66,15 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    top: "20%",
+    padding: "0 4px",
+    right: "-16px",
+    height: "14px",
+  },
+}));
+
 const EpisodeListDescription = (props: {
   episode: IEpisode;
   listened: IMemoryState;
@@ -78,6 +90,7 @@ const EpisodeListDescription = (props: {
       primary={
         <>
           <Typography component={"div"} variant="subtitle1" noWrap>
+            
             {episode.season && (
               <Typography component={"span"} color={mainColor}>
                 S{episode.season}
@@ -89,34 +102,48 @@ const EpisodeListDescription = (props: {
               </Typography>
             )}
             {clearText(episode.title)}
-            {episode?.duration && (
+            {listened &&
+              (listened.completed ? (
+                <StyledBadge>
+                  <HeadsetIcon color="disabled" />
+                </StyledBadge>
+              ) : (
+                <StyledBadge
+                  color="primary"
+                  badgeContent={displayTime(listened.lastPosition)}
+                >
+                  <HeadsetIcon />
+                </StyledBadge>
+              ))}
+          </Typography>
+        </>
+      }
+      secondary={
+        <>
+          {dateFrom(episode.created)}
+          {" "}
+          {episode?.duration && (
               <Typography
                 color={mainColor}
                 component={"span"}
                 variant="subtitle2"
               >
-                {episode?.duration && (
                   <Typography
                     color={mainColor}
                     component={"span"}
                     variant="subtitle2"
                   >
                     <Chip
+                      icon={<AccessTimeIcon />}
                       style={{ color: mainColorTwo, marginLeft: ".3rem" }}
                       size="small"
                       variant="outlined"
                       label={durationDisplay("" + episode.duration)}
                     />
                   </Typography>
-                )}
               </Typography>
             )}
-          </Typography>
-        </>
-      }
-      secondary={
-        <>
-          {dateFrom(episode.created)}{" "}
+          {" "}
           {episode.episodeType && episode.episodeType !== "full" && (
             <Chip
               style={{ marginLeft: "10px", textTransform: "capitalize" }}
@@ -125,22 +152,6 @@ const EpisodeListDescription = (props: {
               label={episode.episodeType}
               color="secondary"
             />
-          )}
-          {listened ? (
-            <Chip
-              color={listened.completed ? "default" : "info"}
-              style={{ marginLeft: "5px" }}
-              size="small"
-              variant="outlined"
-              icon={listened.completed ? <CheckIcon /> : <HeadsetIcon />}
-              label={
-                listened.completed
-                  ? "Completed"
-                  : `${displayTime(listened.lastPosition)}`
-              }
-            />
-          ) : (
-            ""
           )}
         </>
       }
@@ -200,7 +211,12 @@ export default function EpisodeList(props: {
         <Button
           onClick={() => setAmount(amount + 1)}
           variant="outlined"
-          style={{ margin: "1rem auto", width: "80%", color: getRGB(image.colors[0]), borderColor: getRGB(image.colors[0]) }}
+          style={{
+            margin: "1rem auto",
+            width: "80%",
+            color: getRGB(image.colors[0]),
+            borderColor: getRGB(image.colors[0]),
+          }}
           size="large"
         >
           {" "}

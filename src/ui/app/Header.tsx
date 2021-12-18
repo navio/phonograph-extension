@@ -13,7 +13,8 @@ import { PodcastImage } from "ui/utils/imageSaver";
 import { COLORS, contrastColor, getRGBA } from "ui/utils/color";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useHistory } from "react-router-dom";
-import LeftNav from "./LeftNav";
+// import LeftNav from "./LeftNav";
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import Badge from "@mui/material/Badge";
 import {
   getEpisodes,
@@ -139,6 +140,7 @@ export default function SearchAppBar(props: {
         <AppBar position="static" style={overwrite}>
           <Toolbar>
             <IconButton
+              title={back ? "Back to Library": "Find more Podcasts"}
               edge="start"
               className={classes.menuButton}
               color="inherit"
@@ -147,12 +149,13 @@ export default function SearchAppBar(props: {
                 if (back) {
                   history.push("/");
                 } else {
-                  setLeftNav(true);
+                  history.push("/discovery");
+                  // setLeftNav(true);
                 }
               }}
               size="large"
             >
-              {back ? <ArrowBackIcon /> : <HeadsetIcon />}
+              {back ? <ArrowBackIcon /> : <TravelExploreIcon />}
             </IconButton>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
@@ -187,7 +190,7 @@ export default function SearchAppBar(props: {
           </Toolbar>
         </AppBar>
       </div>
-      <LeftNav open={leftNav} onClose={setLeftNav} />
+      {/* <LeftNav open={leftNav} onClose={setLeftNav} /> */}
       <Playlist open={openPlaylist} onClose={setOpenPlaylist} episodes={playlist} />
     </>
   );

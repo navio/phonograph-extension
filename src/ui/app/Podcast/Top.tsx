@@ -8,7 +8,7 @@ import { clearText, dateFrom } from "ui/utils/stringsTools";
 import { getRGBA, getRGB, contrastColor } from "ui/utils/color";
 import MicIcon from "@mui/icons-material/MicNoneOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import { Button, Chip, Typography } from "@mui/material";
+import { Button, Chip, IconButton, Typography } from "@mui/material";
 import { margin } from "@mui/system";
 import Styled from "styled-components";
 
@@ -69,32 +69,19 @@ export default (props: {
               color: getRGBA(image.colors[1]),
             }}
           >
-            {podcast.title}
-          </h1>
-          <span className={classes.infoText}>
-            <MicIcon style={{ height: "1rem" }} />
-            {podcast.author}
-          </span>
-          <span
-            style={{ color: contrastColor(image.colors[0]) }}
-            className={classes.text}
-          >
-            {clearText(podcast.description)}
-          </span>
-          {inLibrary ? (
-            <Button
+            {inLibrary && <IconButton
+              title="Unsubscribe"
               style={{
-                width: "200px",
-                margin: "1rem 0",
                 color: getRGB(image.colors[1]),
                 borderColor: getRGB(image.colors[1]),
               }}
               onClick={() => unsubscribe(podcast.url)}
-              variant="outlined"
             >
-              Unsubscribe
-            </Button>
-          ) : (
+              <BookmarkIcon />
+            </IconButton>}
+            {podcast.title}
+          </h1>
+          {!inLibrary && (
             <Button
               style={{
                 width: "200px",
@@ -108,6 +95,17 @@ export default (props: {
               <BookmarkIcon /> Subscribe
             </Button>
           )}
+          <span className={classes.infoText}>
+            <MicIcon style={{ height: "1rem" }} />
+            {podcast.author}
+          </span>
+          <span
+            style={{ color: contrastColor(image.colors[0]) }}
+            className={classes.text}
+          >
+            {clearText(podcast.description)}
+          </span>
+
           <div>
             {podcast?.author && (
               <LineRow component={"div"} variant="body1">
