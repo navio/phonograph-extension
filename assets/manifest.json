@@ -1,6 +1,6 @@
 {
   "name": "Phonograph",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Phonograph is Podcast Player Extension",
   "browser_action": {
     "name": "Phonograph"
