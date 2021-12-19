@@ -143,6 +143,7 @@ export const listenerLibraryUpdate = (CB: (library: IPodcast[]) => void ) => {
     if(message.action === PODCAST_EMITTER.LIBRARY_UPDATE){
       CB(message.payload.library);
     }
+    return true;
   });
 }
 

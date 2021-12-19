@@ -122,6 +122,9 @@ export default class Memory {
 
   getEpisodeTime(episode: IEpisodeState | IEpisode): number {
     const response = this.getEpisode(episode);
+    if(response && response.completed){
+      return 0;
+    }
     return response ? response.lastPosition : 0;
   }
 
@@ -153,17 +156,6 @@ export default class Memory {
       ...sync.listened,
     };
     
-    // this.library = {
-    //   ...sync.podcasts,
-    //   // ...JSON.parse((await this.local.podcasts) || {}),
-    //   //...this.library,
-    //   // 'empty': 1;
-    // };
-    // this.playlist = {
-    //   ...sync.playlist,
-    //   // ...JSON.parse((await this.local.playlist) || {}),
-    //   // ...this.playlist,
-    // };
 
     this.ready = true;
     return true;
