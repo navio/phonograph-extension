@@ -34,10 +34,11 @@ import { AppContext } from "../index";
 import AudioButton from "ui/common/AudioButton";
 import { IMemoryEpisodes, IMemoryPodcast, IMemoryState } from "lib/Memory";
 import ActionMenu from "./ActionMenu";
-import { getRGB, getRGBA, IColor } from "ui/utils/color";
+import { getDynamicContrast, getRGB, getRGBA, IColor } from "ui/utils/color";
 import { Badge, BadgeProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import AccessTime from "@mui/icons-material/AccessTime";
+import { useTheme } from "@mui/material";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -81,9 +82,11 @@ const EpisodeListDescription = (props: {
   onClick: React.MouseEventHandler<HTMLDivElement>;
   image: PodcastImage;
 }) => {
+  const theme = useTheme();
   const { episode, listened, image } = props;
   const mainColor = getRGBA(image?.colors[1], 7);
-  const mainColorTwo = getRGBA(image?.colors[0], 7);
+  const secondaryColor = getDynamicContrast(image?.colors, theme.palette.background.default)
+  // getRGBA(image?.colors[0], 7);
   return (
     <ListItemText
       onClick={props.onClick}
@@ -135,7 +138,7 @@ const EpisodeListDescription = (props: {
                   >
                     <Chip
                       icon={<AccessTimeIcon />}
-                      style={{ color: mainColorTwo, marginLeft: ".3rem" }}
+                      style={{ color: secondaryColor, marginLeft: ".3rem" }}
                       size="small"
                       variant="outlined"
                       label={durationDisplay("" + episode.duration)}

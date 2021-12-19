@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IPodcast as IPodcastSuitePodcast } from "podcastsuite/dist/PodcastSuite";
 import Header from "./Header";
 import Library from "./Library";
@@ -23,6 +23,7 @@ export interface IAppProps {
   audioState: AudioState;
 }
 
+
 export type IAppContext = Partial<IAppProps>;
 
 export const AppContext = React.createContext<IAppContext>({
@@ -31,7 +32,9 @@ export const AppContext = React.createContext<IAppContext>({
 
 export default function App(props: IAppProps) {
   const { collection, episode, audioState } = props;
-
+  useEffect(() => {
+    document.querySelector('body').style.backgroundColor = theme.palette.background.default;
+  },[]);
   return (
     <ThemeProvider theme={theme}>
       <AppContext.Provider value={{ collection, episode, audioState }}>

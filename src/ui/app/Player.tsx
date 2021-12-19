@@ -80,9 +80,7 @@ const EpisodeImage = styled.img`
   padding-top: 0.3rem;
 `;
 
-const ContentExtender = styled.div`
-  height: 5rem;
-`;
+
 
 const LinearProgressStyled = styled(LinearProgress)`
   & .MuiLinearProgress-colorPrimary,
@@ -99,6 +97,11 @@ export default () => {
   const [media, setMedia] = useState<PodcastImage>();
 
   const theme = useTheme();
+
+  const ContentExtender = styled.div`
+    height: 5rem;
+    background-color: ${theme.palette.background.default};
+  `;
 
   useEffect(() => {
     progressEmissionListener(({ payload }) => {
