@@ -8,9 +8,11 @@ export const osColor =
 export const themeCreator = () => createTheme({
   palette: {
     mode: osColor ? 'dark' : 'light',
-    primary: blue,
+    primary: {
+      main: '#5E81AC',
+    },
     secondary: {
-      main: '#ffa726',
+      main: '#8FBCBB',
     },
   },
 });
