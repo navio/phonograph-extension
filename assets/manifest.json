@@ -6,6 +6,7 @@
     "name": "Phonograph"
   },
   "permissions": [
+    "<all_urls>", 
     "storage"
   ],
   "background": {
@@ -14,7 +15,10 @@
     ],
     "persistent": true
   },
-  "options_page": "options.html",
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
   "icons": { 
    "128": "icon128.png" },
   "content_scripts": [
