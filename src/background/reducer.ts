@@ -91,7 +91,7 @@ const background = (
         const podcastInfo = state.getSimplePodcast();
         if((audioState && !audioState.loaded) || !podcastInfo){
           // if no audio is loaded redirect to library.
-          chrome.tabs.create({ 'url': `chrome-extension://${chrome.i18n.getMessage("@@extension_id")}/options.html#` });
+          chrome.tabs.create({ 'url': `moz-extension://${chrome.i18n.getMessage("@@extension_id")}/options.html#` });
         }
         sendResponse(initializeResponsePopUp(state.getEpisode(), audioState, podcastInfo, podcastImage ));
         return true;
