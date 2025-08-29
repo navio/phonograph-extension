@@ -8,7 +8,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 
 
@@ -19,8 +19,8 @@ interface LeftNavProps {
 }
 
 export default ({onClose, open}: LeftNavProps) => {
-    let history = useHistory();
-    const redirect = (name) => history.push(`/${name}`);
+    let navigate = useNavigate();
+    const redirect = (name) => navigate(`/${name}`);
   
     return (
   <div>

@@ -1,7 +1,3 @@
-type IProperty = string | number | symbol;
-type IGetOverwritesFn = (target: any, property: IProperty) => any;
-type ISetOverwritesFn = (target: any, property: IProperty, value: any) => any;
-
 export interface AudioState {
   currentTime: number;
   duration: number;
@@ -20,67 +16,150 @@ export const percentPlayed = (audio: AudioState) =>
 export const timeByPercentage = (percentage, audio: AudioState) =>
   (percentage * audio.duration) / 100;
 
-export default class AudioElement extends Audio {
-  public audioElement: HTMLAudioElement;
-
-  public getOverwrites: Map<IProperty, IGetOverwritesFn>;
-  public setOverwrites: Map<IProperty, ISetOverwritesFn>;
-
+// Service Worker compatible AudioElement that uses offscreen documents
+export default class AudioElement {
   private audioState: AudioState = {
     currentTime: 0,
     duration: 0,
     playing: false,
   };
 
-  constructor(audioElement?: HTMLAudioElement) {
-    super();
-    this.getOverwrites = new Map();
-    this.setOverwrites = new Map();
-    if (!audioElement) {
-      const defaultElement: HTMLAudioElement = document.createElement("audio");
-      document.body.appendChild(defaultElement);
-      this.audioElement = defaultElement;
-    } else {
-      this.audioElement = audioElement;
-    }
-    // return this.generateProxy();
+  private offscreenReady = false;
+
+  constructor() {
+    this.setupOffscreenDocument();
+    this.setupMessageListener();
   }
 
-  private generateProxy() {
-    return new Proxy(this, {
-      get: (target, property) => {
-        if (this.getOverwrites.has(property)) {
-          return this.getOverwrites.get(property)(this.audioElement, property);
-        }
-        return Reflect.get(this.audioElement, property);
-      },
-      set: (target, property, value) => {
-        if (this.setOverwrites.has(property)) {
-          return this.setOverwrites.get(property)(
-            this.audioElement,
-            property,
-            value
-          );
-        }
-        return Reflect.set(this.audioElement, property, value);
-      },
+  // Setup offscreen document for audio playback
+  private async setupOffscreenDocument(): Promise<void> {
+    try {
+      // Check if offscreen document already exists
+      if (await chrome.offscreen.hasDocument()) {
+        this.offscreenReady = true;
+        return;
+      }
+
+      // Create offscreen document
+      await chrome.offscreen.createDocument({
+        url: 'offscreen.html',
+        reasons: [chrome.offscreen.Reason.AUDIO_PLAYBACK],
+        justification: 'Podcast audio playback'
+      });
+
+      this.offscreenReady = true;
+    } catch (error) {
+      console.error('Failed to setup offscreen document:', error);
+      this.offscreenReady = false;
+    }
+  }
+
+  // Listen for audio state updates from offscreen document
+  private setupMessageListener(): void {
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.type === 'AUDIO_STATE_UPDATE') {
+        this.audioState = { ...this.audioState, ...message.state };
+      }
+      return false; // Don't send response
     });
   }
 
+  // Send command to offscreen document
+  private async sendOffscreenCommand(command: string, payload?: any): Promise<any> {
+    if (!this.offscreenReady) {
+      await this.setupOffscreenDocument();
+    }
+
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage(
+        {
+          target: 'offscreen',
+          command: command,
+          payload: payload
+        },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else if (response && response.success) {
+            if (response.state) {
+              this.audioState = { ...this.audioState, ...response.state };
+            }
+            resolve(response);
+          } else {
+            reject(new Error(response?.error || 'Unknown error'));
+          }
+        }
+      );
+    });
+  }
+
+  // Audio control methods
+  async loadAudio(src: string): Promise<void> {
+    await this.sendOffscreenCommand('LOAD_AUDIO', { src });
+  }
+
+  async play(): Promise<void> {
+    await this.sendOffscreenCommand('PLAY_AUDIO');
+  }
+
+  async pause(): Promise<void> {
+    await this.sendOffscreenCommand('PAUSE_AUDIO');
+  }
+
+  async stop(): Promise<void> {
+    await this.sendOffscreenCommand('STOP_AUDIO');
+  }
+
+  async setCurrentTime(time: number): Promise<void> {
+    await this.sendOffscreenCommand('SET_CURRENT_TIME', { time });
+  }
+
+  async setVolume(volume: number): Promise<void> {
+    await this.sendOffscreenCommand('SET_VOLUME', { volume });
+  }
+
+  // Get current audio state
   get state(): AudioState {
-    this.audioState = {
-      ...this.audioState,
-      loaded: this.audioElement.src,
-      duration: this.audioElement.duration,
-      currentTime: this.audioElement.currentTime,
-      ended: this.audioElement.ended,
-      playing: !this.audioElement.paused,
-    };
-    return this.audioState;
+    return { ...this.audioState };
+  }
+
+  async updateState(): Promise<AudioState> {
+    const response = await this.sendOffscreenCommand('GET_STATE');
+    return response.state;
   }
 
   get durationPercentage(): number {
     return percentPlayed(this.audioState);
   }
 
+  // Legacy property accessors for compatibility
+  get src(): string | undefined {
+    return this.audioState.loaded;
+  }
+
+  set src(value: string | undefined) {
+    if (value) {
+      this.loadAudio(value);
+    }
+  }
+
+  get currentTime(): number {
+    return this.audioState.currentTime;
+  }
+
+  set currentTime(value: number) {
+    this.setCurrentTime(value);
+  }
+
+  get duration(): number {
+    return this.audioState.duration;
+  }
+
+  get paused(): boolean {
+    return !this.audioState.playing;
+  }
+
+  get ended(): boolean {
+    return this.audioState.ended || false;
+  }
 }

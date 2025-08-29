@@ -12,7 +12,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { PodcastImage } from "ui/utils/imageSaver";
 import { COLORS, contrastColor, getRGBA } from "ui/utils/color";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import LeftNav from "./LeftNav";
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import Badge from "@mui/material/Badge";
@@ -100,7 +100,7 @@ export default function SearchAppBar(props: {
   const [openPlaylist, setOpenPlaylist] = useState<boolean>(false);
   const classes = useStyles();
   const { media, back = false, title = "Phonograph" } = props;
-  let history = useHistory();
+  let navigate = useNavigate();
   const overwrite = media
     ? {
         backgroundColor: getRGBA(media.colors[1], 0.8),
@@ -130,7 +130,7 @@ export default function SearchAppBar(props: {
   const searchHandler = (event) => {
     var enterKey = 13;
     if (event.which == enterKey) {
-      history.push(`/search?q=${query}`);
+      navigate(`/search?q=${query}`);
     }
   };
 
@@ -147,9 +147,9 @@ export default function SearchAppBar(props: {
               aria-label="open drawer"
               onClick={() => {
                 if (back) {
-                  history.push("/");
+                  navigate("/");
                 } else {
-                  history.push("/discovery");
+                  navigate("/discovery");
                   // setLeftNav(true);
                 }
               }}

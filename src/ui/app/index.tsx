@@ -5,7 +5,7 @@ import Library from "./Library";
 import Podcast from "./Podcast";
 import Player from "./Player";
 
-import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { IEpisode } from "podcastsuite/dist/Format";
 import { AudioState } from "lib/Audio";
 import Discovery from "./Discovery";
@@ -39,23 +39,27 @@ export default function App(props: IAppProps) {
     <ThemeProvider theme={theme}>
       <AppContext.Provider value={{ collection, episode, audioState }}>
         <Router>
-          <Switch>
-            <Route path="/podcast/:podcast">
-              <Podcast />
-            </Route>
-            <Route path="/discovery">
-              <Header back title="Discovery" />
-              <Discovery />
-            </Route>
-            <Route path="/search">
-              <Header title="Search" />
-              <Search />
-            </Route>
-            <Route path="/">
-              <Header title="Library" />
-              <Library />
-            </Route>
-          </Switch>
+          <Routes>
+            <Route path="/podcast/:podcast" element={<Podcast />} />
+            <Route path="/discovery" element={
+              <>
+                <Header back title="Discovery" />
+                <Discovery />
+              </>
+            } />
+            <Route path="/search" element={
+              <>
+                <Header title="Search" />
+                <Search />
+              </>
+            } />
+            <Route path="/" element={
+              <>
+                <Header title="Library" />
+                <Library />
+              </>
+            } />
+          </Routes>
         </Router>
         <Player />
       </AppContext.Provider>

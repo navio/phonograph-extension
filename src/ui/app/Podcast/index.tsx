@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import imageFetcher, { PodcastImage } from "ui/utils/imageSaver";
 import { AppContext, IPodcast } from "../index";
 import Loading from "ui/common/Loading";
@@ -23,7 +23,7 @@ export default () => {
   const [image, setImage] = useState<PodcastImage>(null);
   const [inLibrary, setInLibrary] = useState<boolean>(true);
   const { collection } = useContext(AppContext);
-  const { podcast: PodcastURL } = useRouteMatch("/podcast/:podcast").params;
+  const { podcast: PodcastURL } = useParams();
   let url: string;
   useEffect(() => {
     try {

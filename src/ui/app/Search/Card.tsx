@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const clearText = (html) => {
   let tmp = document.createElement("div");
@@ -46,10 +46,10 @@ interface MediaCardProps {
 export default function MediaCard({title, image, description, id}: MediaCardProps) {
   const classes = useStyles();
   const rss = (id);
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={() => history.push(`/podcast/${rss}`)}>
+      <CardActionArea onClick={() => navigate(`/podcast/${rss}`)}>
       <CardContent >
       <img src={image} title={title} className={classes.media} />
           <Typography noWrap variant="h5" className={classes.title} component="h2">

@@ -1,6 +1,6 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
-const { ESBuildPlugin, ESBuildMinifyPlugin } = require('esbuild-loader');
+const { EsbuildPlugin } = require('esbuild-loader');
 
 module.exports = {
   mode: "production",
@@ -13,7 +13,10 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new ESBuildMinifyPlugin()
+      new EsbuildPlugin({
+        target: 'es2020',
+        css: true,
+      })
     ]
   },
   // devtool: 'none',
@@ -55,7 +58,6 @@ module.exports = {
         { from: 'assets' },
       ],
     }),
-    new ESBuildPlugin()
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),

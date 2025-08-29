@@ -1,18 +1,17 @@
 {
   "name": "Phonograph",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Phonograph is Podcast Player Extension",
-  "browser_action": {
-    "name": "Phonograph"
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Phonograph"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "offscreen"
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ],
-    "persistent": true
+    "service_worker": "background.js"
   },
   "options_page": "options.html",
   "icons": { 
@@ -27,5 +26,5 @@
       ]
     }
   ],
-  "manifest_version": 2
+  "manifest_version": 3
 }
